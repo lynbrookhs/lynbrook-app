@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, Button, Image, Text, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
-import Alert from "../../components/Alert";
+import APIError from "../../components/APIError";
 import { useAuth } from "../../components/AuthProvider";
 import Card from "../../components/Card";
 import Stack from "../../components/Stack";
@@ -26,20 +26,8 @@ const HomeScreen = () => {
   const { data: user, error } = useUser();
   const { signOut } = useAuth();
 
-  if (error) {
-    return (
-      <Alert
-        style={tw`m-6`}
-        status="error"
-        title="Error"
-        description="An unknown error has occurred. Please try again."
-      />
-    );
-  }
-
-  if (!user) {
-    return <ActivityIndicator style={tw`m-4`} />;
-  }
+  if (error) return <APIError error={error} />;
+  if (!user) return <ActivityIndicator style={tw`m-4`} />;
 
   return (
     <Stack spacing={4} style={tw`flex-1 p-4`}>

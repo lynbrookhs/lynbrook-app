@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import { View, ViewProps } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
-export type DividerProps = PropsWithChildren<ViewProps>;
+export type DividerProps = ViewProps;
 
 const Divider = ({ style, ...props }: DividerProps) => (
   <View style={[tw`relative`, style]} {...props}>

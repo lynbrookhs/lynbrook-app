@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { ActivityIndicator, ScrollView, Text } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
-import Alert from "../../components/Alert";
+import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
 import { usePost } from "../../helpers/api";
 import markdownStyles from "../../helpers/markdownStyles";
@@ -18,20 +18,8 @@ const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
     }
   }, [post]);
 
-  if (error) {
-    return (
-      <Alert
-        style={tw`m-6`}
-        status="error"
-        title="Error"
-        description="An unknown error has occurred. Please try again."
-      />
-    );
-  }
-
-  if (!post) {
-    return <ActivityIndicator style={tw`m-4`} />;
-  }
+  if (error) return <APIError error={error} />;
+  if (!post) return <ActivityIndicator style={tw`m-4`} />;
 
   return (
     <Stack style={tw`flex-1`}>

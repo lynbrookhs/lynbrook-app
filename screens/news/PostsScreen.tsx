@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import React from "react";
 import { ActivityIndicator, FlatList, Text, TouchableHighlight } from "react-native";
 import tw from "tailwind-react-native-classnames";
-import Alert from "../../components/Alert";
+import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { usePosts } from "../../helpers/api";
@@ -35,20 +35,8 @@ const PostItem = ({ item, index, onPress }: PostItemProps) => (
 const PostsScreen = ({ navigation }: PostsScreenProps) => {
   const { data: posts, error, size, setSize } = usePosts();
 
-  if (error) {
-    return (
-      <Alert
-        style={tw`m-6`}
-        status="error"
-        title="Error"
-        description="An unknown error has occurred. Please try again."
-      />
-    );
-  }
-
-  if (!posts) {
-    return <ActivityIndicator style={tw`m-4`} />;
-  }
+  if (error) return <APIError error={error} />;
+  if (!posts) return <ActivityIndicator style={tw`m-4`} />;
 
   return (
     <FlatList<Post>
