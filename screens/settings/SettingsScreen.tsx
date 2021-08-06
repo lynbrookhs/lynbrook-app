@@ -10,6 +10,8 @@ import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useUser } from "../../helpers/api";
 
+// TODO: Fix page
+
 const schoolLinks = [
   {
     title: "Lynbrook High School Website",
@@ -104,6 +106,8 @@ const SettingsScreen = () => {
     return <ActivityIndicator style={tw`m-4`} />;
   }
 
+  const makeOpenUrl = (url: string) => () => Linking.openURL(url);
+
   return (
     <Stack spacing={4} style={tw`flex-1 py-4`}>
       <Profile
@@ -118,11 +122,9 @@ const SettingsScreen = () => {
       </Stack>
       <ResourceLink
         title="Guidance & Student Support Resources"
-        onPress={() =>
-          Linking.openURL(
-            "https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
-          )
-        }
+        onPress={makeOpenUrl(
+          "https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
+        )}
       />
       <Stack>
         {studentLinks.map(({ title, link }) => (
@@ -132,19 +134,15 @@ const SettingsScreen = () => {
           <>
             <ResourceLink
               title={`Class of ${user.grad_year} Instagram`}
-              onPress={() =>
-                Linking.openURL(
-                  `https://www.instagram.com/${classInstagrams[user.grad_year - 2022]}`
-                )
-              }
+              onPress={makeOpenUrl(
+                `https://www.instagram.com/${classInstagrams[user.grad_year - 2022]}`
+              )}
             />
             <ResourceLink
               title={`Class of ${user.grad_year} Facebook`}
-              onPress={() =>
-                Linking.openURL(
-                  `https://www.facebook.com/groups/${classFacebooks[user.grad_year - 2022]}`
-                )
-              }
+              onPress={makeOpenUrl(
+                `https://www.facebook.com/groups/${classFacebooks[user.grad_year - 2022]}`
+              )}
             />
           </>
         )}
