@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, getDay } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -55,8 +55,10 @@ const ScheduleTabs = ({ selected, onSelect }: ScheduleTabsProps) => (
 );
 
 const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
+  const current = (getDay(new Date()) - 1) % 7; // 0 = Sunday here, 0 = Monday in API
+
   const { data: schedule, error } = useCurrentSchedule();
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(current);
 
   useEffect(() => {
     if (schedule) {
