@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import { useAuthState } from "../components/AuthProvider";
+import { useAuth } from "../components/AuthProvider";
 import AuthNavigator from "./AuthNavigator";
 import BottomTabNavigator from "./BottomTabNavigator";
 import { linking } from "./config";
@@ -14,7 +14,7 @@ type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  const { state } = useAuthState();
+  const { state } = useAuth();
 
   return (
     <Stack.Navigator

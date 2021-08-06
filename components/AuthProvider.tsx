@@ -33,7 +33,7 @@ const AuthContext = createContext<AuthContextType>({
   },
 });
 
-export const useAuthState = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
   const [state, setState] = useState<AuthState>({
