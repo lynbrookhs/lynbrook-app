@@ -5,8 +5,10 @@ import * as React from "react";
 import TabBarIcon from "./TabBarIcon";
 import ActivitiesNavigator from "./tabs/ActivitiesNavigator";
 import HomeNavigator from "./tabs/HomeNavigator";
+import NewsNavigator from "./tabs/NewsNavigator";
 
 type BottomTabParamList = {
+  News: undefined;
   Activities: undefined;
   Home: undefined;
 };
@@ -23,6 +25,12 @@ const BottomTabNavigator = () => {
     <>
       <StatusBar style="light" />
       <BottomTab.Navigator initialRouteName="Home">
+        <BottomTab.Screen
+          name="News"
+          component={NewsNavigator}
+          options={{ tabBarIcon: ioniconsTabIcon("newspaper") }}
+        />
+
         <BottomTab.Screen
           name="Activities"
           component={ActivitiesNavigator}
