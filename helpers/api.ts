@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSWRInfinite } from "swr";
-import useSWRNative from "swr-react-native";
+import useSWRNative, { useSWRNativeRevalidate } from "swr-react-native";
 import { useAuth } from "../components/AuthProvider";
 import { apiPath } from "./utils";
 
@@ -44,7 +44,9 @@ export const useAPIRequestInfinite = wrapAPIRequest((path: string, fetcher: type
     return apiPath(path).toString();
   };
 
-  return useSWRInfinite(getKey, fetcher);
+  const ret = useSWRInfinite(getKey, fetcher);
+  useSWRNativeRevalidate(ret);
+  return ret;
 });
 
 export const useUser = () => useAPIRequest("/auth/users/me/");
