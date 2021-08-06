@@ -29,7 +29,7 @@ const NewsNavigator = () => {
       <NewsStack.Screen
         name="PostDetail"
         component={PostDetailScreen}
-        options={{ headerTitle: "Post Detail" }}
+        options={{ headerTitle: "" }}
       />
     </NewsStack.Navigator>
   );
