@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 import React, { PropsWithChildren } from "react";
 import { Button, Text, View } from "react-native";
 import tw from "tailwind-react-native-classnames";

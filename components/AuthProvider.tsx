@@ -1,3 +1,4 @@
+import * as AuthSession from "expo-auth-session";
 import * as SecureStore from "expo-secure-store";
 import React, {
   createContext,
@@ -8,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { Text } from "react-native";
+import { apiPath } from "../helpers/utils";
 
 const AuthLoading = () => <Text>Loading...</Text>;
 
@@ -56,16 +58,41 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 
       // TODO: Validate token
 
-      setState({ ...state, isLoading: false, token });
+      setState({ isLoading: false, isSignout: false, token });
     })();
   }, []);
 
-  const signIn = useCallback(() => {
-    // Sign in
+  const signIn = useCallback(async () => {
+    // Get authorization url
+    const auth_url = apiPath("/auth/o/schoology/");
+    auth_url.searchParams.append("redirect_uri", AuthSession.makeRedirectUri({ useProxy: true }));
+    const resp = await fetch(auth_url.toString());
+    const { authorization_url } = await resp.json();
+
+    // Authorize
+    const auth_res = await AuthSession.startAsync({ authUrl: authorization_url });
+    if (auth_res.type !== "success") {
+      console.error(auth_res);
+      return;
+    }
+
+    // Get JWT token
+    const login_url = apiPath("/auth/o/schoology/");
+    const login_res = await fetch(login_url.toString(), {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ oauth_token: auth_res.params.oauth_token }).toString(),
+    });
+    const { access } = await login_res.json();
+    if (access === undefined) return;
+
+    // Set new state
+    await SecureStore.setItemAsync("token", access);
+    setState({ isLoading: false, isSignout: false, token: access });
   }, []);
 
   const signOut = useCallback(() => {
-    setState({ ...state, isSignout: true, token: undefined });
+    setState({ isLoading: false, isSignout: true, token: undefined });
   }, []);
 
   return (

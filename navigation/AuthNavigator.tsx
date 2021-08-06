@@ -3,7 +3,7 @@ import React from "react";
 import WelcomeScreen from "../screens/WelcomeScreen";
 
 type AuthParamList = {
-  WelcomeScreen: undefined;
+  Welcome: undefined;
 };
 
 const AuthStack = createStackNavigator<AuthParamList>();
@@ -11,11 +11,7 @@ const AuthStack = createStackNavigator<AuthParamList>();
 const AuthNavigator = () => {
   return (
     <AuthStack.Navigator screenOptions={{ cardStyle: { backgroundColor: "transparent" } }}>
-      <AuthStack.Screen
-        name="WelcomeScreen"
-        component={WelcomeScreen}
-        options={{ headerShown: false }}
-      />
+      <AuthStack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
     </AuthStack.Navigator>
   );
 };

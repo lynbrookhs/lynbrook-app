@@ -37,7 +37,9 @@
     "react-native-web": "~0.13.12",
     "swr": "^0.5.6",
     "swr-react-native": "^0.1.2",
-    "tailwind-react-native-classnames": "^1.4.2"
+    "tailwind-react-native-classnames": "^1.4.2",
+    "expo-auth-session": "~3.3.1",
+    "expo-random": "~11.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

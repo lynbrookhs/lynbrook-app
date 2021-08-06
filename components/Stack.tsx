@@ -3,7 +3,7 @@ import { View, ViewProps } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { getValidChildren } from "../helpers/utils";
 
-type StackProps = PropsWithChildren<
+export type StackProps = PropsWithChildren<
   ViewProps & {
     direction?: string;
     spacing?: number;
