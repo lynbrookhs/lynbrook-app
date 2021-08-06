@@ -3,13 +3,13 @@ import { useSWRInfinite } from "swr";
 import useSWRNative, { useSWRNativeRevalidate } from "swr-react-native";
 import { useAuth } from "../../components/AuthProvider";
 import { apiPath } from "../utils";
-import { Organization, Post, Prize, Schedule, User } from "./models";
+import { APIDate, NestedSchedule, Organization, Post, Prize, Schedule, User } from "./models";
 
 export type Error = {
   status: number;
 };
 
-export type PaginatedResponse<T> = {
+type PaginatedResponse<T> = {
   count: number;
   next?: string;
   previous?: string;
@@ -75,4 +75,19 @@ export const usePosts = () => useAPIRequestInfinite<Post>("/posts/");
 export const usePost = (id: number) => useAPIRequest<Post>(`/posts/${id}/`);
 
 export const useSchedules = () => useAPIRequestInfinite<Schedule>("/schedules/");
-export const useCurrentSchedule = () => useAPIRequest("/schedules/current/");
+
+type CurrentSchedule = {
+  start: APIDate;
+  end: APIDate;
+  weekdays: [
+    NestedSchedule,
+    NestedSchedule,
+    NestedSchedule,
+    NestedSchedule,
+    NestedSchedule,
+    NestedSchedule,
+    NestedSchedule
+  ];
+};
+
+export const useCurrentSchedule = () => useAPIRequest<CurrentSchedule>("/schedules/current/");

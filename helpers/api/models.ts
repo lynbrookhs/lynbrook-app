@@ -1,3 +1,7 @@
+export type APIDate = string;
+export type APITime = string;
+export type APIDateTime = string;
+
 enum DayOfWeek {
   MONDAY = 0,
   TUESDAY = 1,
@@ -44,7 +48,7 @@ export type Organization = NestedOrganization & {
   advisors: NestedUser[];
   admins: NestedUser[];
   day?: DayOfWeek;
-  time?: Date;
+  time?: APITime;
   link?: string;
 };
 
@@ -89,8 +93,8 @@ export type NestedPeriod = {
 // SchedulePeriod
 
 export type NestedSchedulePeriod = {
-  start: Date;
-  end: Date;
+  start: APITime;
+  end: APITime;
   period: NestedPeriod;
 };
 
@@ -104,8 +108,8 @@ export type NestedSchedule = {
 };
 
 export type Schedule = NestedSchedule & {
-  start: Date;
-  end: Date;
+  start: APIDate;
+  end: APIDate;
   weekday: DayOfWeek[];
   priority: number;
 };
@@ -131,8 +135,8 @@ export type Event = {
   organization: NestedOrganization;
   name: string;
   description: string;
-  start: Date;
-  end: Date;
+  start: APIDateTime;
+  end: APIDateTime;
   points: number;
 };
 
