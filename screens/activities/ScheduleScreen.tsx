@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
@@ -6,6 +6,7 @@ import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useCurrentSchedule } from "../../helpers/api";
 import { NestedSchedulePeriod } from "../../helpers/api/models";
+import { ScheduleScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 
 const WEEKDAYS = ["Mon", "Tues", "Wed", "Thurs", "Fri"];
 
@@ -52,9 +53,15 @@ const ScheduleTabs = ({ selected, onSelect }: ScheduleTabsProps) => (
   </Stack>
 );
 
-const ScheduleScreen = () => {
+const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
   const { data: schedule, error } = useCurrentSchedule();
   const [selected, setSelected] = useState(0);
+
+  useEffect(() => {
+    if (schedule) {
+      navigation.setOptions({ headerTitle: schedule.weekdays[selected].name });
+    }
+  }, [schedule, selected]);
 
   if (error) return <APIError error={error} />;
   if (!schedule) return <ActivityIndicator style={tw`m-4`} />;
