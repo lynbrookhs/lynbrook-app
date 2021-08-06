@@ -13,14 +13,15 @@ export type StackProps = PropsWithChildren<
 
 const Stack = ({ direction = "col", spacing, divider, style, children, ...props }: StackProps) => {
   const validChildren = getValidChildren(children);
+  const spacer = direction === "col" ? "mt" : "mr";
 
   return (
     <View style={[tw`flex flex-${direction} items-stretch`, style]} {...props}>
       {validChildren.map((elem, idx) => (
         <Fragment key={idx}>
-          {idx > 0 && spacing && <View style={tw`h-${spacing}`}></View>}
+          {idx > 0 && spacing && <View style={tw`${spacer}-${spacing}`}></View>}
           {idx > 0 && divider}
-          {idx > 0 && divider && spacing && <View style={tw`h-${spacing}`}></View>}
+          {idx > 0 && divider && spacing && <View style={tw`${spacer}-${spacing}`}></View>}
           {elem}
         </Fragment>
       ))}

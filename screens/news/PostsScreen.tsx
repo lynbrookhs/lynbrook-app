@@ -1,7 +1,10 @@
+import { Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
 import React from "react";
 import { ActivityIndicator, FlatList, Text } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import Alert from "../../components/Alert";
+import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { usePosts } from "../../helpers/api";
 
@@ -13,10 +16,17 @@ type PostItemProps = {
 };
 
 const PostItem = ({ item, index }: PostItemProps) => (
-  <Stack style={[tw`p-3 bg-white border-b border-gray-200`, index === 0 && tw`border-t`]}>
-    <Text style={tw`text-sm font-bold`}>{item.title}</Text>
-    <Text style={tw`text-sm text-gray-500`}>{item.organization.name}</Text>
-  </Stack>
+  <ListItem
+    style={index === 0 && tw`border-t`}
+    title={item.title}
+    description={item.organization.name}
+    direction="row"
+  >
+    <Stack direction="row" style={tw`items-center self-start`} spacing={1}>
+      <Text style={tw`text-gray-500`}>{format(new Date(item.date), "M/d")}</Text>
+      <Ionicons name="chevron-forward" style={tw`text-gray-500`} />
+    </Stack>
+  </ListItem>
 );
 
 const PostsScreen = () => {

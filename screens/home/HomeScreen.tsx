@@ -12,6 +12,7 @@ type ProfileProps = { name: string; email: string; uri: string };
 const Profile = ({ name, email, uri }: ProfileProps) => (
   <Card direction="row">
     <View>
+      {/* TODO: Image needs to be centered */}
       <Image style={tw`w-14 h-14 rounded-full mr-4`} source={{ uri }} />
     </View>
     <View style={tw`flex-1`}>
