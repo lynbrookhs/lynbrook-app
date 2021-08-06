@@ -115,7 +115,7 @@ export type Schedule = NestedSchedule & {
 export type Post = {
   id: number;
   url: string;
-  organization: any;
+  organization: NestedOrganization;
   title: string;
   date: string;
   content: string;
