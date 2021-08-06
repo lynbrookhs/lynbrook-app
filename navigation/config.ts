@@ -20,5 +20,4 @@ export const linking: LinkingOptions = {
 export const screenOptions = {
   headerStyle: { backgroundColor: "#043265" },
   headerTintColor: "#FFFFFF",
-  cardStyle: { backgroundColor: "#FFFFFF" },
 };
