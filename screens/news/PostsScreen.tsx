@@ -7,9 +7,8 @@ import Alert from "../../components/Alert";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { usePosts } from "../../helpers/api";
+import { Post } from "../../helpers/api/models";
 import { PostsScreenProps } from "../../navigation/tabs/NewsNavigator";
-
-type Post = any;
 
 type PostItemProps = {
   item: Post;
@@ -52,8 +51,8 @@ const PostsScreen = ({ navigation }: PostsScreenProps) => {
   }
 
   return (
-    <FlatList
-      data={posts.flatMap((x: any) => x.results)}
+    <FlatList<Post>
+      data={posts.flatMap((x) => x.results)}
       renderItem={({ item, index }) => (
         <PostItem
           item={item}
