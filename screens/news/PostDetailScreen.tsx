@@ -12,6 +12,12 @@ import { PostDetailScreenProps } from "../../navigation/tabs/NewsNavigator";
 const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
   const { data: post, error } = usePost(route.params.id);
 
+  useEffect(() => {
+    if (post) {
+      navigation.setOptions({ headerTitle: post.title });
+    }
+  }, [post]);
+
   if (error) {
     return (
       <Alert
@@ -22,12 +28,6 @@ const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
       />
     );
   }
-
-  useEffect(() => {
-    if (post) {
-      navigation.setOptions({ headerTitle: post.title });
-    }
-  }, [post]);
 
   if (!post) {
     return <ActivityIndicator style={tw`m-4`} />;

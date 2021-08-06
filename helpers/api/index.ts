@@ -32,7 +32,7 @@ const useAPIRequest = <T>(path: string) => {
   const { signOut, state } = useAuth();
   const { token } = state;
 
-  const ret = useSWRNative<T, Error>(path, apiFetcher(token ?? ""));
+  const ret = useSWRNative<T, Error>(apiPath(path).toString(), apiFetcher(token ?? ""));
   const loggedOut = ret.error && ret.error.status == 401;
 
   useEffect(() => {
