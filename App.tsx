@@ -1,19 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import { extendTheme, NativeBaseProvider } from "native-base";
 import React from "react";
+import { View } from "react-native";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import useCachedResources from "./hooks/useCachedResources";
+import tw from "tailwind-react-native-classnames";
+import AuthProvider from "./components/AuthProvider";
+import useCachedResources from "./helpers/useCachedResources";
 import Navigation from "./navigation";
 
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: "light",
-};
-
-const theme = extendTheme({ config });
-
-export default function App() {
+const App = () => {
   const isLoadingComplete = useCachedResources();
 
   if (!isLoadingComplete) {
@@ -21,11 +16,15 @@ export default function App() {
   }
 
   return (
-    <NativeBaseProvider theme={theme}>
-      <SafeAreaProvider>
-        <Navigation />
-        <StatusBar />
-      </SafeAreaProvider>
-    </NativeBaseProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <View style={tw`flex-1 p-4`}>
+          <Navigation />
+        </View>
+      </AuthProvider>
+      <StatusBar />
+    </SafeAreaProvider>
   );
-}
+};
+
+export default App;
