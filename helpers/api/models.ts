@@ -1,6 +1,12 @@
+import { parse, parseISO } from "date-fns";
+
 export type APIDate = string;
 export type APITime = string;
 export type APIDateTime = string;
+
+export const parseTime = (time: APITime) => parse(time, "HH:mm:ss", new Date(0));
+export const parseDate = (date: APIDate) => parseISO(date);
+export const parseDateTime = (date: APIDateTime) => parseISO(date);
 
 enum DayOfWeek {
   MONDAY = 0,

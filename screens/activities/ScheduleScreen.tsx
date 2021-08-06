@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -5,7 +6,7 @@ import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useCurrentSchedule } from "../../helpers/api";
-import { NestedSchedulePeriod } from "../../helpers/api/models";
+import { NestedSchedulePeriod, parseTime } from "../../helpers/api/models";
 import { ScheduleScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 
 const WEEKDAYS = ["Mon", "Tues", "Wed", "Thurs", "Fri"];
@@ -18,7 +19,7 @@ type ScheduleItemProps = {
 const ScheduleItem = ({ item }: ScheduleItemProps) => (
   <ListItem title={item.period.name} direction="row" style={tw`items-center`}>
     <Text style={tw`text-gray-500`}>
-      {item.start} – {item.end}
+      {format(parseTime(item.start), "h:mm a")} – {format(parseTime(item.end), "h:mm a")}
     </Text>
   </ListItem>
 );
