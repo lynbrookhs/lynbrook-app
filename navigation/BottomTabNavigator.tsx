@@ -6,11 +6,13 @@ import TabBarIcon from "./TabBarIcon";
 import ActivitiesNavigator from "./tabs/ActivitiesNavigator";
 import HomeNavigator from "./tabs/HomeNavigator";
 import NewsNavigator from "./tabs/NewsNavigator";
+import SettingsNavigator from "./tabs/SettingsNavigator";
 
 type BottomTabParamList = {
   News: undefined;
   Activities: undefined;
   Home: undefined;
+  Settings: undefined;
 };
 
 const ioniconsTabIcon =
@@ -41,6 +43,12 @@ const BottomTabNavigator = () => {
           name="Home"
           component={HomeNavigator}
           options={{ tabBarIcon: ioniconsTabIcon("home") }}
+        />
+
+        <BottomTab.Screen
+          name="Settings"
+          component={SettingsNavigator}
+          options={{ tabBarIcon: ioniconsTabIcon("settings") }}
         />
       </BottomTab.Navigator>
     </>
