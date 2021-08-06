@@ -49,7 +49,10 @@ export const useAPIRequestInfinite = wrapAPIRequest((path: string, fetcher: type
 
 export const useUser = () => useAPIRequest("/auth/users/me/");
 export const useOrgs = () => useAPIRequest("/orgs/");
+
 export const usePosts = () => useAPIRequestInfinite("/posts/");
+export const usePost = (id: number) => useAPIRequest(`/posts/${id}/`);
+
 export const useEvents = () => useAPIRequest("/events/");
 export const usePrizes = () => useAPIRequest("/prizes/");
 export const useSchedules = () => useAPIRequest("/schedules/");

@@ -1,35 +1,39 @@
 import { Ionicons } from "@expo/vector-icons";
 import { format } from "date-fns";
 import React from "react";
-import { ActivityIndicator, FlatList, Text } from "react-native";
+import { ActivityIndicator, FlatList, Text, TouchableHighlight } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import Alert from "../../components/Alert";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { usePosts } from "../../helpers/api";
+import { PostsScreenProps } from "../../navigation/tabs/NewsNavigator";
 
 type Post = any;
 
 type PostItemProps = {
   item: Post;
   index: number;
+  onPress: () => void;
 };
 
-const PostItem = ({ item, index }: PostItemProps) => (
-  <ListItem
-    style={index === 0 && tw`border-t`}
-    title={item.title}
-    description={item.organization.name}
-    direction="row"
-  >
-    <Stack direction="row" style={tw`items-center self-start`} spacing={1}>
-      <Text style={tw`text-gray-500`}>{format(new Date(item.date), "M/d")}</Text>
-      <Ionicons name="chevron-forward" style={tw`text-gray-500`} />
-    </Stack>
-  </ListItem>
+const PostItem = ({ item, index, onPress }: PostItemProps) => (
+  <TouchableHighlight onPress={onPress}>
+    <ListItem
+      style={index === 0 && tw`border-t`}
+      title={item.title}
+      description={item.organization.name}
+      direction="row"
+    >
+      <Stack direction="row" style={tw`items-center self-start`} spacing={1}>
+        <Text style={tw`text-gray-500`}>{format(new Date(item.date), "M/d")}</Text>
+        <Ionicons name="chevron-forward" style={tw`text-gray-500`} />
+      </Stack>
+    </ListItem>
+  </TouchableHighlight>
 );
 
-const PostsScreen = () => {
+const PostsScreen = ({ navigation }: PostsScreenProps) => {
   const { data: posts, error, size, setSize } = usePosts();
 
   if (error) {
@@ -50,7 +54,13 @@ const PostsScreen = () => {
   return (
     <FlatList
       data={posts.flatMap((x: any) => x.results)}
-      renderItem={PostItem}
+      renderItem={({ item, index }) => (
+        <PostItem
+          item={item}
+          index={index}
+          onPress={() => navigation.navigate("PostDetail", { id: item.id })}
+        />
+      )}
       keyExtractor={(item) => item.id.toString()}
       onEndReached={() => setSize(size + 1)}
     />
