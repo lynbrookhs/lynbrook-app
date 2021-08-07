@@ -11,17 +11,18 @@ export type APIErrorProps = ViewProps & {
 const TEXT: { [key: number]: [string, string] } = {
   404: ["Not Found", "The requested resource was not found."],
   401: ["Unauthorized", "You don't seem to be logged in. Try again?"],
+  [-1]: ["Error", "An unknown error has occurred. Please try again."],
 };
 
 const APIError = ({ error, style, ...props }: APIErrorProps) => {
-  const [title, description] = TEXT[error.status];
+  const [title, description] = TEXT[error.status] ?? TEXT[-1];
 
   return (
     <Alert
       style={[tw`m-6`, style]}
       status="error"
-      title={title ?? "Error"}
-      description={description ?? "An unknown error has occurred. Please try again."}
+      title={title}
+      description={description}
       {...props}
     />
   );

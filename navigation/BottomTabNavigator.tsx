@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import TabBarIcon from "./TabBarIcon";
 import ActivitiesNavigator from "./tabs/ActivitiesNavigator";
+import EventsNavigator from "./tabs/EventsNavigator";
 import HomeNavigator from "./tabs/HomeNavigator";
 import NewsNavigator from "./tabs/NewsNavigator";
 import SettingsNavigator from "./tabs/SettingsNavigator";
@@ -12,6 +13,7 @@ type BottomTabParamList = {
   News: undefined;
   Activities: undefined;
   Home: undefined;
+  Events: undefined;
   Settings: undefined;
 };
 
@@ -43,6 +45,12 @@ const BottomTabNavigator = () => {
           name="Home"
           component={HomeNavigator}
           options={{ tabBarIcon: ioniconsTabIcon("home") }}
+        />
+
+        <BottomTab.Screen
+          name="Events"
+          component={EventsNavigator}
+          options={{ tabBarIcon: ioniconsTabIcon("calendar") }}
         />
 
         <BottomTab.Screen

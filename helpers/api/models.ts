@@ -56,6 +56,7 @@ export type Organization = NestedOrganization & {
   day?: DayOfWeek;
   time?: APITime;
   link?: string;
+  ical_links: string[];
 };
 
 // Poll

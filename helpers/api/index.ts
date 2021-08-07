@@ -44,7 +44,7 @@ const useAPIRequest = <T>(path: string) => {
   return ret;
 };
 
-const useAPIRequestInfinite = <T>(path: string) => {
+const useAPIRequestPaginated = <T>(path: string) => {
   const getKey = (_: number, previous: PaginatedResponse<T> | null) => {
     if (previous) return previous.next ?? null;
     return apiPath(path).toString();
@@ -67,14 +67,14 @@ const useAPIRequestInfinite = <T>(path: string) => {
 };
 
 export const useUser = () => useAPIRequest<User>("/auth/users/me/");
-export const useOrgs = () => useAPIRequestInfinite<Organization>("/orgs/");
-export const useEvents = () => useAPIRequestInfinite<Event>("/events/");
-export const usePrizes = () => useAPIRequestInfinite<Prize>("/prizes/");
+export const useOrgs = () => useAPIRequest<Organization[]>("/orgs/");
+export const useEvents = () => useAPIRequest<Event[]>("/events/");
+export const usePrizes = () => useAPIRequest<Prize[]>("/prizes/");
 
-export const usePosts = () => useAPIRequestInfinite<Post>("/posts/");
+export const usePosts = () => useAPIRequestPaginated<Post>("/posts/");
 export const usePost = (id: number) => useAPIRequest<Post>(`/posts/${id}/`);
 
-export const useSchedules = () => useAPIRequestInfinite<Schedule>("/schedules/");
+export const useSchedules = () => useAPIRequest<Schedule[]>("/schedules/");
 
 type CurrentSchedule = {
   start: APIDate;
