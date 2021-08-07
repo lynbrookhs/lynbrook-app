@@ -33,7 +33,7 @@ const useAPIRequest = <T>(path: string) => {
   const { token } = state;
 
   const ret = useSWRNative<T, Error>(apiPath(path).toString(), apiFetcher(token ?? ""));
-  const loggedOut = ret.error && ret.error.status == 401;
+  const loggedOut = ret.error && ret.error.status === 401;
 
   useEffect(() => {
     if (loggedOut) {
@@ -54,7 +54,7 @@ const useAPIRequestPaginated = <T>(path: string) => {
   const { token } = state;
 
   const ret = useSWRInfinite<PaginatedResponse<T>, Error>(getKey, apiFetcher(token ?? ""));
-  const loggedOut = ret.error && ret.error.status == 401;
+  const loggedOut = ret.error && ret.error.status === 401;
 
   useEffect(() => {
     if (loggedOut) {

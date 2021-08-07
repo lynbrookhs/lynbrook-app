@@ -3,12 +3,10 @@ import { Text } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import Stack, { StackProps } from "./Stack";
 
-export type ListItemProps = PropsWithChildren<
-  StackProps & {
-    title?: string;
-    description?: string;
-  }
->;
+export type ListItemProps = PropsWithChildren<StackProps> & {
+  title?: string;
+  description?: string;
+};
 
 const ListItem = ({ title, description, style, children, ...props }: ListItemProps) => {
   return (

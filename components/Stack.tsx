@@ -3,13 +3,11 @@ import { View, ViewProps } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { getValidChildren } from "../helpers/utils";
 
-export type StackProps = PropsWithChildren<
-  ViewProps & {
-    direction?: string;
-    spacing?: number;
-    divider?: ReactNode;
-  }
->;
+export type StackProps = PropsWithChildren<ViewProps> & {
+  direction?: string;
+  spacing?: number;
+  divider?: ReactNode;
+};
 
 const Stack = ({ direction = "col", spacing, divider, style, children, ...props }: StackProps) => {
   const validChildren = getValidChildren(children);

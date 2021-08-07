@@ -8,7 +8,7 @@ export const parseTime = (time: APITime) => parse(time, "HH:mm:ss", new Date(0))
 export const parseDate = (date: APIDate) => parseISO(date);
 export const parseDateTime = (date: APIDateTime) => parseISO(date);
 
-enum DayOfWeek {
+export enum DayOfWeek {
   MONDAY = 0,
   TUESDAY = 1,
   WEDNESDAY = 2,
@@ -37,7 +37,7 @@ export type User = NestedUser & {
 
 // Organization
 
-enum OrganizationType {
+export enum OrganizationType {
   GLOBAL = 1,
   CLASS = 2,
   CLUB = 3,
@@ -61,7 +61,7 @@ export type Organization = NestedOrganization & {
 
 // Poll
 
-enum PollType {
+export enum PollType {
   SELECT = 1,
   SHORT_ANSWER = 2,
 }
