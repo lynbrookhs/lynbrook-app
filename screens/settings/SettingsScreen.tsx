@@ -1,23 +1,16 @@
-import React from "react";
-import {
-  ActivityIndicator,
-  Button,
-  Image,
-  Text,
-  View,
-  FlatList,
-  TouchableHighlight,
-} from "react-native";
-import ListItem from "../../components/ListItem";
 import { Ionicons } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
+import React from "react";
+import { ActivityIndicator, Button, Image, Text, TouchableHighlight, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import Alert from "../../components/Alert";
 import { useAuth } from "../../components/AuthProvider";
 import Card from "../../components/Card";
+import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useUser } from "../../helpers/api";
-import { UserInterfaceIdiom } from "expo-constants";
+
+// TODO: Fix page
 
 const schoolLinks = [
   {
@@ -61,7 +54,11 @@ const classInstagrams = ["lynbrook2022", "lynbrook2023", "lynbrookclassof2024", 
 
 const classFacebooks = ["395859940822522", "lynbrookclassof2023", "1603301959845362", ""];
 
-type ProfileProps = { name: string; email: string; uri: string };
+type ProfileProps = {
+  name: string;
+  email: string;
+  uri: string;
+};
 
 const Profile = ({ name, email, uri }: ProfileProps) => (
   <Card direction="row">
@@ -83,10 +80,9 @@ type ResourceLinkProps = {
 
 const ResourceLink = ({ title, onPress }: ResourceLinkProps) => (
   <TouchableHighlight onPress={onPress}>
-    <ListItem title={title} direction="row">
-      <Stack direction="row" style={tw`items-center self-center`} spacing={1}>
-        <Ionicons name="link" style={tw`text-gray-500`} />
-      </Stack>
+    <ListItem direction="row" style={tw`items-center`}>
+      <Text style={tw`flex-1`}>{title}</Text>
+      <Ionicons name="link" style={tw`text-gray-500`} />
     </ListItem>
   </TouchableHighlight>
 );
@@ -110,6 +106,8 @@ const SettingsScreen = () => {
     return <ActivityIndicator style={tw`m-4`} />;
   }
 
+  const makeOpenUrl = (url: string) => () => Linking.openURL(url);
+
   return (
     <Stack spacing={4} style={tw`flex-1 py-4`}>
       <Profile
@@ -124,11 +122,9 @@ const SettingsScreen = () => {
       </Stack>
       <ResourceLink
         title="Guidance & Student Support Resources"
-        onPress={() =>
-          Linking.openURL(
-            "https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
-          )
-        }
+        onPress={makeOpenUrl(
+          "https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
+        )}
       />
       <Stack>
         {studentLinks.map(({ title, link }) => (
@@ -138,19 +134,15 @@ const SettingsScreen = () => {
           <>
             <ResourceLink
               title={`Class of ${user.grad_year} Instagram`}
-              onPress={() =>
-                Linking.openURL(
-                  `https://www.instagram.com/${classInstagrams[user.grad_year - 2022]}`
-                )
-              }
+              onPress={makeOpenUrl(
+                `https://www.instagram.com/${classInstagrams[user.grad_year - 2022]}`
+              )}
             />
             <ResourceLink
               title={`Class of ${user.grad_year} Facebook`}
-              onPress={() =>
-                Linking.openURL(
-                  `https://www.facebook.com/groups/${classFacebooks[user.grad_year - 2022]}`
-                )
-              }
+              onPress={makeOpenUrl(
+                `https://www.facebook.com/groups/${classFacebooks[user.grad_year - 2022]}`
+              )}
             />
           </>
         )}
