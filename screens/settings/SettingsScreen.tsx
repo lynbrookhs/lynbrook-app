@@ -88,9 +88,13 @@ type ResourceLinkProps = {
 
 const ResourceLink = ({ idx, title, url }: ResourceLinkProps) => (
   <TouchableHighlight onPress={() => Linking.openURL(url)}>
-    <ListItem direction="row" style={tw`items-center`} border={idx === 0 ? "both" : "bottom"}>
-      <Text style={tw`flex-1`}>{title}</Text>
-      <Ionicons name="link" style={tw`text-gray-500`} />
+    <ListItem
+      text={title}
+      direction="row"
+      style={tw`items-center`}
+      border={idx === 0 ? "both" : "bottom"}
+    >
+      <Ionicons name="open-outline" style={tw`text-lg text-gray-500`} />
     </ListItem>
   </TouchableHighlight>
 );

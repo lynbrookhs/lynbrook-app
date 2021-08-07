@@ -17,10 +17,10 @@ type PostItemProps = {
 
 const PostItem = ({ item, onPress }: PostItemProps) => (
   <TouchableHighlight onPress={onPress}>
-    <ListItem title={item.title} description={item.organization.name} direction="row">
+    <ListItem primary={item.title} secondary={item.organization.name} direction="row">
       <Stack direction="row" style={tw`items-center self-start`} spacing={1}>
-        <Text style={tw`text-gray-500`}>{format(new Date(item.date), "M/d")}</Text>
-        <Ionicons name="chevron-forward" style={tw`text-gray-500`} />
+        <Text style={tw`text-sm text-gray-500`}>{format(new Date(item.date), "M/d")}</Text>
+        <Ionicons name="chevron-forward" style={tw`text-sm text-gray-500`} />
       </Stack>
     </ListItem>
   </TouchableHighlight>

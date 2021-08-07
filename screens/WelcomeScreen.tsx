@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
 import React, { PropsWithChildren } from "react";
 import { Button, Text, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -14,7 +13,7 @@ type WelcomeItemProps = PropsWithChildren<{
 const WelcomeItem = ({ icon, children }: WelcomeItemProps) => (
   <Stack direction="row" style={tw`items-center`}>
     <View style={tw`w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mr-5`}>
-      <Ionicons name={icon} size={25} />
+      <Ionicons name={icon} style={tw`text-2xl`} />
     </View>
     <View style={tw`flex-1`}>
       <Text style={tw`text-base`}>{children}</Text>

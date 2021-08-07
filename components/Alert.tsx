@@ -29,7 +29,7 @@ const Alert = ({ title, description, status = "success", style, ...props }: Aler
       style={[tw`rounded-md bg-${color}-100 border border-${color}-500 p-4 items-center`, style]}
       {...props}
     >
-      <Ionicons name={icon} style={tw`text-${color}-500 mr-3`} size={24} />
+      <Ionicons name={icon} style={tw`text-xl text-${color}-500 mr-3`} />
       <View style={tw`flex-1`}>
         <Text style={tw`text-base font-medium text-${color}-800`}>{title}</Text>
         <Text style={tw`text-sm text-${color}-700`}>{description}</Text>

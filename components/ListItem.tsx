@@ -10,25 +10,31 @@ const BORDER_STYLES = {
 };
 
 export type ListItemProps = PropsWithChildren<StackProps> & {
-  title?: string;
-  description?: string;
+  primary?: string;
+  secondary?: string;
+  text?: string;
   border?: "top" | "bottom" | "both";
 };
 
 const ListItem = ({
-  title,
-  description,
+  primary,
+  secondary,
+  text,
   style,
   children,
   border = "bottom",
   ...props
 }: ListItemProps) => {
   return (
-    <Stack style={[tw`p-3 bg-white border-gray-200`, BORDER_STYLES[border], style]} {...props}>
-      {(title || description) && (
+    <Stack
+      style={[tw`py-3 px-4 bg-white border-gray-200`, BORDER_STYLES[border], style]}
+      {...props}
+    >
+      {(primary || secondary || text) && (
         <Stack style={tw`flex-1`}>
-          {title && <Text style={tw`text-sm font-bold`}>{title}</Text>}
-          {description && <Text style={tw`text-sm text-gray-500`}>{description}</Text>}
+          {primary && <Text style={tw`text-sm font-bold`}>{primary}</Text>}
+          {secondary && <Text style={tw`text-sm text-gray-500`}>{secondary}</Text>}
+          {text && <Text style={tw`text-base`}>{text}</Text>}
         </Stack>
       )}
       {children}

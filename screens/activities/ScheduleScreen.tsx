@@ -18,7 +18,7 @@ type ScheduleItemProps = {
 };
 
 const ScheduleItem = ({ item }: ScheduleItemProps) => (
-  <ListItem title={item.period.name} direction="row" style={tw`items-center`}>
+  <ListItem primary={item.period.name} direction="row" style={tw`items-center`}>
     <Text style={tw`text-gray-500`}>
       {format(parseTime(item.start), "h:mm a")} – {format(parseTime(item.end), "h:mm a")}
     </Text>
@@ -73,6 +73,7 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
   return (
     <Stack style={tw`flex-1`}>
       <ScheduleTabs selected={selected} onSelect={setSelected} />
+
       <FlatList<NestedSchedulePeriod>
         data={schedule.weekdays[selected].periods}
         renderItem={ScheduleItem}
@@ -83,10 +84,10 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
           </ListItem>
         }
       />
+
       <TouchableOpacity onPress={() => navigation.navigate("Clubs")}>
-        <ListItem direction="row" style={tw`items-center`}>
-          <Text style={tw`flex-1`}>Clubs</Text>
-          <Ionicons name="link" style={tw`text-gray-500`} />
+        <ListItem text="Clubs" direction="row" style={tw`items-center`} border="top">
+          <Ionicons name="chevron-forward" style={tw`text-lg text-gray-500`} />
         </ListItem>
       </TouchableOpacity>
     </Stack>

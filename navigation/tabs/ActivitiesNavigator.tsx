@@ -1,7 +1,7 @@
 import { RouteProp } from "@react-navigation/native";
 import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import ClubsDetailScreen from "../../screens/activities/ClubsDetailScreen";
+import ClubDetailScreen from "../../screens/activities/ClubDetailScreen";
 import ClubsScreen from "../../screens/activities/ClubsScreen";
 import ScheduleScreen from "../../screens/activities/ScheduleScreen";
 import { screenOptions } from "../config";
@@ -16,15 +16,15 @@ export type ClubsScreenProps = {
   route: RouteProp<ActivitiesParamList, "Clubs">;
 };
 
-export type ClubsDetailScreenProps = {
-  navigation: StackNavigationProp<ActivitiesParamList, "ClubsDetail">;
-  route: RouteProp<ActivitiesParamList, "ClubsDetail">;
+export type ClubDetailScreenProps = {
+  navigation: StackNavigationProp<ActivitiesParamList, "ClubDetail">;
+  route: RouteProp<ActivitiesParamList, "ClubDetail">;
 };
 
 type ActivitiesParamList = {
   Schedule: undefined;
   Clubs: undefined;
-  ClubsDetail: { id: number };
+  ClubDetail: { id: number };
 };
 
 const ActivitiesStack = createStackNavigator<ActivitiesParamList>();
@@ -43,8 +43,8 @@ const ActivitiesNavigator = () => {
         options={{ headerTitle: "Clubs" }}
       />
       <ActivitiesStack.Screen
-        name="ClubsDetail"
-        component={ClubsDetailScreen}
+        name="ClubDetail"
+        component={ClubDetailScreen}
         options={{ headerTitle: "" }}
       />
     </ActivitiesStack.Navigator>

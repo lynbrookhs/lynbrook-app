@@ -1,18 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
-import { format } from "date-fns";
 import React from "react";
 import {
   ActivityIndicator,
-  FlatList,
   SectionList,
   Text,
   TouchableHighlight,
   TouchableOpacity,
+  View,
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
-import Stack from "../../components/Stack";
 import { useClubOrgs, useUserOrgs } from "../../helpers/api";
 import { Organization, OrganizationType } from "../../helpers/api/models";
 import { ClubsScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
@@ -25,22 +23,19 @@ type ClubItemProps = {
 };
 
 const ClubItem = ({ item, subscribed, toggle, info }: ClubItemProps) => (
-  <ListItem title={item.name} direction="row">
-    <Stack direction="row" style={tw`items-center self-center`}>
+  <TouchableHighlight onPress={info}>
+    <ListItem text={item.name} direction="row" style={tw`items-center`} spacing={2}>
       {item.type == OrganizationType.CLUB && (
         <TouchableOpacity onPress={toggle}>
-          {subscribed ? (
-            <Ionicons name="remove-circle-outline" style={tw`text-red-500 text-xl`} />
-          ) : (
-            <Ionicons name="add-circle-outline" style={tw`text-green-500 text-xl`} />
-          )}
+          <Ionicons
+            name={subscribed ? "remove-circle-outline" : "add-circle-outline"}
+            style={tw`text-${subscribed ? "red" : "green"}-500 text-2xl`}
+          />
         </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={info}>
-        <Ionicons name="information-circle" style={tw`text-xl`} />
-      </TouchableOpacity>
-    </Stack>
-  </ListItem>
+      <Ionicons name="chevron-forward" style={tw`text-lg text-gray-500`} />
+    </ListItem>
+  </TouchableHighlight>
 );
 
 const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
@@ -51,8 +46,6 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   if (error2) return <APIError error={error2} />;
   if (!clubOrgs) return <ActivityIndicator style={tw`m-4`} />;
   if (!userOrgs) return <ActivityIndicator style={tw`m-4`} />;
-
-  console.log(userOrgs);
 
   const listData = [
     {
@@ -66,30 +59,20 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   ];
 
   return (
-    /* <FlatList<Organization>
-      data={[...userOrgs.filter((item) => item.type != OrganizationType.CLUB), ...clubOrgs]}
-      renderItem={({ item, index }) => (
-        <ClubItem
-          item={item}
-          subscribed={userOrgs.includes(item)}
-          toggle={() => console.log("TODO TOGGLE :D")}
-          info={() => navigation.navigate("ClubsDetail", { id: item.id })}
-        />
-      )}
-      keyExtractor={(item) => item.id.toString()}
-    /> */
     <SectionList<Organization>
       sections={listData}
-      renderItem={({ item, index }) => (
+      renderItem={({ item }) => (
         <ClubItem
           item={item}
           subscribed={userOrgs.includes(item)}
           toggle={() => console.log("TODO TOGGLE :D")}
-          info={() => navigation.navigate("ClubsDetail", { id: item.id })}
+          info={() => navigation.navigate("ClubDetail", { id: item.id })}
         />
       )}
       renderSectionHeader={({ section: { title } }) => (
-        <Text style={tw`py-3 font-medium text-center`}>{title}</Text>
+        <View style={tw`bg-gray-100 border-b border-gray-200`}>
+          <Text style={tw`py-3 font-medium text-center`}>{title}</Text>
+        </View>
       )}
       keyExtractor={(item) => item.id.toString()}
     />
