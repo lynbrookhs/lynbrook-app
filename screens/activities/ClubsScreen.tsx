@@ -6,7 +6,6 @@ import {
   Text,
   TouchableHighlight,
   TouchableOpacity,
-  View,
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
@@ -60,6 +59,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
 
   return (
     <SectionList<Organization>
+      style={tw`-mb-px`}
       sections={listData}
       renderItem={({ item }) => (
         <ClubItem
@@ -70,9 +70,12 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
         />
       )}
       renderSectionHeader={({ section: { title } }) => (
-        <View style={tw`bg-gray-100 border-b border-gray-200`}>
-          <Text style={tw`py-3 font-medium text-center`}>{title}</Text>
-        </View>
+        <ListItem
+          style={tw`bg-gray-100`}
+          border={listData.findIndex((x) => x.title === title) === 0 ? "both" : "bottom"}
+        >
+          <Text style={tw`font-medium text-center`}>{title}</Text>
+        </ListItem>
       )}
       keyExtractor={(item) => item.id.toString()}
     />

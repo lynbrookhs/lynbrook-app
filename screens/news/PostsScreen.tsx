@@ -12,12 +12,18 @@ import { PostsScreenProps } from "../../navigation/tabs/NewsNavigator";
 
 type PostItemProps = {
   item: Post;
+  index: number;
   onPress: () => void;
 };
 
-const PostItem = ({ item, onPress }: PostItemProps) => (
+const PostItem = ({ item, index, onPress }: PostItemProps) => (
   <TouchableHighlight onPress={onPress}>
-    <ListItem primary={item.title} secondary={item.organization.name} direction="row">
+    <ListItem
+      primary={item.title}
+      secondary={item.organization.name}
+      direction="row"
+      border={index === 0 ? "both" : "bottom"}
+    >
       <Stack direction="row" style={tw`items-center self-start`} spacing={1}>
         <Text style={tw`text-sm text-gray-500`}>{format(new Date(item.date), "M/d")}</Text>
         <Ionicons name="chevron-forward" style={tw`text-sm text-gray-500`} />
@@ -34,9 +40,14 @@ const PostsScreen = ({ navigation }: PostsScreenProps) => {
 
   return (
     <FlatList<Post>
+      style={tw`-mt-px`}
       data={posts.flatMap((x) => x.results)}
       renderItem={({ item, index }) => (
-        <PostItem item={item} onPress={() => navigation.navigate("PostDetail", { id: item.id })} />
+        <PostItem
+          item={item}
+          index={index}
+          onPress={() => navigation.navigate("PostDetail", { id: item.id })}
+        />
       )}
       keyExtractor={(item) => item.id.toString()}
       onEndReached={() => setSize(size + 1)}

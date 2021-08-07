@@ -17,8 +17,13 @@ type ScheduleItemProps = {
   index: number;
 };
 
-const ScheduleItem = ({ item }: ScheduleItemProps) => (
-  <ListItem primary={item.period.name} direction="row" style={tw`items-center`}>
+const ScheduleItem = ({ item, index }: ScheduleItemProps) => (
+  <ListItem
+    primary={item.period.name}
+    direction="row"
+    style={tw`items-center`}
+    border={index === 0 ? "both" : "bottom"}
+  >
     <Text style={tw`text-gray-500`}>
       {format(parseTime(item.start), "h:mm a")} – {format(parseTime(item.end), "h:mm a")}
     </Text>
@@ -75,6 +80,7 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
       <ScheduleTabs selected={selected} onSelect={setSelected} />
 
       <FlatList<NestedSchedulePeriod>
+        style={tw`-mt-px`}
         data={schedule.weekdays[selected].periods}
         renderItem={ScheduleItem}
         keyExtractor={(_, idx) => idx.toString()}
