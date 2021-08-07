@@ -10,6 +10,7 @@ import {
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
+import Stack from "../../components/Stack";
 import { useClubOrgs, useUserOrgs } from "../../helpers/api";
 import { Organization, OrganizationType } from "../../helpers/api/models";
 import { ClubsScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
@@ -23,16 +24,18 @@ type ClubItemProps = {
 
 const ClubItem = ({ item, subscribed, toggle, info }: ClubItemProps) => (
   <TouchableHighlight onPress={info}>
-    <ListItem text={item.name} direction="row" style={tw`items-center`} spacing={2}>
+    <ListItem text={item.name} direction="row" style={tw`items-center`}>
       {item.type == OrganizationType.CLUB && (
-        <TouchableOpacity onPress={toggle}>
-          <Ionicons
-            name={subscribed ? "remove-circle-outline" : "add-circle-outline"}
-            style={tw`text-${subscribed ? "red" : "green"}-500 text-2xl`}
-          />
-        </TouchableOpacity>
+        <Stack direction="row" spacing={2} style={tw`items-center`}>
+          <TouchableOpacity onPress={toggle}>
+            <Ionicons
+              name={subscribed ? "remove-circle-outline" : "add-circle-outline"}
+              style={tw`text-${subscribed ? "red" : "green"}-500 text-2xl`}
+            />
+          </TouchableOpacity>
+          <Ionicons name="chevron-forward" style={tw`text-lg text-gray-500`} />
+        </Stack>
       )}
-      <Ionicons name="chevron-forward" style={tw`text-lg text-gray-500`} />
     </ListItem>
   </TouchableHighlight>
 );

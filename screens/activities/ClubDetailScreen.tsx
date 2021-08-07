@@ -6,6 +6,8 @@ import Stack from "../../components/Stack";
 import { useOrg } from "../../helpers/api";
 import { ClubDetailScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 
+const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
 const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
   const { data: org, error } = useOrg(route.params.id);
 
@@ -22,12 +24,11 @@ const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
     <Stack style={tw`flex-1`}>
       <Stack style={tw`bg-white p-3 border-b border-gray-200`}>
         <Text style={tw`text-lg font-bold`}>{org.name}</Text>
-        <Text style={tw`text-sm text-gray-500`}>{org.day}</Text>
-        <Text style={tw`text-sm text-gray-500`}>
-          {/* {format(new Date(org.date), "EEEE, MMMM d y")} */}
-        </Text>
+        {org.day && <Text style={tw`text-sm text-gray-500`}>{WEEKDAYS[org.day]}</Text>}
       </Stack>
-      <ScrollView style={tw`bg-white p-3 flex-1`}>{org.link}</ScrollView>
+      <ScrollView style={tw`bg-white p-3 flex-1`}>
+        <Text>{org.description ?? "No description found."}</Text>
+      </ScrollView>
     </Stack>
   );
 };
