@@ -46,11 +46,11 @@ enum OrganizationType {
 export type NestedOrganization = {
   id: number;
   name: string;
+  type: OrganizationType;
 };
 
 export type Organization = NestedOrganization & {
   url: string;
-  type: OrganizationType;
   advisors: NestedUser[];
   admins: NestedUser[];
   day?: DayOfWeek;
