@@ -43,13 +43,19 @@ export enum OrganizationType {
   CLUB = 3,
 }
 
+export enum ClubCategory {
+  SERVICE = 1,
+  COMPETITION = 2,
+  INTEREST = 3,
+}
+
 export type NestedOrganization = {
   id: number;
   name: string;
   type: OrganizationType;
 };
 
-export type Organization = NestedOrganization & {
+type BaseOrganization = NestedOrganization & {
   url: string;
   advisors: NestedUser[];
   admins: NestedUser[];
@@ -57,7 +63,18 @@ export type Organization = NestedOrganization & {
   time?: APITime;
   link?: string;
   ical_links: string[];
+  description: string;
 };
+
+type NonClubOrganization = BaseOrganization & {
+  category: undefined;
+};
+
+type ClubOrganization = BaseOrganization & {
+  category: ClubCategory;
+};
+
+export type Organization = NonClubOrganization | ClubOrganization;
 
 // Poll
 
