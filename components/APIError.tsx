@@ -24,7 +24,7 @@ const APIError = ({ error, style, ...props }: APIErrorProps) => {
       style={[tw`m-6`, style]}
       status="error"
       title={title}
-      description={description}
+      description={error.detail ?? description}
       {...props}
     />
   );

@@ -8,7 +8,7 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import Stack from "../../components/Stack";
-import { useOrgs } from "../../helpers/api";
+import { Error, useOrgs } from "../../helpers/api";
 import { COLORS } from "../../helpers/utils";
 
 type Event = {
@@ -26,7 +26,15 @@ type Items = {
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
-  if (!res.ok) throw new Error("Request error");
+
+  if (!res.ok) {
+    throw {
+      status: res.status,
+      url: url,
+      detail: await res.text(),
+    };
+  }
+
   return await res.text();
 };
 
@@ -75,13 +83,13 @@ const CalendarItem = ({ event, first }: CalendarItemProps) => (
 const EventsScreen = () => {
   const { data: orgs, error } = useOrgs();
   const ical_links = orgs?.flatMap((x) => x.ical_links) ?? [];
-  const { data: calendars, error: error2 } = useSWRNative(ical_links, multiFetcher);
+  const { data: cals, error: error2 } = useSWRNative<string[], Error>(ical_links, multiFetcher);
 
   const [items, setItems] = useState<Items>({});
 
   useEffect(() => {
-    if (calendars) {
-      const parsed = calendars.flatMap((x, idx) => parseCalendar(x, COLORS[idx % COLORS.length]));
+    if (cals) {
+      const parsed = cals.flatMap((x, idx) => parseCalendar(x, COLORS[idx % COLORS.length]));
       const newItems = parsed.reduce<Items>((acc, val, idx) => {
         if (!val) return acc;
         const key = format(val.start, "yyyy-MM-dd");
@@ -91,7 +99,7 @@ const EventsScreen = () => {
       }, {});
       setItems(newItems);
     }
-  }, [calendars]);
+  }, [cals]);
 
   const loadItemsForMonth = ({ dateString }: { dateString: string }) => {
     const date = parseISO(dateString);
@@ -105,7 +113,7 @@ const EventsScreen = () => {
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
   if (!orgs) return <ActivityIndicator style={tw`m-4`} />;
-  if (!calendars) return <ActivityIndicator style={tw`m-4`} />;
+  if (!cals) return <ActivityIndicator style={tw`m-4`} />;
 
   return (
     <Agenda

@@ -8,6 +8,7 @@ import { APIDate, NestedSchedule, Organization, Post, Prize, Schedule, User } fr
 export type Error = {
   url: string;
   status: number;
+  detail?: string;
 };
 
 type PaginatedResponse<T> = {
