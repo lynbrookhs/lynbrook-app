@@ -7,6 +7,7 @@ import useSWRNative from "swr-react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
+import Stack from "../../components/Stack";
 import { useOrgs } from "../../helpers/api";
 import { COLORS } from "../../helpers/utils";
 
@@ -56,19 +57,18 @@ const parseCalendar = (calendar: string, color: string) => {
 type CalendarItemProps = { event: Event; first: boolean };
 
 const CalendarItem = ({ event, first }: CalendarItemProps) => (
-  <Card
-    direction="row"
-    style={[tw`mr-4 p-3 items-stretch overflow-hidden`, first ? tw`mt-4` : tw`mt-2`]}
-  >
-    <View style={tw`w-1 -m-3 mr-3 bg-${event.color}-500`} />
-    <View style={tw`flex-1`}>
-      <Text style={tw`text-base font-bold`}>{event.name}</Text>
-      <Text style={tw`text-sm text-gray-500`}>
-        {event.allDay
-          ? "All Day"
-          : `${format(event.start, "h:mm a")} – ${format(event.end, "h:mm a")}`}
-      </Text>
-    </View>
+  <Card style={[tw`mr-4 p-3 overflow-hidden`, first ? tw`mt-4` : tw`mt-2`]}>
+    <Stack direction="row">
+      <View style={tw`w-1 -m-3 mr-3 bg-${event.color}-500`} />
+      <View style={tw`flex-1`}>
+        <Text style={tw`text-base font-bold`}>{event.name}</Text>
+        <Text style={tw`text-sm text-gray-500`}>
+          {event.allDay
+            ? "All Day"
+            : `${format(event.start, "h:mm a")} – ${format(event.end, "h:mm a")}`}
+        </Text>
+      </View>
+    </Stack>
   </Card>
 );
 

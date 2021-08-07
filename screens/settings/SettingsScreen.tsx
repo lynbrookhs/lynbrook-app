@@ -1,18 +1,25 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import React from "react";
-import { ActivityIndicator, Button, Image, Text, TouchableHighlight, View } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  Image,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  View,
+} from "react-native";
 import tw from "tailwind-react-native-classnames";
-import Alert from "../../components/Alert";
+import APIError from "../../components/APIError";
 import { useAuth } from "../../components/AuthProvider";
-import Card from "../../components/Card";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useUser } from "../../helpers/api";
 
-// TODO: Fix page
+// TODO: Put class links in DB
 
-const schoolLinks = [
+const SCHOOL_LINKS = [
   {
     title: "Lynbrook High School Website",
     link: "https://www.lhs.fuhsd.org/",
@@ -31,7 +38,7 @@ const schoolLinks = [
   },
 ];
 
-const studentLinks = [
+const STUDENT_LINKS = [
   {
     title: "Lynbrook ASB Website",
     link: "https://www.lynbrookasb.com/",
@@ -50,9 +57,9 @@ const studentLinks = [
   },
 ];
 
-const classInstagrams = ["lynbrook2022", "lynbrook2023", "lynbrookclassof2024", ""];
+const CLASS_INSTAGRAMS = ["lynbrook2022", "lynbrook2023", "lynbrookclassof2024", ""];
 
-const classFacebooks = ["395859940822522", "lynbrookclassof2023", "1603301959845362", ""];
+const CLASS_FACEBOOKS = ["395859940822522", "lynbrookclassof2023", "1603301959845362", ""];
 
 type ProfileProps = {
   name: string;
@@ -61,7 +68,7 @@ type ProfileProps = {
 };
 
 const Profile = ({ name, email, uri }: ProfileProps) => (
-  <Card direction="row">
+  <ListItem direction="row" border="both">
     <View>
       {/* TODO: Image needs to be centered */}
       <Image style={tw`w-14 h-14 rounded-full mr-4`} source={{ uri }} />
@@ -70,17 +77,18 @@ const Profile = ({ name, email, uri }: ProfileProps) => (
       <Text style={tw`text-base font-medium`}>{name}</Text>
       <Text style={tw`text-sm`}>{email}</Text>
     </View>
-  </Card>
+  </ListItem>
 );
 
 type ResourceLinkProps = {
+  idx: number;
   title: string;
-  onPress: () => void;
+  url: string;
 };
 
-const ResourceLink = ({ title, onPress }: ResourceLinkProps) => (
-  <TouchableHighlight onPress={onPress}>
-    <ListItem direction="row" style={tw`items-center`}>
+const ResourceLink = ({ idx, title, url }: ResourceLinkProps) => (
+  <TouchableHighlight onPress={() => Linking.openURL(url)}>
+    <ListItem direction="row" style={tw`items-center`} border={idx === 0 ? "both" : "bottom"}>
       <Text style={tw`flex-1`}>{title}</Text>
       <Ionicons name="link" style={tw`text-gray-500`} />
     </ListItem>
@@ -91,68 +99,62 @@ const SettingsScreen = () => {
   const { data: user, error } = useUser();
   const { signOut } = useAuth();
 
-  if (error) {
-    return (
-      <Alert
-        style={tw`m-6`}
-        status="error"
-        title="Error"
-        description="An unknown error has occurred. Please try again."
-      />
-    );
-  }
-
-  if (!user) {
-    return <ActivityIndicator style={tw`m-4`} />;
-  }
-
-  const makeOpenUrl = (url: string) => () => Linking.openURL(url);
+  if (error) return <APIError error={error} />;
+  if (!user) return <ActivityIndicator style={tw`m-4`} />;
 
   return (
-    <Stack spacing={4} style={tw`flex-1 py-4`}>
-      <Profile
-        name={`${user.first_name} ${user.last_name}`}
-        email={user.email}
-        uri={user.picture_url}
-      />
-      <Stack>
-        {schoolLinks.map(({ title, link }, index) => (
-          <ResourceLink title={title} onPress={() => Linking.openURL(link)} />
-        ))}
+    <ScrollView style={tw`flex-1`}>
+      <Stack spacing={8} style={tw`py-8`}>
+        <Profile
+          name={`${user.first_name} ${user.last_name}`}
+          email={user.email}
+          uri={user.picture_url}
+        />
+
+        <Stack>
+          {SCHOOL_LINKS.map(({ title, link }, idx) => (
+            <ResourceLink key={link} idx={idx} title={title} url={link} />
+          ))}
+        </Stack>
+
+        <ResourceLink
+          idx={0}
+          title="Guidance & Student Support Resources"
+          url="https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
+        />
+
+        <Stack>
+          {STUDENT_LINKS.map(({ title, link }, idx) => (
+            <ResourceLink key={link} title={title} idx={idx} url={link} />
+          ))}
+
+          {user.grad_year && (
+            <>
+              <ResourceLink
+                idx={-1}
+                title={`Class of ${user.grad_year} Instagram`}
+                url={`https://www.instagram.com/${CLASS_INSTAGRAMS[user.grad_year - 2022]}`}
+              />
+              <ResourceLink
+                idx={-1}
+                title={`Class of ${user.grad_year} Facebook`}
+                url={`https://www.facebook.com/groups/${CLASS_FACEBOOKS[user.grad_year - 2022]}`}
+              />
+            </>
+          )}
+        </Stack>
+
+        <ResourceLink
+          idx={0}
+          title={"Lynbrook Principal Twitter"}
+          url="https://twitter.com/lhsvikingprin/"
+        />
+
+        <ListItem border="both">
+          <Button title="Sign Out" onPress={signOut} />
+        </ListItem>
       </Stack>
-      <ResourceLink
-        title="Guidance & Student Support Resources"
-        onPress={makeOpenUrl(
-          "https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
-        )}
-      />
-      <Stack>
-        {studentLinks.map(({ title, link }) => (
-          <ResourceLink title={title} onPress={() => Linking.openURL(link)} />
-        ))}
-        {user.grad_year && (
-          <>
-            <ResourceLink
-              title={`Class of ${user.grad_year} Instagram`}
-              onPress={makeOpenUrl(
-                `https://www.instagram.com/${classInstagrams[user.grad_year - 2022]}`
-              )}
-            />
-            <ResourceLink
-              title={`Class of ${user.grad_year} Facebook`}
-              onPress={makeOpenUrl(
-                `https://www.facebook.com/groups/${classFacebooks[user.grad_year - 2022]}`
-              )}
-            />
-          </>
-        )}
-      </Stack>
-      <ResourceLink
-        title={"Lynbrook Principal Twitter"}
-        onPress={() => Linking.openURL("https://twitter.com/lhsvikingprin/")}
-      />
-      <Button title="Sign Out" onPress={signOut} />
-    </Stack>
+    </ScrollView>
   );
 };
 

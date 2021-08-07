@@ -1,7 +1,8 @@
 import { Children, isValidElement } from "react";
 
-const API_BASE_URL = "http://localhost:8000/api/";
-export const apiPath = (path: string) => new URL(path, API_BASE_URL);
+export const apiPath = (path: string) => {
+  return new URL(path, "https://lynbrookasb.org/api/");
+};
 
 export const COLORS = ["red", "yellow", "green", "blue", "indigo", "purple", "pink", "gray"];
 

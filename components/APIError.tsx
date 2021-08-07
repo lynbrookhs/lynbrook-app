@@ -17,6 +17,8 @@ const TEXT: { [key: number]: [string, string] } = {
 const APIError = ({ error, style, ...props }: APIErrorProps) => {
   const [title, description] = TEXT[error.status] ?? TEXT[-1];
 
+  console.error(error);
+
   return (
     <Alert
       style={[tw`m-6`, style]}

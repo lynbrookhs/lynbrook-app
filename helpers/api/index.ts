@@ -6,6 +6,7 @@ import { apiPath } from "../utils";
 import { APIDate, NestedSchedule, Organization, Post, Prize, Schedule, User } from "./models";
 
 export type Error = {
+  url: string;
   status: number;
 };
 
@@ -22,6 +23,7 @@ export const apiFetcher = (token: string) => async (url: string) => {
   if (!res.ok) {
     const error = await res.json();
     error.status = res.status;
+    error.url = url;
     throw error;
   }
 

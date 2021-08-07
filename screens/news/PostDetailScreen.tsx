@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import React, { useEffect } from "react";
-import { ActivityIndicator, ScrollView, Text } from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
@@ -30,8 +30,10 @@ const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
           {format(new Date(post.date), "EEEE, MMMM d y")}
         </Text>
       </Stack>
-      <ScrollView style={tw`bg-white p-3 flex-1`}>
-        <Markdown style={markdownStyles}>{post.content}</Markdown>
+      <ScrollView style={tw`bg-white flex-1`}>
+        <View style={tw`p-3`}>
+          <Markdown style={markdownStyles}>{post.content}</Markdown>
+        </View>
       </ScrollView>
     </Stack>
   );

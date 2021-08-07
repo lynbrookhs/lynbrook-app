@@ -74,8 +74,6 @@ const HomeScreen = () => {
     (x) => x.organization.id === cls?.organization.id && x.points > cls.points
   );
 
-  console.log(nextClsPrize);
-
   return (
     <ScrollView style={tw`flex-1`}>
       <Stack spacing={4} style={tw`p-4`}>
