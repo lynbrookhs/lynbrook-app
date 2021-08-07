@@ -27,7 +27,7 @@ const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
         <Text style={tw`text-lg font-bold`}>{post.title}</Text>
         <Text style={tw`text-sm text-gray-500`}>{post.organization.name}</Text>
         <Text style={tw`text-sm text-gray-500`}>
-          {format(new Date(post.date), "EEEE, MMMM d y")}
+          {format(new Date(post.date), "EEEE, MMMM d, y")}
         </Text>
       </Stack>
       <ScrollView style={tw`bg-white flex-1`}>
