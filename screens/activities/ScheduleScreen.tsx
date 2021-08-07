@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { format, getDay } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native";
@@ -82,6 +83,12 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
           </ListItem>
         }
       />
+      <TouchableOpacity onPress={() => navigation.navigate("Clubs")}>
+        <ListItem direction="row" style={tw`items-center`}>
+          <Text style={tw`flex-1`}>Clubs</Text>
+          <Ionicons name="link" style={tw`text-gray-500`} />
+        </ListItem>
+      </TouchableOpacity>
     </Stack>
   );
 };

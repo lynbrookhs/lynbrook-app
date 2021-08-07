@@ -8,7 +8,7 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import Stack from "../../components/Stack";
-import { Error, useOrgs } from "../../helpers/api";
+import { Error, useUserOrgs } from "../../helpers/api";
 import { COLORS } from "../../helpers/utils";
 
 type Event = {
@@ -81,7 +81,7 @@ const CalendarItem = ({ event, first }: CalendarItemProps) => (
 );
 
 const EventsScreen = () => {
-  const { data: orgs, error } = useOrgs();
+  const { data: orgs, error } = useUserOrgs();
   const ical_links = orgs?.flatMap((x) => x.ical_links) ?? [];
   const { data: cals, error: error2 } = useSWRNative<string[], Error>(ical_links, multiFetcher);
 

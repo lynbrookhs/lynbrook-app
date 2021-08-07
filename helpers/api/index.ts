@@ -70,7 +70,11 @@ const useAPIRequestPaginated = <T>(path: string) => {
 };
 
 export const useUser = () => useAPIRequest<User>("/auth/users/me/");
-export const useOrgs = () => useAPIRequest<Organization[]>("/orgs/");
+
+export const useClubOrgs = () => useAPIRequest<Organization[]>("/orgs/?clubs=1");
+export const useUserOrgs = () => useAPIRequest<Organization[]>("/orgs/?user=1");
+export const useOrg = (id: number) => useAPIRequest<Organization>(`/orgs/${id}/`);
+
 export const useEvents = () => useAPIRequest<Event[]>("/events/");
 export const usePrizes = () => useAPIRequest<Prize[]>("/prizes/");
 
