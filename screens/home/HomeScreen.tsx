@@ -1,5 +1,6 @@
 import React from "react";
-import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
@@ -12,9 +13,10 @@ type ProfileProps = { name: string; email: string; uri: string };
 
 const Profile = ({ name, email, uri }: ProfileProps) => (
   <Card>
-    <Stack direction="row" style={tw`items-center`}>
-      {/* TODO: Image needs to be centered */}
-      <Image style={tw`w-14 h-14 rounded-full mr-4`} source={{ uri }} />
+    <Stack direction="row" spacing={4} style={tw`items-center`}>
+      <View style={tw`w-14 h-14 rounded-full overflow-hidden`}>
+        <AutoHeightImage width={56} source={{ uri }} />
+      </View>
       <View style={tw`flex-1`}>
         <Text style={tw`text-base font-bold`}>{name}</Text>
         <Text style={tw`text-sm`}>{email}</Text>

@@ -4,12 +4,12 @@ import React from "react";
 import {
   ActivityIndicator,
   Button,
-  Image,
   ScrollView,
   Text,
   TouchableHighlight,
   View,
 } from "react-native";
+import AutoHeightImage from "react-native-auto-height-image";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import { useAuth } from "../../components/AuthProvider";
@@ -25,13 +25,14 @@ type ProfileProps = {
 };
 
 const Profile = ({ name, email, uri }: ProfileProps) => (
-  <ListItem direction="row" border="both">
+  <ListItem direction="row" spacing={4} style={tw`items-center`} border="both">
     <View>
-      {/* TODO: Image needs to be centered */}
-      <Image style={tw`w-14 h-14 rounded-full mr-4`} source={{ uri }} />
+      <View style={tw`w-14 h-14 rounded-full overflow-hidden`}>
+        <AutoHeightImage width={56} source={{ uri }} />
+      </View>
     </View>
     <View style={tw`flex-1`}>
-      <Text style={tw`text-base font-medium`}>{name}</Text>
+      <Text style={tw`text-base font-bold`}>{name}</Text>
       <Text style={tw`text-sm`}>{email}</Text>
     </View>
   </ListItem>
