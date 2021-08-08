@@ -1,7 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { format, getDay } from "date-fns";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
@@ -46,14 +53,11 @@ const ScheduleTabs = ({ selected, onSelect }: ScheduleTabsProps) => (
         ]}
       >
         <TouchableOpacity onPress={() => onSelect(idx)}>
-          <Text
-            style={[
-              tw`text-center text-gray-500 py-3`,
-              selected === idx && tw`text-indigo-500 font-bold`,
-            ]}
-          >
-            {x}
-          </Text>
+          <View style={tw`py-3 flex items-center`}>
+            <Text style={selected === idx ? tw`text-indigo-500 font-bold` : tw`text-gray-500`}>
+              {x}
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
     ))}
@@ -93,11 +97,11 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
         ListEmptyComponent={EmptyDay}
       />
 
-      <TouchableOpacity onPress={() => navigation.navigate("Clubs")}>
+      <TouchableHighlight onPress={() => navigation.navigate("Clubs")}>
         <ListItem text="Clubs" direction="row" align="center" border="top">
           <Ionicons name="chevron-forward" style={tw`text-lg text-gray-500`} />
         </ListItem>
-      </TouchableOpacity>
+      </TouchableHighlight>
     </Stack>
   );
 };
