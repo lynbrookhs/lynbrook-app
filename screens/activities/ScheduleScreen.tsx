@@ -36,7 +36,7 @@ type ScheduleTabsProps = {
 };
 
 const ScheduleTabs = ({ selected, onSelect }: ScheduleTabsProps) => (
-  <Stack direction="row">
+  <Stack direction="row" style={tw`z-10`}>
     {WEEKDAYS.map((x, idx) => (
       <View
         key={idx}
@@ -58,6 +58,12 @@ const ScheduleTabs = ({ selected, onSelect }: ScheduleTabsProps) => (
       </View>
     ))}
   </Stack>
+);
+
+const EmptyDay = () => (
+  <ListItem style={tw`h-40 items-center justify-center`} border="both">
+    <Text style={tw`text-lg text-gray-500`}>No School 😴</Text>
+  </ListItem>
 );
 
 const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
@@ -84,11 +90,7 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
         data={schedule.weekdays[selected].periods}
         renderItem={ScheduleItem}
         keyExtractor={(_, idx) => idx.toString()}
-        ListEmptyComponent={
-          <ListItem style={tw`h-40 items-center justify-center`}>
-            <Text style={tw`text-lg text-gray-500`}>No School 😴</Text>
-          </ListItem>
-        }
+        ListEmptyComponent={EmptyDay}
       />
 
       <TouchableOpacity onPress={() => navigation.navigate("Clubs")}>
