@@ -62,6 +62,7 @@ type BaseOrganization = NestedOrganization & {
   day?: DayOfWeek;
   time?: APITime;
   link?: string;
+  links: OrganizationLink[];
   ical_links: string[];
   description: string;
 };
@@ -75,6 +76,13 @@ type ClubOrganization = BaseOrganization & {
 };
 
 export type Organization = NonClubOrganization | ClubOrganization;
+
+// OrganizationLink
+
+export type OrganizationLink = {
+  title: string;
+  url: string;
+};
 
 // Poll
 

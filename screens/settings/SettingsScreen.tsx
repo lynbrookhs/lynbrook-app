@@ -15,51 +15,8 @@ import APIError from "../../components/APIError";
 import { useAuth } from "../../components/AuthProvider";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
-import { useUser } from "../../helpers/api";
-
-// TODO: Put class links in DB
-
-const SCHOOL_LINKS = [
-  {
-    title: "Lynbrook High School Website",
-    link: "https://www.lhs.fuhsd.org/",
-  },
-  {
-    title: "Schoology",
-    link: "https://www.fuhsd.schoology.org/",
-  },
-  {
-    title: "Infinite Campus",
-    link: "https://campus.fuhsd.org/campus/portal/fremont.jsp",
-  },
-  {
-    title: "Naviance",
-    link: "https://student.naviance.com/lynbrookhs",
-  },
-];
-
-const STUDENT_LINKS = [
-  {
-    title: "Lynbrook ASB Website",
-    link: "https://www.lynbrookasb.com/",
-  },
-  {
-    title: "The Epic",
-    link: "https://lhsepic.com",
-  },
-  {
-    title: "Lynbrook Facebook Group",
-    link: "https://www.facebook.com/groups/lynbrookhighschool/",
-  },
-  {
-    title: "Lynbrook ASB Instagram",
-    link: "https://www.instagram.com/lynbrookasb/",
-  },
-];
-
-const CLASS_INSTAGRAMS = ["lynbrook2022", "lynbrook2023", "lynbrookclassof2024", ""];
-
-const CLASS_FACEBOOKS = ["395859940822522", "lynbrookclassof2023", "1603301959845362", ""];
+import { useUser, useUserOrgs } from "../../helpers/api";
+import { OrganizationType } from "../../helpers/api/models";
 
 type ProfileProps = {
   name: string;
@@ -101,10 +58,15 @@ const ResourceLink = ({ idx, title, url }: ResourceLinkProps) => (
 
 const SettingsScreen = () => {
   const { data: user, error } = useUser();
+  const { data: orgs, error: error2 } = useUserOrgs();
   const { signOut } = useAuth();
 
   if (error) return <APIError error={error} />;
+  if (error2) return <APIError error={error2} />;
   if (!user) return <ActivityIndicator style={tw`m-4`} />;
+  if (!orgs) return <ActivityIndicator style={tw`m-4`} />;
+
+  const mainOrgs = orgs.filter((x) => x.type !== OrganizationType.CLUB);
 
   return (
     <ScrollView style={tw`flex-1`}>
@@ -115,44 +77,26 @@ const SettingsScreen = () => {
           uri={user.picture_url}
         />
 
-        <Stack>
-          {SCHOOL_LINKS.map(({ title, link }, idx) => (
-            <ResourceLink key={link} idx={idx} title={title} url={link} />
-          ))}
-        </Stack>
-
-        <ResourceLink
-          idx={0}
-          title="Guidance & Student Support Resources"
-          url="https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
-        />
+        {mainOrgs.map((x) => (
+          <Stack key={x.id}>
+            {x.links.map(({ title, url }, idx) => (
+              <ResourceLink key={url} idx={idx} title={title} url={url} />
+            ))}
+          </Stack>
+        ))}
 
         <Stack>
-          {STUDENT_LINKS.map(({ title, link }, idx) => (
-            <ResourceLink key={link} title={title} idx={idx} url={link} />
-          ))}
-
-          {user.grad_year && (
-            <>
-              <ResourceLink
-                idx={-1}
-                title={`Class of ${user.grad_year} Instagram`}
-                url={`https://www.instagram.com/${CLASS_INSTAGRAMS[user.grad_year - 2022]}`}
-              />
-              <ResourceLink
-                idx={-1}
-                title={`Class of ${user.grad_year} Facebook`}
-                url={`https://www.facebook.com/groups/${CLASS_FACEBOOKS[user.grad_year - 2022]}`}
-              />
-            </>
-          )}
+          <ResourceLink
+            idx={0}
+            title="Guidance & Student Support Resources"
+            url="https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
+          />
+          <ResourceLink
+            idx={1}
+            title={"Lynbrook Principal Twitter"}
+            url="https://twitter.com/lhsvikingprin/"
+          />
         </Stack>
-
-        <ResourceLink
-          idx={0}
-          title={"Lynbrook Principal Twitter"}
-          url="https://twitter.com/lhsvikingprin/"
-        />
 
         <ListItem border="both">
           <Button title="Sign Out" onPress={signOut} />
