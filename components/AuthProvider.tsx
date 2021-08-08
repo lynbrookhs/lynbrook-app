@@ -91,7 +91,8 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
     setState({ isLoading: false, isSignout: false, token: access });
   }, []);
 
-  const signOut = useCallback(() => {
+  const signOut = useCallback(async () => {
+    await SecureStore.deleteItemAsync("token");
     setState({ isLoading: false, isSignout: true, token: undefined });
   }, []);
 
