@@ -67,7 +67,7 @@ const EmptyDay = () => (
 );
 
 const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
-  const current = (getDay(new Date()) - 1) % 7; // 0 = Sunday here, 0 = Monday in API
+  const current = (getDay(new Date()) + 6) % 7; // 0 = Sunday here, 0 = Monday in API
 
   const { data: schedule, error } = useCurrentSchedule();
   const [selected, setSelected] = useState(current);
