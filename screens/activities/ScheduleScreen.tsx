@@ -21,7 +21,7 @@ const ScheduleItem = ({ item, index }: ScheduleItemProps) => (
   <ListItem
     primary={item.period.name}
     direction="row"
-    style={tw`items-center`}
+    align="center"
     border={index === 0 ? "both" : "bottom"}
   >
     <Text style={tw`text-gray-500`}>
@@ -61,7 +61,7 @@ const ScheduleTabs = ({ selected, onSelect }: ScheduleTabsProps) => (
 );
 
 const EmptyDay = () => (
-  <ListItem style={tw`h-40 items-center justify-center`} border="both">
+  <ListItem align="center" style={tw`h-40`} border="both">
     <Text style={tw`text-lg text-gray-500`}>No School 😴</Text>
   </ListItem>
 );
@@ -94,7 +94,7 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
       />
 
       <TouchableOpacity onPress={() => navigation.navigate("Clubs")}>
-        <ListItem text="Clubs" direction="row" style={tw`items-center`} border="top">
+        <ListItem text="Clubs" direction="row" align="center" border="top">
           <Ionicons name="chevron-forward" style={tw`text-lg text-gray-500`} />
         </ListItem>
       </TouchableOpacity>

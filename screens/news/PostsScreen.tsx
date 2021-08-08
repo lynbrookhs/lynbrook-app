@@ -24,7 +24,7 @@ const PostItem = ({ item, index, onPress }: PostItemProps) => (
       direction="row"
       border={index === 0 ? "both" : "bottom"}
     >
-      <Stack direction="row" style={tw`items-center self-start`} spacing={1}>
+      <Stack direction="row" align="center" style={tw`self-start`} spacing={1}>
         <Text style={tw`text-sm text-gray-500`}>{format(new Date(item.date), "M/d")}</Text>
         <Ionicons name="chevron-forward" style={tw`text-sm text-gray-500`} />
       </Stack>

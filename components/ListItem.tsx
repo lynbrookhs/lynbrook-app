@@ -27,7 +27,7 @@ const ListItem = ({
 }: ListItemProps) => {
   return (
     <Stack
-      style={[tw`py-3 px-4 bg-white border-gray-200`, BORDER_STYLES[border], style]}
+      style={[tw`py-3 px-4 bg-white border-gray-200 justify-center`, BORDER_STYLES[border], style]}
       {...props}
     >
       {(primary || secondary || text) && (

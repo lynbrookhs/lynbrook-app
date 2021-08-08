@@ -24,9 +24,9 @@ type ClubItemProps = {
 
 const ClubItem = ({ item, subscribed, toggle, info }: ClubItemProps) => (
   <TouchableHighlight onPress={info}>
-    <ListItem text={item.name} direction="row" style={tw`items-center`}>
+    <ListItem text={item.name} direction="row" align="center">
       {item.type == OrganizationType.CLUB && (
-        <Stack direction="row" spacing={2} style={tw`items-center`}>
+        <Stack direction="row" spacing={2} align="center">
           <TouchableOpacity onPress={toggle}>
             <Ionicons
               name={subscribed ? "remove-circle-outline" : "add-circle-outline"}

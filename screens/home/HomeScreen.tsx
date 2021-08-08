@@ -13,7 +13,7 @@ type ProfileProps = { name: string; email: string; uri: string };
 
 const Profile = ({ name, email, uri }: ProfileProps) => (
   <Card>
-    <Stack direction="row" spacing={4} style={tw`items-center`}>
+    <Stack direction="row" spacing={4} align="center">
       <View style={tw`w-14 h-14 rounded-full overflow-hidden`}>
         <AutoHeightImage width={56} source={{ uri }} />
       </View>
@@ -34,7 +34,7 @@ type SpiritPointsProps = {
 
 const SpiritPoints = ({ points, checkpoint, checkpointPrize, headerText }: SpiritPointsProps) => (
   <Card header={headerText && <Text style={tw`text-lg font-bold`}>{headerText}</Text>}>
-    <Stack direction="row" spacing={6} style={tw`items-center`}>
+    <Stack direction="row" spacing={6} align="center">
       <ProgressCircle
         percent={(points / checkpoint) * 100}
         radius={40}
@@ -45,7 +45,7 @@ const SpiritPoints = ({ points, checkpoint, checkpointPrize, headerText }: Spiri
       />
 
       <Stack style={tw`flex-1`}>
-        <Stack direction="row" spacing={2} style={tw`items-center`}>
+        <Stack direction="row" spacing={2} align="center">
           <Text style={tw`text-4xl font-bold`}>{points}</Text>
           <Text style={tw`text-xl`}>/ {checkpoint}</Text>
         </Stack>

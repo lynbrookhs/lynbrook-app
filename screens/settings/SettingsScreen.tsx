@@ -25,7 +25,7 @@ type ProfileProps = {
 };
 
 const Profile = ({ name, email, uri }: ProfileProps) => (
-  <ListItem direction="row" spacing={4} style={tw`items-center`} border="both">
+  <ListItem direction="row" spacing={4} align="center" border="both">
     <View>
       <View style={tw`w-14 h-14 rounded-full overflow-hidden`}>
         <AutoHeightImage width={56} source={{ uri }} />
@@ -46,12 +46,7 @@ type ResourceLinkProps = {
 
 const ResourceLink = ({ idx, title, url }: ResourceLinkProps) => (
   <TouchableHighlight onPress={() => Linking.openURL(url)}>
-    <ListItem
-      text={title}
-      direction="row"
-      style={tw`items-center`}
-      border={idx === 0 ? "both" : "bottom"}
-    >
+    <ListItem text={title} direction="row" align="center" border={idx === 0 ? "both" : "bottom"}>
       <Ionicons name="open-outline" style={tw`text-lg text-gray-500`} />
     </ListItem>
   </TouchableHighlight>

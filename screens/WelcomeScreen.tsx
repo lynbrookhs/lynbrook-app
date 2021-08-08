@@ -11,7 +11,7 @@ type WelcomeItemProps = PropsWithChildren<{
 }>;
 
 const WelcomeItem = ({ icon, children }: WelcomeItemProps) => (
-  <Stack direction="row" style={tw`items-center`}>
+  <Stack direction="row" align="center">
     <View style={tw`w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mr-5`}>
       <Ionicons name={icon} style={tw`text-2xl`} />
     </View>

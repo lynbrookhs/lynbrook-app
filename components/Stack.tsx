@@ -4,17 +4,26 @@ import tw from "tailwind-react-native-classnames";
 import { getValidChildren } from "../helpers/utils";
 
 export type StackProps = PropsWithChildren<ViewProps> & {
-  direction?: string;
+  direction?: "row" | "col";
   spacing?: number;
   divider?: ReactNode;
+  align?: "start" | "end" | "center" | "baseline" | "stretch";
 };
 
-const Stack = ({ direction = "col", spacing, divider, style, children, ...props }: StackProps) => {
+const Stack = ({
+  direction = "col",
+  align = "stretch",
+  spacing,
+  divider,
+  style,
+  children,
+  ...props
+}: StackProps) => {
   const validChildren = getValidChildren(children);
   const spacer = direction === "col" ? "mt" : "mr";
 
   return (
-    <View style={[tw`flex flex-${direction} items-stretch`, style]} {...props}>
+    <View style={[tw`flex flex-${direction} items-${align}`, style]} {...props}>
       {validChildren.map((elem, idx) => (
         <Fragment key={idx}>
           {idx > 0 && spacing && <View style={tw`${spacer}-${spacing}`}></View>}

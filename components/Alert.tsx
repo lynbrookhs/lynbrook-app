@@ -26,7 +26,8 @@ const Alert = ({ title, description, status = "success", style, ...props }: Aler
   return (
     <Stack
       direction="row"
-      style={[tw`rounded-md bg-${color}-100 border border-${color}-500 p-4 items-center`, style]}
+      align="center"
+      style={[tw`rounded-md bg-${color}-100 border border-${color}-500 p-4`, style]}
       {...props}
     >
       <Ionicons name={icon} style={tw`text-xl text-${color}-500 mr-3`} />
