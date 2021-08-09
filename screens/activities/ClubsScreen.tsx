@@ -1,18 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useCallback } from "react";
+import React, { useCallback, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   SectionList,
   Text,
   TouchableHighlight,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useMemberships, useOrgs, useRequest } from "../../helpers/api";
-import { Organization, OrganizationType } from "../../helpers/api/models";
+import { ClubCategory, Organization, OrganizationType } from "../../helpers/api/models";
 import { ClubsScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 
 type ClubItemProps = {
@@ -45,6 +45,17 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   const { data: memberships, error, mutate } = useMemberships();
   const { data: orgs, error: error2 } = useOrgs();
   const request = useRequest();
+  const [sorted, setSorted] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: ({ tintColor }) => (
+        <TouchableOpacity onPress={() => setSorted(!sorted)}>
+          <Ionicons name="list" color={tintColor} style={tw`text-xl mr-4`} />
+        </TouchableOpacity>
+      ),
+    });
+  });
 
   const handleAdd = useCallback(
     async (organization: Organization) => {
@@ -81,7 +92,12 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   ];
   const otherClubs = clubs.filter((x) => !userOrgIds.includes(x.id));
 
-  const listData = [
+  const listData = sorted ? [
+    { title: "My Organizations", data: userOrgs },
+    { title: "Competition", data: otherClubs.filter((x) => x.category === ClubCategory.COMPETITION) },
+    { title: "Interest", data: otherClubs.filter((x) => x.category === ClubCategory.INTEREST) },
+    { title: "Service", data: otherClubs.filter((x) => x.category === ClubCategory.SERVICE) },
+  ] : [
     { title: "My Organizations", data: userOrgs },
     { title: "Other Organizations", data: otherClubs },
   ];
