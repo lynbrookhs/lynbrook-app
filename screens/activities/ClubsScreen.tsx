@@ -5,7 +5,7 @@ import {
   SectionList,
   Text,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
@@ -51,7 +51,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <TouchableOpacity onPress={() => setSorted(!sorted)}>
-          <Ionicons name="list" color={tintColor} style={tw`text-xl mr-4`} />
+          <Ionicons name="list" color={tintColor} style={tw`text-xl`} />
         </TouchableOpacity>
       ),
     });
@@ -92,15 +92,20 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   ];
   const otherClubs = clubs.filter((x) => !userOrgIds.includes(x.id));
 
-  const listData = sorted ? [
-    { title: "My Organizations", data: userOrgs },
-    { title: "Competition", data: otherClubs.filter((x) => x.category === ClubCategory.COMPETITION) },
-    { title: "Interest", data: otherClubs.filter((x) => x.category === ClubCategory.INTEREST) },
-    { title: "Service", data: otherClubs.filter((x) => x.category === ClubCategory.SERVICE) },
-  ] : [
-    { title: "My Organizations", data: userOrgs },
-    { title: "Other Organizations", data: otherClubs },
-  ];
+  const listData = sorted
+    ? [
+        { title: "My Organizations", data: userOrgs },
+        {
+          title: "Competition",
+          data: otherClubs.filter((x) => x.category === ClubCategory.COMPETITION),
+        },
+        { title: "Interest", data: otherClubs.filter((x) => x.category === ClubCategory.INTEREST) },
+        { title: "Service", data: otherClubs.filter((x) => x.category === ClubCategory.SERVICE) },
+      ]
+    : [
+        { title: "My Organizations", data: userOrgs },
+        { title: "Other Organizations", data: otherClubs },
+      ];
 
   return (
     <SectionList<Organization>

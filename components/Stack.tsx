@@ -23,7 +23,7 @@ const Stack = ({
   const spacer = direction === "col" ? "mt" : "mr";
 
   return (
-    <View style={[tw`flex flex-${direction} items-${align}`, style]} {...props}>
+    <View style={[tw`flex-${direction} items-${align}`, style]} {...props}>
       {validChildren.map((elem, idx) => (
         <Fragment key={idx}>
           {idx > 0 && spacing && <View style={tw`${spacer}-${spacing}`}></View>}

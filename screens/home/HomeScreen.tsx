@@ -66,8 +66,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
+        // @ts-ignore TODO Fix typing for navigating to parent
         <TouchableOpacity onPress={() => navigation.navigate("QRCode")}>
-          <Ionicons name="scan" color={tintColor} style={tw`text-xl mr-4`} />
+          <Ionicons name="scan" color={tintColor} style={tw`text-xl`} />
         </TouchableOpacity>
       ),
     });

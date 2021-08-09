@@ -53,7 +53,7 @@ const ScheduleTabs = ({ selected, onSelect }: ScheduleTabsProps) => (
         ]}
       >
         <TouchableOpacity onPress={() => onSelect(idx)}>
-          <View style={tw`py-3 flex items-center`}>
+          <View style={tw`py-3 items-center`}>
             <Text style={selected === idx ? tw`text-indigo-500 font-bold` : tw`text-gray-500`}>
               {x}
             </Text>
