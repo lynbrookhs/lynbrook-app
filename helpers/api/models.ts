@@ -114,6 +114,11 @@ export type NestedMembership = {
   points: number;
 };
 
+export type Membership = {
+  organization: Organization;
+  points: number;
+};
+
 // Period
 
 export type NestedPeriod = {

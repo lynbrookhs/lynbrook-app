@@ -15,7 +15,7 @@ import APIError from "../../components/APIError";
 import { useAuth } from "../../components/AuthProvider";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
-import { useUser, useUserOrgs } from "../../helpers/api";
+import { useMemberships, useUser } from "../../helpers/api";
 import { OrganizationType } from "../../helpers/api/models";
 
 type ProfileProps = {
@@ -54,15 +54,18 @@ const ResourceLink = ({ idx, title, url }: ResourceLinkProps) => (
 
 const SettingsScreen = () => {
   const { data: user, error } = useUser();
-  const { data: orgs, error: error2 } = useUserOrgs();
+  const { data: memberships, error: error2 } = useMemberships();
   const { signOut } = useAuth();
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
   if (!user) return <ActivityIndicator style={tw`m-4`} />;
-  if (!orgs) return <ActivityIndicator style={tw`m-4`} />;
+  if (!memberships) return <ActivityIndicator style={tw`m-4`} />;
 
-  const mainOrgs = orgs.filter((x) => x.type !== OrganizationType.CLUB);
+  const mainOrgs = memberships
+    .map((x) => x.organization)
+    .filter((x) => x.type !== OrganizationType.CLUB)
+    .filter((x) => x.links.length > 0);
 
   return (
     <ScrollView style={tw`flex-1`}>

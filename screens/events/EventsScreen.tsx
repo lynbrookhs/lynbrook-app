@@ -8,7 +8,7 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import Stack from "../../components/Stack";
-import { Error, useUserOrgs } from "../../helpers/api";
+import { Error, useMemberships } from "../../helpers/api";
 import { COLORS } from "../../helpers/utils";
 
 type Event = {
@@ -81,8 +81,8 @@ const CalendarItem = ({ event, first }: CalendarItemProps) => (
 );
 
 const EventsScreen = () => {
-  const { data: orgs, error } = useUserOrgs();
-  const ical_links = orgs?.flatMap((x) => x.ical_links) ?? [];
+  const { data: memberships, error } = useMemberships();
+  const ical_links = memberships?.flatMap((x) => x.organization.ical_links) ?? [];
   const { data: cals, error: error2 } = useSWRNative<string[], Error>(ical_links, multiFetcher);
 
   const [items, setItems] = useState<Items>({});
@@ -112,7 +112,7 @@ const EventsScreen = () => {
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
-  if (!orgs) return <ActivityIndicator style={tw`m-4`} />;
+  if (!memberships) return <ActivityIndicator style={tw`m-4`} />;
   if (!cals) return <ActivityIndicator style={tw`m-4`} />;
 
   return (

@@ -1,14 +1,23 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useSWRInfinite } from "swr";
 import useSWRNative, { useSWRNativeRevalidate } from "swr-react-native";
 import { useAuth } from "../../components/AuthProvider";
 import { apiPath } from "../utils";
-import { APIDate, NestedSchedule, Organization, Post, Prize, Schedule, User } from "./models";
+import {
+  APIDate,
+  Membership,
+  NestedSchedule,
+  Organization,
+  Post,
+  Prize,
+  Schedule,
+  User,
+} from "./models";
 
 export type Error = {
   url: string;
   status: number;
-  detail?: string;
+  inner?: any;
 };
 
 type PaginatedResponse<T> = {
@@ -18,17 +27,28 @@ type PaginatedResponse<T> = {
   results: T[];
 };
 
-export const apiFetcher = (token: string) => async (url: string) => {
-  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+export const apiFetcher = (token: string) => async (url: string, options?: RequestInit) => {
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...options?.headers,
+    },
+  });
 
   if (!res.ok) {
-    const error = await res.json();
-    error.status = res.status;
-    error.url = url;
+    let error: Error = { status: res.status, url };
+    try {
+      error.inner = await res.json();
+    } catch {}
     throw error;
   }
 
-  return await res.json();
+  try {
+    return await res.json();
+  } catch {
+    return undefined;
+  }
 };
 
 const useAPIRequest = <T>(path: string) => {
@@ -69,20 +89,6 @@ const useAPIRequestPaginated = <T>(path: string) => {
   return ret;
 };
 
-export const useUser = () => useAPIRequest<User>("/auth/users/me/");
-
-export const useClubOrgs = () => useAPIRequest<Organization[]>("/orgs/?clubs=1");
-export const useUserOrgs = () => useAPIRequest<Organization[]>("/orgs/?user=1");
-export const useOrg = (id: number) => useAPIRequest<Organization>(`/orgs/${id}/`);
-
-export const useEvents = () => useAPIRequest<Event[]>("/events/");
-export const usePrizes = () => useAPIRequest<Prize[]>("/prizes/");
-
-export const usePosts = () => useAPIRequestPaginated<Post>("/posts/");
-export const usePost = (id: number) => useAPIRequest<Post>(`/posts/${id}/`);
-
-export const useSchedules = () => useAPIRequest<Schedule[]>("/schedules/");
-
 type CurrentSchedule = {
   start: APIDate;
   end: APIDate;
@@ -97,4 +103,39 @@ type CurrentSchedule = {
   ];
 };
 
+// Get Requests
+
+export const useUser = () => useAPIRequest<User>("/users/me/");
+export const useMemberships = () => useAPIRequest<Membership[]>("/users/me/orgs/");
+
+export const useOrgs = () => useAPIRequest<Organization[]>(`/orgs/`);
+export const useOrg = (id: number) => useAPIRequest<Organization>(`/orgs/${id}/`);
+
+export const useEvents = () => useAPIRequest<Event[]>("/events/");
+export const usePrizes = () => useAPIRequest<Prize[]>("/prizes/");
+
+export const usePosts = () => useAPIRequestPaginated<Post>("/posts/");
+export const usePost = (id: number) => useAPIRequest<Post>(`/posts/${id}/`);
+
+export const useSchedules = () => useAPIRequest<Schedule[]>("/schedules/");
+
 export const useCurrentSchedule = () => useAPIRequest<CurrentSchedule>("/schedules/current/");
+
+// Post Request
+
+export const useRequest = () => {
+  const { state } = useAuth();
+  const { token } = state;
+
+  return useCallback(
+    async (method: string, path: string, data?: any) => {
+      const fetcher = apiFetcher(token ?? "");
+      return await fetcher(apiPath(path).toString(), {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: data ? JSON.stringify(data) : undefined,
+      });
+    },
+    [token]
+  );
+};
