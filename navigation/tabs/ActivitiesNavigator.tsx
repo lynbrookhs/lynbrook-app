@@ -1,5 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
-import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import ClubDetailScreen from "../../screens/activities/ClubDetailScreen";
 import ClubsScreen from "../../screens/activities/ClubsScreen";
@@ -27,7 +28,7 @@ type ActivitiesParamList = {
   ClubDetail: { id: number };
 };
 
-const ActivitiesStack = createStackNavigator<ActivitiesParamList>();
+const ActivitiesStack = createNativeStackNavigator<ActivitiesParamList>();
 
 const ActivitiesNavigator = () => {
   return (

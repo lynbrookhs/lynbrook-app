@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { useAuth } from "../components/AuthProvider";
 import AuthNavigator from "./AuthNavigator";
@@ -11,15 +11,13 @@ type RootStackParamList = {
   Auth: undefined;
 };
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
   const { state } = useAuth();
 
   return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false, cardStyle: { backgroundColor: "transparent" } }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       {state.token ? (
         <Stack.Screen name="Main" component={BottomTabNavigator} />
       ) : (

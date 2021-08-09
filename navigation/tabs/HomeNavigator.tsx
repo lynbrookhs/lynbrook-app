@@ -1,4 +1,4 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import HomeScreen from "../../screens/home/HomeScreen";
 import { screenOptions } from "../config";
@@ -7,7 +7,7 @@ type HomeParamList = {
   HomeScreen: undefined;
 };
 
-const HomeStack = createStackNavigator<HomeParamList>();
+const HomeStack = createNativeStackNavigator<HomeParamList>();
 
 const HomeNavigator = () => {
   return (

@@ -10,11 +10,11 @@ import NewsNavigator from "./tabs/NewsNavigator";
 import SettingsNavigator from "./tabs/SettingsNavigator";
 
 type BottomTabParamList = {
-  News: undefined;
-  Activities: undefined;
-  Home: undefined;
-  Events: undefined;
-  Settings: undefined;
+  NewsTab: undefined;
+  ActivitiesTab: undefined;
+  HomeTab: undefined;
+  EventsTab: undefined;
+  SettingsTab: undefined;
 };
 
 const ioniconsTabIcon =
@@ -28,35 +28,31 @@ const BottomTabNavigator = () => {
   return (
     <>
       <StatusBar style="light" />
-      <BottomTab.Navigator initialRouteName="Home">
+      <BottomTab.Navigator initialRouteName="HomeTab" screenOptions={{ headerShown: false }}>
         <BottomTab.Screen
-          name="News"
+          name="NewsTab"
           component={NewsNavigator}
-          options={{ tabBarIcon: ioniconsTabIcon("newspaper") }}
+          options={{ tabBarIcon: ioniconsTabIcon("newspaper"), tabBarLabel: "News" }}
         />
-
         <BottomTab.Screen
-          name="Activities"
+          name="ActivitiesTab"
           component={ActivitiesNavigator}
-          options={{ tabBarIcon: ioniconsTabIcon("time") }}
+          options={{ tabBarIcon: ioniconsTabIcon("time"), tabBarLabel: "Activities" }}
         />
-
         <BottomTab.Screen
-          name="Home"
+          name="HomeTab"
           component={HomeNavigator}
-          options={{ tabBarIcon: ioniconsTabIcon("home") }}
+          options={{ tabBarIcon: ioniconsTabIcon("home"), tabBarLabel: "Home" }}
         />
-
         <BottomTab.Screen
-          name="Events"
+          name="EventsTab"
           component={EventsNavigator}
-          options={{ tabBarIcon: ioniconsTabIcon("calendar") }}
+          options={{ tabBarIcon: ioniconsTabIcon("calendar"), tabBarLabel: "Events" }}
         />
-
         <BottomTab.Screen
-          name="Settings"
+          name="SettingsTab"
           component={SettingsNavigator}
-          options={{ tabBarIcon: ioniconsTabIcon("settings") }}
+          options={{ tabBarIcon: ioniconsTabIcon("settings"), tabBarLabel: "Settings" }}
         />
       </BottomTab.Navigator>
     </>
