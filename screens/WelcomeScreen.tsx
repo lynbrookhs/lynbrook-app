@@ -45,8 +45,8 @@ const WelcomeScreen = () => {
 
         <View>
           <Button title="Sign in with Schoology" onPress={signIn} />
-          <Text style={tw`text-sm text-center text-gray-500`}>or</Text>
-          <Button title="Continue as Guest" onPress={() => {}} />
+          {/* <Text style={tw`text-sm text-center text-gray-500`}>or</Text>
+          <Button title="Continue as Guest" onPress={() => {}} /> */}
         </View>
       </Stack>
     </Stack>
