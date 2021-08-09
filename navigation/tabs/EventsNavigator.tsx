@@ -3,11 +3,11 @@ import React from "react";
 import EventsScreen from "../../screens/events/EventsScreen";
 import { screenOptions } from "../config";
 
-type EventsParamList = {
+export type EventsTabParamList = {
   Events: undefined;
 };
 
-const EventsStack = createNativeStackNavigator<EventsParamList>();
+const EventsStack = createNativeStackNavigator<EventsTabParamList>();
 
 const EventsNavigator = () => {
   return (

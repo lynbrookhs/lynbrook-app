@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import WelcomeScreen from "../screens/WelcomeScreen";
 
-type AuthParamList = {
+export type AuthParamList = {
   Welcome: undefined;
 };
 

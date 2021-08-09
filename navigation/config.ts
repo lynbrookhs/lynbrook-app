@@ -1,14 +1,15 @@
 import { LinkingOptions } from "@react-navigation/native";
+import { RootStackParamList } from ".";
 
-export const linking: LinkingOptions = {
+export const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ["lhs://"],
   config: {
     screens: {
-      Root: {
+      Main: {
         screens: {
           HomeTab: {
             screens: {
-              HomeScreen: "home",
+              Home: "home",
             },
           },
         },

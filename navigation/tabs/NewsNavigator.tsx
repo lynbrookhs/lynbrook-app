@@ -9,21 +9,21 @@ import PostsScreen from "../../screens/news/PostsScreen";
 import { screenOptions } from "../config";
 
 export type PostsScreenProps = {
-  navigation: NativeStackNavigationProp<NewsParamList, "Posts">;
-  route: RouteProp<NewsParamList, "Posts">;
+  navigation: NativeStackNavigationProp<NewsTabParamList, "Posts">;
+  route: RouteProp<NewsTabParamList, "Posts">;
 };
 
 export type PostDetailScreenProps = {
-  navigation: NativeStackNavigationProp<NewsParamList, "PostDetail">;
-  route: RouteProp<NewsParamList, "PostDetail">;
+  navigation: NativeStackNavigationProp<NewsTabParamList, "PostDetail">;
+  route: RouteProp<NewsTabParamList, "PostDetail">;
 };
 
-type NewsParamList = {
+export type NewsTabParamList = {
   Posts: undefined;
   PostDetail: { id: number };
 };
 
-const NewsStack = createNativeStackNavigator<NewsParamList>();
+const NewsStack = createNativeStackNavigator<NewsTabParamList>();
 
 const NewsNavigator = () => {
   return (

@@ -1,5 +1,6 @@
-import React from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useLayoutEffect } from "react";
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import tw from "tailwind-react-native-classnames";
@@ -8,6 +9,7 @@ import Card from "../../components/Card";
 import Stack from "../../components/Stack";
 import { usePrizes, useUser } from "../../helpers/api";
 import { OrganizationType } from "../../helpers/api/models";
+import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
 
 type ProfileProps = { name: string; email: string; uri: string };
 
@@ -57,9 +59,19 @@ const SpiritPoints = ({ points, checkpoint, checkpointPrize, headerText }: Spiri
   </Card>
 );
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { data: user, error } = useUser();
   const { data: prizes, error: error2 } = usePrizes();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: ({ tintColor }) => (
+        <TouchableOpacity onPress={() => navigation.navigate("QRCode")}>
+          <Ionicons name="scan" color={tintColor} style={tw`text-xl mr-4`} />
+        </TouchableOpacity>
+      ),
+    });
+  });
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;

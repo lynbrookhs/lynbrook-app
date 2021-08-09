@@ -3,17 +3,17 @@ import React from "react";
 import SettingScreen from "../../screens/settings/SettingsScreen";
 import { screenOptions } from "../config";
 
-type SettingsParamList = {
-  SettingsScreen: undefined;
+export type SettingsTabParamList = {
+  Settings: undefined;
 };
 
-const SettingsStack = createNativeStackNavigator<SettingsParamList>();
+const SettingsStack = createNativeStackNavigator<SettingsTabParamList>();
 
 const HomeNavigator = () => {
   return (
     <SettingsStack.Navigator screenOptions={screenOptions}>
       <SettingsStack.Screen
-        name="SettingsScreen"
+        name="Settings"
         component={SettingScreen}
         options={{ headerTitle: "Settings" }}
       />

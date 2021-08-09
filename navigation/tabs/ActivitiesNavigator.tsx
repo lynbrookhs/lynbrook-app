@@ -10,27 +10,27 @@ import ScheduleScreen from "../../screens/activities/ScheduleScreen";
 import { screenOptions } from "../config";
 
 export type ScheduleScreenProps = {
-  navigation: NativeStackNavigationProp<ActivitiesParamList, "Schedule">;
-  route: RouteProp<ActivitiesParamList, "Schedule">;
+  navigation: NativeStackNavigationProp<ActivitiesTabParamList, "Schedule">;
+  route: RouteProp<ActivitiesTabParamList, "Schedule">;
 };
 
 export type ClubsScreenProps = {
-  navigation: NativeStackNavigationProp<ActivitiesParamList, "Clubs">;
-  route: RouteProp<ActivitiesParamList, "Clubs">;
+  navigation: NativeStackNavigationProp<ActivitiesTabParamList, "Clubs">;
+  route: RouteProp<ActivitiesTabParamList, "Clubs">;
 };
 
 export type ClubDetailScreenProps = {
-  navigation: NativeStackNavigationProp<ActivitiesParamList, "ClubDetail">;
-  route: RouteProp<ActivitiesParamList, "ClubDetail">;
+  navigation: NativeStackNavigationProp<ActivitiesTabParamList, "ClubDetail">;
+  route: RouteProp<ActivitiesTabParamList, "ClubDetail">;
 };
 
-type ActivitiesParamList = {
+export type ActivitiesTabParamList = {
   Schedule: undefined;
   Clubs: undefined;
   ClubDetail: { id: number };
 };
 
-const ActivitiesStack = createNativeStackNavigator<ActivitiesParamList>();
+const ActivitiesStack = createNativeStackNavigator<ActivitiesTabParamList>();
 
 const ActivitiesNavigator = () => {
   return (

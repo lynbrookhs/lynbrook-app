@@ -1,20 +1,21 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigatorScreenParams } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import TabBarIcon from "./TabBarIcon";
-import ActivitiesNavigator from "./tabs/ActivitiesNavigator";
-import EventsNavigator from "./tabs/EventsNavigator";
-import HomeNavigator from "./tabs/HomeNavigator";
-import NewsNavigator from "./tabs/NewsNavigator";
-import SettingsNavigator from "./tabs/SettingsNavigator";
+import ActivitiesNavigator, { ActivitiesTabParamList } from "./tabs/ActivitiesNavigator";
+import EventsNavigator, { EventsTabParamList } from "./tabs/EventsNavigator";
+import HomeNavigator, { HomeTabParamList } from "./tabs/HomeNavigator";
+import NewsNavigator, { NewsTabParamList } from "./tabs/NewsNavigator";
+import SettingsNavigator, { SettingsTabParamList } from "./tabs/SettingsNavigator";
 
-type BottomTabParamList = {
-  NewsTab: undefined;
-  ActivitiesTab: undefined;
-  HomeTab: undefined;
-  EventsTab: undefined;
-  SettingsTab: undefined;
+export type MainParamList = {
+  NewsTab: NavigatorScreenParams<NewsTabParamList>;
+  ActivitiesTab: NavigatorScreenParams<ActivitiesTabParamList>;
+  HomeTab: NavigatorScreenParams<HomeTabParamList>;
+  EventsTab: NavigatorScreenParams<EventsTabParamList>;
+  SettingsTab: NavigatorScreenParams<SettingsTabParamList>;
 };
 
 const ioniconsTabIcon =
@@ -22,9 +23,9 @@ const ioniconsTabIcon =
   ({ color }: { color: string }) =>
     <TabBarIcon name={icon} color={color} />;
 
-const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+const BottomTab = createBottomTabNavigator<MainParamList>();
 
-const BottomTabNavigator = () => {
+const MainNavigator = () => {
   return (
     <>
       <StatusBar style="light" />
@@ -59,4 +60,4 @@ const BottomTabNavigator = () => {
   );
 };
 
-export default BottomTabNavigator;
+export default MainNavigator;
