@@ -1,7 +1,16 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RouteProp } from "@react-navigation/native";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 import React from "react";
 import HomeScreen from "../../screens/home/HomeScreen";
 import { screenOptions } from "../config";
+
+export type HomeScreenProps = {
+  navigation: NativeStackNavigationProp<HomeTabParamList, "Home">;
+  route: RouteProp<HomeTabParamList, "Home">;
+};
 
 export type HomeTabParamList = {
   Home: undefined;
