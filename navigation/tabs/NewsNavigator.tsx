@@ -1,18 +1,20 @@
 import { RouteProp } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StackNavigationProp } from "@react-navigation/stack";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 import React from "react";
 import PostDetailScreen from "../../screens/news/PostDetailScreen";
 import PostsScreen from "../../screens/news/PostsScreen";
 import { screenOptions } from "../config";
 
 export type PostsScreenProps = {
-  navigation: StackNavigationProp<NewsParamList, "Posts">;
+  navigation: NativeStackNavigationProp<NewsParamList, "Posts">;
   route: RouteProp<NewsParamList, "Posts">;
 };
 
 export type PostDetailScreenProps = {
-  navigation: StackNavigationProp<NewsParamList, "PostDetail">;
+  navigation: NativeStackNavigationProp<NewsParamList, "PostDetail">;
   route: RouteProp<NewsParamList, "PostDetail">;
 };
 

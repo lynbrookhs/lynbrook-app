@@ -1,6 +1,8 @@
 import { RouteProp } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StackNavigationProp } from "@react-navigation/stack";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 import React from "react";
 import ClubDetailScreen from "../../screens/activities/ClubDetailScreen";
 import ClubsScreen from "../../screens/activities/ClubsScreen";
@@ -8,17 +10,17 @@ import ScheduleScreen from "../../screens/activities/ScheduleScreen";
 import { screenOptions } from "../config";
 
 export type ScheduleScreenProps = {
-  navigation: StackNavigationProp<ActivitiesParamList, "Schedule">;
+  navigation: NativeStackNavigationProp<ActivitiesParamList, "Schedule">;
   route: RouteProp<ActivitiesParamList, "Schedule">;
 };
 
 export type ClubsScreenProps = {
-  navigation: StackNavigationProp<ActivitiesParamList, "Clubs">;
+  navigation: NativeStackNavigationProp<ActivitiesParamList, "Clubs">;
   route: RouteProp<ActivitiesParamList, "Clubs">;
 };
 
 export type ClubDetailScreenProps = {
-  navigation: StackNavigationProp<ActivitiesParamList, "ClubDetail">;
+  navigation: NativeStackNavigationProp<ActivitiesParamList, "ClubDetail">;
   route: RouteProp<ActivitiesParamList, "ClubDetail">;
 };
 
