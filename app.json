@@ -2,7 +2,7 @@
   "expo": {
     "name": "Lynbrook High School",
     "slug": "lhs-app",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "lhs",
@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.fuhsd.lhs.app",
-      "buildNumber": "2.0.2",
+      "buildNumber": "2.0.3",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow camera access to scan barcodes and get spirit points for events.",
         "NSCalendarsUsageDescription": "Allow calendar access if you want to integrate your personal calendar with the school calendars in the app (will only be READ and only stored on your phone)."
@@ -32,7 +32,7 @@
         "backgroundColor": "#033265"
       },
       "package": "org.fuhsd.lhs.app",
-      "versionCode": 22,
+      "versionCode": 23,
       "permissions": ["CAMERA", "READ_CALENDAR"]
     }
   }
