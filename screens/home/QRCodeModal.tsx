@@ -66,12 +66,8 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
   const handleBarCodeScanned = useCallback(
     ({ data }: BarCodeScanningResult) => {
       if (scanned) return;
-      const code = Number(data.replace("lhs://", ""));
-      if (isNaN(code)) {
-        navigation.goBack();
-      } else {
-        navigation.replace("QRCodeScanned", { code });
-      }
+      const code = Number(data.replace("lhs://", "")) || 0;
+      navigation.replace("QRCodeScanned", { code });
       setScanned(true);
     },
     [scanned]

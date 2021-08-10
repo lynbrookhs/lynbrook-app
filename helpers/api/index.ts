@@ -129,13 +129,14 @@ export const useRequest = () => {
   const { token } = state;
 
   return useCallback(
-    async (method: string, path: string, data?: any) => {
+    async <T>(method: string, path: string, data?: any) => {
       const fetcher = apiFetcher(token ?? "");
-      return await fetcher(apiPath(path).toString(), {
+      const result = await fetcher(apiPath(path).toString(), {
         method,
         headers: { "Content-Type": "application/json" },
         body: data ? JSON.stringify(data) : undefined,
       });
+      return result as T;
     },
     [token]
   );
