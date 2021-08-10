@@ -36,14 +36,16 @@
       "permissions": ["CAMERA", "READ_CALENDAR"]
     },
     "plugins": ["sentry-expo"],
-    "postPublish": [
-      {
-        "file": "sentry-expo/upload-sourcemaps",
-        "config": {
-          "organization": "lynbrook-asb",
-          "project": "app"
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "lynbrook-asb",
+            "project": "app"
+          }
         }
-      }
-    ]
+      ]
+    }
   }
 }
