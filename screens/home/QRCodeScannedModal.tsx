@@ -7,7 +7,7 @@ import { QRCodeScannedModalProps } from "../../navigation";
 const QRCodeScannedModal = ({ route }: QRCodeScannedModalProps) => {
   return (
     <Stack style={tw`flex-1 p-6 justify-center`} align="center" spacing={4}>
-      <Text style={tw`text-xl font-bold text-center`}>Test</Text>
+      <Text style={tw`text-xl font-bold text-center`}>Scanned Code</Text>
       <Text style={tw`text-gray-500 text-center`}>{route.params.code}</Text>
     </Stack>
   );
