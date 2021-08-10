@@ -5,20 +5,23 @@ import { useRequest } from ".";
 import { useAuth } from "../../components/AuthProvider";
 import { apiPath } from "../utils";
 
-export const useSignInWithSchoology = (throw_on_error?: boolean) => {
+type Provider = "schoology" | "google-oauth2";
+
+export const useSignInWithProvider = (provider: Provider, throw_on_error?: boolean) => {
   const { request, error } = useRequest(throw_on_error);
   const { setToken } = useAuth();
 
-  const signInWithSchoology = useCallback(async () => {
-    const authUrl = apiPath("/auth/o/schoology/");
+  const signInWithProvider = useCallback(async () => {
+    const authUrl = apiPath(`/auth/o/${provider}/`);
     authUrl.searchParams.append("redirect_uri", AuthSession.makeRedirectUri({ useProxy: true }));
     const { authorization_url } = await request("GET", authUrl.toString());
 
     const authRes = await AuthSession.startAsync({ authUrl: authorization_url });
     if (authRes.type !== "success") return console.error(authRes);
+    console.log(authRes.params);
     const { access } = await request(
       "POST",
-      "/auth/o/schoology/",
+      `/auth/o/${provider}/`,
       new URLSearchParams({ oauth_token: authRes.params.oauth_token }).toString(),
       "application/x-www-form-urlencoded"
     );
@@ -28,7 +31,7 @@ export const useSignInWithSchoology = (throw_on_error?: boolean) => {
     setToken(access);
   }, []);
 
-  return { signInWithSchoology, error };
+  return { signInWithProvider, error };
 };
 
 export const useSignOut = () => {

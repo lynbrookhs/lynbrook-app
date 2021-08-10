@@ -4,7 +4,7 @@ import { Button, Text, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
-import { useSignInWithSchoology } from "../../helpers/api/auth";
+import { useSignInWithProvider } from "../../helpers/api/auth";
 import { WelcomeScreenProps } from "../../navigation/AuthNavigator";
 
 type WelcomeItemProps = PropsWithChildren<{
@@ -23,7 +23,7 @@ const WelcomeItem = ({ icon, children }: WelcomeItemProps) => (
 );
 
 const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
-  const { signInWithSchoology } = useSignInWithSchoology();
+  const { signInWithProvider } = useSignInWithProvider("schoology");
 
   return (
     <Stack spacing={8} style={tw`flex-1 justify-center p-6`}>
@@ -45,7 +45,7 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
         </WelcomeItem>
 
         <View>
-          <Button title="Sign in with Schoology" onPress={signInWithSchoology} />
+          <Button title="Sign in with Schoology" onPress={signInWithProvider} />
           <Text style={tw`text-sm text-center text-gray-500`}>or</Text>
           <Button title="Continue as Guest" onPress={() => navigation.navigate("GuestLogin")} />
         </View>
