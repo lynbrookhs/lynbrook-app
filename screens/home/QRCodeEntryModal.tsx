@@ -25,11 +25,9 @@ type NumberInputCharacterProps = {
 };
 
 const NumberInputCharacter = ({ char, first, disabled }: NumberInputCharacterProps) => (
-  <TouchableOpacity style={tw`flex-1`}>
-    <View style={[!first && tw`border-l`, tw`border-gray-300 py-3 items-center justify-center`]}>
-      <Text style={[tw`text-3xl`, disabled && tw`opacity-30`]}>{char}</Text>
-    </View>
-  </TouchableOpacity>
+  <View style={[!first && tw`border-l`, tw`flex-1 border-gray-300 py-3 items-center`]}>
+    <Text style={[tw`text-3xl`, disabled && tw`opacity-30`]}>{char}</Text>
+  </View>
 );
 
 type NumberInputProps = {
