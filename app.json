@@ -34,6 +34,16 @@
       "package": "org.fuhsd.lhs.app",
       "versionCode": 24,
       "permissions": ["CAMERA", "READ_CALENDAR"]
-    }
+    },
+    "plugins": ["sentry-expo"],
+    "postPublish": [
+      {
+        "file": "sentry-expo/upload-sourcemaps",
+        "config": {
+          "organization": "lynbrook-asb",
+          "project": "app"
+        }
+      }
+    ]
   }
 }

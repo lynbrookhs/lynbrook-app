@@ -4,9 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { Alert, AppState, AppStateStatus } from "react-native";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import * as Sentry from "sentry-expo";
 import AuthProvider from "./components/AuthProvider";
 import useCachedResources from "./helpers/useCachedResources";
 import Navigation from "./navigation";
+
+Sentry.init({
+  dsn: "https://24af5d48ffe84346ad39a6dd6f304ff0@o951004.ingest.sentry.io/5899693",
+  enableInExpoDevelopment: true,
+});
 
 const isActive = (x: AppStateStatus) => x === "active";
 
