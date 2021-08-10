@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { ViewProps } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { Error } from "../helpers/api";
@@ -14,17 +14,31 @@ const TEXT: { [key: number]: [string, string] } = {
   [-1]: ["Error", "An unknown error has occurred. Please try again."],
 };
 
-const APIError = ({ error, style, ...props }: APIErrorProps) => {
-  const [title, description] = TEXT[error.status] ?? TEXT[-1];
+const traverse = (val: any): string | undefined => {
+  if (val === undefined || val === null) return undefined;
 
-  console.error(error);
+  if (Array.isArray(val)) {
+    if (val.length > 0) {
+      return traverse(val[0]);
+    }
+  } else if (typeof val === "object") {
+    return traverse(Object.values(val));
+  }
+
+  return val.toString();
+};
+
+const APIError = ({ error, style, ...props }: APIErrorProps) => {
+  let [title, description] = TEXT[error.status] ?? TEXT[-1];
+  const errorDesc = useMemo(() => traverse(error.inner), [error.inner]);
+  useEffect(() => console.error(error), [error]);
 
   return (
     <Alert
       style={[tw`m-6`, style]}
       status="error"
       title={title}
-      description={error.inner?.detail ?? description}
+      description={errorDesc ?? description}
       {...props}
     />
   );

@@ -94,7 +94,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <Stack spacing={4} style={tw`p-4`}>
         <Text style={tw`text-2xl font-bold text-center`}>Lynbrook High School</Text>
         <Profile
-          name={`${user.first_name} ${user.last_name}`}
+          name={user.first_name ? `${user.first_name} ${user.last_name}` : "Guest User"}
           email={user.email}
           uri={user.picture_url}
         />

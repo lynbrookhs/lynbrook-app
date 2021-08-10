@@ -1,4 +1,4 @@
-import { LinkingOptions } from "@react-navigation/native";
+import { DefaultTheme, LinkingOptions } from "@react-navigation/native";
 import { RootStackParamList } from ".";
 
 export const linking: LinkingOptions<RootStackParamList> = {
@@ -21,4 +21,11 @@ export const linking: LinkingOptions<RootStackParamList> = {
 export const screenOptions = {
   headerStyle: { backgroundColor: "#043265" },
   headerTintColor: "#FFFFFF",
+};
+
+export const Theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+  },
 };

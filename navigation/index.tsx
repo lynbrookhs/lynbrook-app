@@ -8,7 +8,7 @@ import { useAuth } from "../components/AuthProvider";
 import QRCodeModal from "../screens/home/QRCodeModal";
 import QRCodeScannedModal from "../screens/home/QRCodeScannedModal";
 import AuthNavigator, { AuthParamList } from "./AuthNavigator";
-import { linking } from "./config";
+import { linking, Theme } from "./config";
 import MainNavigator, { MainParamList } from "./MainNavigator";
 
 export type QRCodeModalProps = {
@@ -37,9 +37,7 @@ const RootNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {state.token ? (
         <>
-          <Stack.Group>
-            <Stack.Screen name="Main" component={MainNavigator} />
-          </Stack.Group>
+          <Stack.Screen name="Main" component={MainNavigator} />
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen name="QRCode" component={QRCodeModal} />
             <Stack.Screen name="QRCodeScanned" component={QRCodeScannedModal} />
@@ -60,7 +58,7 @@ const RootNavigator = () => {
 
 const Navigation = () => {
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer linking={linking} theme={Theme}>
       <RootNavigator />
     </NavigationContainer>
   );

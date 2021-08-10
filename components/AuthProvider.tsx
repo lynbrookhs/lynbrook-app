@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { Text } from "react-native";
+import { useRequest } from "../helpers/api";
 import { apiPath } from "../helpers/utils";
 
 const AuthLoading = () => <Text>Loading...</Text>;
@@ -20,13 +21,28 @@ type AuthState = {
 };
 
 type AuthContextType = {
-  signIn: () => void;
+  registerAsGuest: (creds: GuestRegisterCredentials) => void;
+  signInWithSchoology: () => void;
+  signInAsGuest: (creds: GuestLoginCredentials) => void;
   signOut: () => void;
   state: AuthState;
 };
 
+type GuestRegisterCredentials = {
+  email: string;
+  password: string;
+  re_password: string;
+};
+
+type GuestLoginCredentials = {
+  email: string;
+  password: string;
+};
+
 const AuthContext = createContext<AuthContextType>({
-  signIn: () => {},
+  registerAsGuest: () => {},
+  signInWithSchoology: () => {},
+  signInAsGuest: () => {},
   signOut: () => {},
   state: {
     isLoading: true,
@@ -38,6 +54,8 @@ const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
+  const request = useRequest();
+
   const [state, setState] = useState<AuthState>({
     isLoading: true,
     isSignout: false,
@@ -62,7 +80,7 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
     })();
   }, []);
 
-  const signIn = useCallback(async () => {
+  const signInWithSchoology = useCallback(async () => {
     // Get authorization url
     const auth_url = apiPath("/auth/o/schoology/");
     auth_url.searchParams.append("redirect_uri", AuthSession.makeRedirectUri({ useProxy: true }));
@@ -91,13 +109,36 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
     setState({ isLoading: false, isSignout: false, token: access });
   }, []);
 
+  const registerAsGuest = useCallback(async (creds: GuestRegisterCredentials) => {
+    await request("POST", "/auth/users/", creds);
+    await signInAsGuest(creds);
+  }, []);
+
+  const signInAsGuest = useCallback(
+    async (creds: GuestLoginCredentials) => {
+      const { access } = await request("POST", "/auth/jwt/create", creds);
+      if (access === undefined) return;
+      await SecureStore.setItemAsync("token", access);
+      setState({ isLoading: false, isSignout: false, token: access });
+    },
+    [request]
+  );
+
   const signOut = useCallback(async () => {
     await SecureStore.deleteItemAsync("token");
     setState({ isLoading: false, isSignout: true, token: undefined });
   }, []);
 
+  const value = {
+    registerAsGuest,
+    signInWithSchoology,
+    signInAsGuest,
+    signOut,
+    state,
+  };
+
   return (
-    <AuthContext.Provider value={{ signIn, signOut, state }}>
+    <AuthContext.Provider value={value}>
       {state.isLoading ? <AuthLoading /> : children}
     </AuthContext.Provider>
   );

@@ -27,11 +27,12 @@ type PaginatedResponse<T> = {
   results: T[];
 };
 
-export const apiFetcher = (token: string) => async (url: string, options?: RequestInit) => {
+export const apiFetcher = (token?: string) => async (url: string, options?: RequestInit) => {
+  const auth_headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
   const res = await fetch(url, {
     ...options,
     headers: {
-      Authorization: `Bearer ${token}`,
+      ...auth_headers,
       ...options?.headers,
     },
   });

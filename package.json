@@ -35,6 +35,7 @@
     "expo-status-bar": "~1.0.4",
     "expo-updates": "~0.8.2",
     "expo-web-browser": "~9.2.0",
+    "formik": "^2.2.9",
     "node-ical": "github:lynbrookhs/node-ical",
     "path": "^0.12.7",
     "react": "16.13.1",

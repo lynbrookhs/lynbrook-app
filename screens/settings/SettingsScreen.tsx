@@ -71,7 +71,7 @@ const SettingsScreen = () => {
     <ScrollView style={tw`flex-1`}>
       <Stack spacing={8} style={tw`py-8`}>
         <Profile
-          name={`${user.first_name} ${user.last_name}`}
+          name={user.first_name ? `${user.first_name} ${user.last_name}` : "Guest User"}
           email={user.email}
           uri={user.picture_url}
         />

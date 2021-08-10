@@ -2,9 +2,10 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { PropsWithChildren } from "react";
 import { Button, Text, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
-import { useAuth } from "../components/AuthProvider";
-import Divider from "../components/Divider";
-import Stack from "../components/Stack";
+import { useAuth } from "../../components/AuthProvider";
+import Divider from "../../components/Divider";
+import Stack from "../../components/Stack";
+import { WelcomeScreenProps } from "../../navigation/AuthNavigator";
 
 type WelcomeItemProps = PropsWithChildren<{
   icon: keyof typeof Ionicons.glyphMap;
@@ -21,11 +22,11 @@ const WelcomeItem = ({ icon, children }: WelcomeItemProps) => (
   </Stack>
 );
 
-const WelcomeScreen = () => {
-  const { signIn } = useAuth();
+const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
+  const { signInWithSchoology } = useAuth();
 
   return (
-    <Stack spacing={4} style={tw`flex-1 justify-center p-6`}>
+    <Stack spacing={8} style={tw`flex-1 justify-center p-6`}>
       <Text style={tw`text-3xl font-bold text-center`}>Welcome</Text>
 
       <Stack spacing={4} divider={<Divider />}>
@@ -44,9 +45,9 @@ const WelcomeScreen = () => {
         </WelcomeItem>
 
         <View>
-          <Button title="Sign in with Schoology" onPress={signIn} />
-          {/* <Text style={tw`text-sm text-center text-gray-500`}>or</Text>
-          <Button title="Continue as Guest" onPress={() => {}} /> */}
+          <Button title="Sign in with Schoology" onPress={signInWithSchoology} />
+          <Text style={tw`text-sm text-center text-gray-500`}>or</Text>
+          <Button title="Continue as Guest" onPress={() => navigation.navigate("GuestLogin")} />
         </View>
       </Stack>
     </Stack>
