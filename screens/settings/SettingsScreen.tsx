@@ -12,10 +12,10 @@ import {
 import AutoHeightImage from "react-native-auto-height-image";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
-import { useAuth } from "../../components/AuthProvider";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useMemberships, useUser } from "../../helpers/api";
+import { useSignOut } from "../../helpers/api/auth";
 import { OrganizationType } from "../../helpers/api/models";
 
 type ProfileProps = {
@@ -55,7 +55,7 @@ const ResourceLink = ({ idx, title, url }: ResourceLinkProps) => (
 const SettingsScreen = () => {
   const { data: user, error } = useUser();
   const { data: memberships, error: error2 } = useMemberships();
-  const { signOut } = useAuth();
+  const signOut = useSignOut();
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;

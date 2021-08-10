@@ -2,9 +2,9 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { PropsWithChildren } from "react";
 import { Button, Text, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
-import { useAuth } from "../../components/AuthProvider";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
+import { useSignInWithSchoology } from "../../helpers/api/auth";
 import { WelcomeScreenProps } from "../../navigation/AuthNavigator";
 
 type WelcomeItemProps = PropsWithChildren<{
@@ -23,7 +23,7 @@ const WelcomeItem = ({ icon, children }: WelcomeItemProps) => (
 );
 
 const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
-  const { signInWithSchoology } = useAuth();
+  const { signInWithSchoology } = useSignInWithSchoology();
 
   return (
     <Stack spacing={8} style={tw`flex-1 justify-center p-6`}>

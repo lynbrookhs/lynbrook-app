@@ -1,8 +1,9 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSWRInfinite } from "swr";
 import useSWRNative, { useSWRNativeRevalidate } from "swr-react-native";
 import { useAuth } from "../../components/AuthProvider";
 import { apiPath } from "../utils";
+import { useSignOut } from "./auth";
 import {
   APIDate,
   Membership,
@@ -53,16 +54,14 @@ export const apiFetcher = (token?: string) => async (url: string, options?: Requ
 };
 
 const useAPIRequest = <T>(path: string) => {
-  const { signOut, state } = useAuth();
-  const { token } = state;
+  const { token } = useAuth();
+  const signOut = useSignOut();
 
   const ret = useSWRNative<T, Error>(apiPath(path).toString(), apiFetcher(token ?? ""));
   const loggedOut = ret.error && ret.error.status === 401;
 
   useEffect(() => {
-    if (loggedOut) {
-      signOut();
-    }
+    if (loggedOut) signOut();
   }, [loggedOut]);
 
   return ret;
@@ -74,16 +73,14 @@ const useAPIRequestPaginated = <T>(path: string) => {
     return apiPath(path).toString();
   };
 
-  const { signOut, state } = useAuth();
-  const { token } = state;
+  const { token } = useAuth();
+  const signOut = useSignOut();
 
   const ret = useSWRInfinite<PaginatedResponse<T>, Error>(getKey, apiFetcher(token ?? ""));
   const loggedOut = ret.error && ret.error.status === 401;
 
   useEffect(() => {
-    if (loggedOut) {
-      signOut();
-    }
+    if (loggedOut) signOut();
   }, [loggedOut]);
 
   useSWRNativeRevalidate(ret);
@@ -124,20 +121,33 @@ export const useCurrentSchedule = () => useAPIRequest<CurrentSchedule>("/schedul
 
 // Post Request
 
-export const useRequest = () => {
-  const { state } = useAuth();
-  const { token } = state;
+export const useRequest = (throw_on_error?: boolean) => {
+  const [error, setError] = useState<Error | undefined>(undefined);
+  const { token } = useAuth();
 
-  return useCallback(
-    async <T>(method: string, path: string, data?: any) => {
+  const request = useCallback(
+    async <T = any>(
+      method: string,
+      path: string,
+      data?: any,
+      contentType: string = "application/json"
+    ) => {
+      if (typeof data !== "string") data = JSON.stringify(data);
       const fetcher = apiFetcher(token ?? "");
-      const result = await fetcher(apiPath(path).toString(), {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: data ? JSON.stringify(data) : undefined,
-      });
-      return result as T;
+      try {
+        const result = await fetcher(apiPath(path).toString(), {
+          method,
+          headers: { "Content-Type": contentType },
+          body: data,
+        });
+        return result as T;
+      } catch (error) {
+        setError(error);
+        if (throw_on_error) throw error;
+      }
     },
     [token]
   );
+
+  return { request, error };
 };

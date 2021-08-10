@@ -38,11 +38,11 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  const { state } = useAuth();
+  const { token } = useAuth();
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {state.token ? (
+      {token ? (
         <>
           <Stack.Screen name="Main" component={MainNavigator} />
           <Stack.Group screenOptions={{ presentation: "modal" }}>
@@ -52,13 +52,7 @@ const RootNavigator = () => {
           </Stack.Group>
         </>
       ) : (
-        <Stack.Screen
-          name="Auth"
-          component={AuthNavigator}
-          options={{
-            animationTypeForReplace: state.isSignout ? "pop" : "push",
-          }}
-        />
+        <Stack.Screen name="Auth" component={AuthNavigator} />
       )}
     </Stack.Navigator>
   );

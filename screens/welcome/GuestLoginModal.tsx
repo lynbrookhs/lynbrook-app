@@ -12,15 +12,15 @@ import {
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
-import { useAuth } from "../../components/AuthProvider";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
 import { Error } from "../../helpers/api";
-import { WelcomeScreenProps } from "../../navigation/AuthNavigator";
+import { useSignInAsGuest } from "../../helpers/api/auth";
+import { GuestLoginModalProps } from "../../navigation/AuthNavigator";
 
-const GuestLoginModal = ({ navigation }: WelcomeScreenProps) => {
+const GuestLoginModal = ({ navigation }: GuestLoginModalProps) => {
   const [error, setError] = useState<Error | undefined>(undefined);
-  const { signInAsGuest } = useAuth();
+  const { signInAsGuest } = useSignInAsGuest();
 
   const handleSignIn = useCallback(async (values) => {
     try {

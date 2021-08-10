@@ -4,7 +4,7 @@ import { ActivityIndicator, Button, Text } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
-import { Error, useRequest } from "../../helpers/api";
+import { useRequest } from "../../helpers/api";
 import { Event } from "../../helpers/api/models";
 import { QRCodeScannedModalProps } from "../../navigation";
 
@@ -24,17 +24,12 @@ const Content = ({ navigation, icon, title, description }: ContentProps) => (
 );
 
 const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
-  const [error, setError] = useState<Error | undefined>(undefined);
   const [event, setEvent] = useState<Event | undefined>(undefined);
-  const request = useRequest();
+  const { request, error } = useRequest();
 
   useEffect(() => {
     (async () => {
-      try {
-        setEvent(await request<Event>("POST", "/users/me/events/", { code: route.params.code }));
-      } catch (error) {
-        setError(error);
-      }
+      setEvent(await request<Event>("POST", "/users/me/events/", { code: route.params.code }));
     })();
   }, [route.params.code]);
 

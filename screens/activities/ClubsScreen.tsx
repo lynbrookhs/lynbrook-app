@@ -44,7 +44,7 @@ const ClubItem = ({ item, subscribed, onAdd, onRemove, onPress }: ClubItemProps)
 const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   const { data: memberships, error, mutate } = useMemberships();
   const { data: orgs, error: error2 } = useOrgs();
-  const request = useRequest();
+  const { request, error: error3 } = useRequest();
   const [sorted, setSorted] = useState(false);
 
   useLayoutEffect(() => {
@@ -80,6 +80,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
+  if (error3) return <APIError error={error3} />;
   if (!memberships) return <ActivityIndicator style={tw`m-4`} />;
   if (!orgs) return <ActivityIndicator style={tw`m-4`} />;
 
