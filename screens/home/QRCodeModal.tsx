@@ -77,6 +77,7 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
   if (!hasPermission) return <NoPermission />;
 
   const Wrapper = Platform.OS === "android" ? SafeAreaView : View;
+  const Wrapper2 = Platform.OS === "android" ? View : SafeAreaView;
 
   return (
     <Camera
@@ -95,6 +96,13 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
             <BorderOverlay />
           </View>
         </View>
+        <Wrapper2 style={tw`absolute bottom-0 left-0 right-0 items-center pb-4`}>
+          <TouchableOpacity onPress={() => navigation.replace("QRCodeEntry")}>
+            <View style={tw`bg-black bg-opacity-20 py-2 px-4 rounded-full`}>
+              <Text style={tw`text-lg text-white`}>Enter Manually</Text>
+            </View>
+          </TouchableOpacity>
+        </Wrapper2>
       </Wrapper>
     </Camera>
   );
