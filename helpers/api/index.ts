@@ -118,6 +118,7 @@ export const usePost = (id: number) => useAPIRequest<Post>(`/posts/${id}/`);
 export const useSchedules = () => useAPIRequest<Schedule[]>("/schedules/");
 
 export const useCurrentSchedule = () => useAPIRequest<CurrentSchedule>("/schedules/current/");
+export const useNextSchedule = () => useAPIRequest<CurrentSchedule>("/schedules/next/");
 
 // Post Request
 

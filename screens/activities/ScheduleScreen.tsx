@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { format, getDay } from "date-fns";
+import { addDays, format, getDay, getMonth, getYear, parseISO } from "date-fns";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -11,9 +11,10 @@ import {
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
+import HeaderButton from "../../components/HeaderButton";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
-import { useCurrentSchedule } from "../../helpers/api";
+import { useCurrentSchedule, useNextSchedule } from "../../helpers/api";
 import { NestedSchedulePeriod, parseTime } from "../../helpers/api/models";
 import { ScheduleScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 
@@ -37,12 +38,12 @@ const ScheduleItem = ({ item, index }: ScheduleItemProps) => (
   </ListItem>
 );
 
-type ScheduleTabsProps = {
+type ScheduleDayTabsProps = {
   selected: number;
   onSelect: (weekday: number) => void;
 };
 
-const ScheduleTabs = ({ selected, onSelect }: ScheduleTabsProps) => (
+const ScheduleDayTabs = ({ selected, onSelect }: ScheduleDayTabsProps) => (
   <Stack direction="row" style={tw`z-10`}>
     {WEEKDAYS.map((x, idx) => (
       <View
@@ -71,27 +72,50 @@ const EmptyDay = () => (
 );
 
 const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
-  const current = (getDay(new Date()) + 6) % 7; // 0 = Sunday here, 0 = Monday in API
+  const { data: current, error } = useCurrentSchedule();
+  const { data: next, error: error2 } = useNextSchedule();
+  const [preview, setPreview] = useState(false);
+  const [day, setDay] = useState((getDay(new Date()) + 6) % 7); // 0 = Sunday here, 0 = Monday in API
 
-  const { data: schedule, error } = useCurrentSchedule();
-  const [selected, setSelected] = useState(current);
+  const schedule = preview ? next : current;
 
   useEffect(() => {
     if (schedule) {
-      navigation.setOptions({ headerTitle: schedule.weekdays[selected].name });
+      const start = parseISO(schedule.start);
+      const end = addDays(parseISO(schedule.end), -2);
+
+      const headerTitle =
+        getMonth(start) === getMonth(end)
+          ? `${format(start, "MMMM d")}–${format(end, "d, yyyy")}`
+          : getYear(start) === getYear(end)
+          ? `${format(start, "MMMM d")} – ${format(end, "MMMM d, yyyy")}`
+          : `${format(start, "MMMM d, yyyy")} – ${format(end, "MMMM d, yyyy")}`;
+
+      navigation.setOptions({
+        headerTitle,
+        headerRight: (props) =>
+          !preview && (
+            <HeaderButton icon="chevron-forward" onPress={() => setPreview(true)} {...props} />
+          ),
+        headerLeft: (props) =>
+          preview && (
+            <HeaderButton icon="chevron-back" onPress={() => setPreview(false)} {...props} />
+          ),
+      });
     }
-  }, [schedule, selected]);
+  }, [schedule, preview]);
 
   if (error) return <APIError error={error} />;
+  if (error2) return <APIError error={error2} />;
   if (!schedule) return <ActivityIndicator style={tw`m-4`} />;
 
   return (
     <Stack style={tw`flex-1`}>
-      <ScheduleTabs selected={selected} onSelect={setSelected} />
+      <ScheduleDayTabs selected={day} onSelect={setDay} />
 
       <FlatList<NestedSchedulePeriod>
         style={tw`-mt-px`}
-        data={schedule.weekdays[selected].periods}
+        data={schedule.weekdays[day].periods}
         renderItem={ScheduleItem}
         keyExtractor={(_, idx) => idx.toString()}
         ListEmptyComponent={EmptyDay}
