@@ -26,7 +26,7 @@ const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
         <Text style={tw`text-lg font-bold`}>{org.name}</Text>
         {org.day && <Text style={tw`text-sm text-gray-500`}>{WEEKDAYS[org.day]}</Text>}
       </Stack>
-      <ScrollView style={tw`bg-white p-3 flex-1`}>
+      <ScrollView style={tw`bg-white`} contentContainerStyle={tw`p-3`}>
         <Text>{org.description ?? "No description found."}</Text>
       </ScrollView>
     </Stack>

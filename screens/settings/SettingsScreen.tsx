@@ -68,7 +68,7 @@ const SettingsScreen = () => {
     .filter((x) => x.links.length > 0);
 
   return (
-    <ScrollView style={tw`flex-1`}>
+    <ScrollView>
       <Stack spacing={8} style={tw`py-8`}>
         <Profile
           name={user.first_name ? `${user.first_name} ${user.last_name}` : "Guest User"}

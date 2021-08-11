@@ -90,7 +90,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   );
 
   return (
-    <ScrollView style={tw`flex-1`}>
+    <ScrollView>
       <Stack spacing={4} style={tw`p-4`}>
         <Text style={tw`text-2xl font-bold text-center`}>Lynbrook High School</Text>
         <Profile
