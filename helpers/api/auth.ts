@@ -5,7 +5,12 @@ import { useRequest } from ".";
 import { useAuth } from "../../components/AuthProvider";
 import { apiPath } from "../utils";
 
-type Provider = "schoology" | "google-oauth2";
+type Provider = "schoology" | "google";
+
+const KEEP_CALLBACK_FIELDS: { [key in Provider]: string[] } = {
+  schoology: ["oauth_token"],
+  google: ["code", "state"],
+};
 
 export const useSignInWithProvider = (provider: Provider, throw_on_error?: boolean) => {
   const { request, error } = useRequest(throw_on_error);
@@ -18,11 +23,16 @@ export const useSignInWithProvider = (provider: Provider, throw_on_error?: boole
 
     const authRes = await AuthSession.startAsync({ authUrl: authorization_url });
     if (authRes.type !== "success") return console.error(authRes);
-    console.log(authRes.params);
+
+    const body = new URLSearchParams();
+    for (const field of KEEP_CALLBACK_FIELDS[provider]) {
+      body.append(field, authRes.params[field]);
+    }
+
     const { access } = await request(
       "POST",
       `/auth/o/${provider}/`,
-      new URLSearchParams({ oauth_token: authRes.params.oauth_token }).toString(),
+      body.toString(),
       "application/x-www-form-urlencoded"
     );
     if (access === undefined) return;
