@@ -166,6 +166,11 @@ export type Post = {
 
 // Event
 
+export enum EventSubmissionType {
+  CODE = 1,
+  FILE = 2
+};
+
 export type Event = {
   id: number;
   url: string;
@@ -175,6 +180,7 @@ export type Event = {
   start: APIDateTime;
   end: APIDateTime;
   points: number;
+  submission_type: EventSubmissionType;
 };
 
 // Prize
