@@ -51,7 +51,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
-        <HeaderButton icon="list" onPress={() => setSorted(!sorted)} {...props} />
+        <HeaderButton side="right" icon="list" onPress={() => setSorted(!sorted)} {...props} />
       ),
     });
   });

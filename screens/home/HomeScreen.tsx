@@ -119,10 +119,20 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: (props) => (
-        <HeaderButton icon="gift" onPress={() => navigation.navigate("Rewards")} {...props} />
+        <HeaderButton
+          side="left"
+          icon="gift"
+          onPress={() => navigation.navigate("Rewards")}
+          {...props}
+        />
       ),
       headerRight: (props) => (
-        <HeaderButton icon="scan" onPress={() => navigation.navigate("QRCode")} {...props} />
+        <HeaderButton
+          side="right"
+          icon="scan"
+          onPress={() => navigation.navigate("QRCode")}
+          {...props}
+        />
       ),
     });
   });
