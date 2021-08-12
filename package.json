@@ -1,4 +1,5 @@
 {
+  "name": "lynbrook-app",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -30,6 +31,7 @@
     "expo-constants": "~11.0.1",
     "expo-device": "~3.3.0",
     "expo-font": "~9.2.1",
+    "expo-image-picker": "^10.2.2",
     "expo-linking": "^2.3.1",
     "expo-random": "~11.2.0",
     "expo-secure-store": "^10.2.0",
