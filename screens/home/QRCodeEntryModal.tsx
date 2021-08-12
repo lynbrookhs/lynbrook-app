@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useCallback, useEffect, useState } from "reac
 import { Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import Stack from "../../components/Stack";
+import { EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeEntryModalProps } from "../../navigation";
 
 type NumberButtonProps = {
@@ -100,7 +101,14 @@ const QRCodeEntryModal = ({ navigation }: QRCodeEntryModalProps) => {
 
   useEffect(() => {
     if (code.length === 6) {
-      setTimeout(() => navigation.replace("QRCodeScanned", { code: Number(code) }), 500);
+      setTimeout(
+        () =>
+          navigation.replace("QRCodeScanned", {
+            type: EventSubmissionType.CODE,
+            code: Number(code),
+          }),
+        500
+      );
     }
   }, [code]);
 

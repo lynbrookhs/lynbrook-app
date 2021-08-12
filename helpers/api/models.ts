@@ -168,19 +168,20 @@ export type Post = {
 
 export enum EventSubmissionType {
   CODE = 1,
-  FILE = 2
-};
+  FILE = 2,
+}
 
 export type Event = {
   id: number;
   url: string;
   organization: NestedOrganization;
   name: string;
-  description: string;
+  description?: string;
   start: APIDateTime;
   end: APIDateTime;
   points: number;
   submission_type: EventSubmissionType;
+  claimed: boolean;
 };
 
 // Prize

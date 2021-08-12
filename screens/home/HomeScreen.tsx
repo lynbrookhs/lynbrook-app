@@ -1,20 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import React, { useLayoutEffect } from "react";
-import { parseISO } from "date-fns";
-import { Alert, ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
-import Stack from "../../components/Stack";
 import FilledButton from "../../components/FilledButton";
-import { usePrizes, useUser, useEvents, useMemberships } from "../../helpers/api";
-import { OrganizationType, EventSubmissionType } from "../../helpers/api/models";
+import HeaderButton from "../../components/HeaderButton";
+import Stack from "../../components/Stack";
+import { useEvents, usePrizes, useUser } from "../../helpers/api";
+import { Event, EventSubmissionType, OrganizationType } from "../../helpers/api/models";
 import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
-import Navigation from "../../navigation";
-import { useRequest } from "../../helpers/api";
-import * as ImagePicker from "expo-image-picker";
 
 type ProfileProps = { name: string; email: string; uri: string };
 
@@ -64,50 +62,51 @@ const SpiritPoints = ({ points, checkpoint, checkpointPrize, headerText }: Spiri
   </Card>
 );
 
-type EventItemProps = {
-  name: string;
-  description: string;
-  organization: string;
-  points: number;
-  type?: EventSubmissionType;
+type SpecialEventItemProps = {
+  event: Event;
   onPress: () => void;
 };
 
-const EventItem = ({ name, description, organization, points, type, onPress }: EventItemProps) => (
+const SpecialEventItem = ({ event, onPress }: SpecialEventItemProps) => (
+  <Card>
+    <Stack direction="row" style={tw`justify-between`} align="center">
+      <Stack>
+        <Text style={tw`text-lg font-bold`}>{event.name}</Text>
+        <Text style={tw`text-sm`}>{event.organization.name}</Text>
+      </Stack>
+      <TouchableOpacity onPress={onPress}>
+        <Ionicons name="arrow-forward" style={tw`text-xl`} />
+      </TouchableOpacity>
+    </Stack>
+  </Card>
+);
+
+type EventItemProps = {
+  event: Event;
+  onPress: () => void;
+};
+
+const EventItem = ({ event, onPress }: EventItemProps) => (
   <Card
     header={
-      type && (
-        <Stack direction="row" style={tw`justify-between`} align="center">
-          <Stack>
-            <Text style={tw`text-lg font-bold`}>{name}</Text>
-            <Text style={tw`text-xs`}>{organization}</Text>
-          </Stack>
-          <Text style={tw`text-base`}>{points} points</Text>
+      <Stack direction="row" align="center">
+        <Stack style={tw`flex-1`}>
+          <Text style={tw`text-lg font-bold`}>{event.name}</Text>
+          <Text style={tw`text-sm`}>{event.organization.name}</Text>
         </Stack>
-      )
+        <Text style={tw`text-base`}>{event.points} points</Text>
+      </Stack>
     }
   >
-    <Stack direction="row" spacing={4} align="center">
-      <Stack style={tw`flex-1`}>
-        {type ? (
-          <Stack spacing={2}>
-            <Text style={tw`text-xs`}>{description}</Text>
-            <FilledButton textStyle={tw`text-center`} onPress={onPress}>
-              {type === EventSubmissionType.CODE ? "Scan" : "Upload"} for Points
-            </FilledButton>
-          </Stack>
-        ) : (
-          <Stack direction="row" style={tw`justify-between`} align="center">
-            <Stack>
-              <Text style={tw`text-lg font-bold`}>{name}</Text>
-              <Text style={tw`text-xs`}>{organization}</Text>
-            </Stack>
-            <TouchableOpacity onPress={onPress}>
-              <Ionicons name="arrow-forward" style={tw`text-xl`} />
-            </TouchableOpacity>
-          </Stack>
-        )}
-      </Stack>
+    <Stack spacing={4}>
+      {event.description && <Text style={tw`text-sm`}>{event.description}</Text>}
+      <FilledButton textStyle={tw`text-center`} onPress={onPress} disabled={event.claimed}>
+        {event.claimed
+          ? "Already Claimed"
+          : event.submission_type === EventSubmissionType.CODE
+          ? "Scan for Points"
+          : "Upload for Points"}
+      </FilledButton>
     </Stack>
   </Card>
 );
@@ -116,20 +115,14 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { data: user, error } = useUser();
   const { data: prizes, error: error2 } = usePrizes();
   const { data: events, error: error3 } = useEvents();
-  const { request, error: error4 } = useRequest();
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: ({ tintColor }) => (
-        <TouchableOpacity onPress={() => navigation.navigate("Rewards")}>
-          <Ionicons name="gift" color={tintColor} style={tw`text-xl`} />
-        </TouchableOpacity>
+      headerLeft: (props) => (
+        <HeaderButton icon="gift" onPress={() => navigation.navigate("Rewards")} {...props} />
       ),
-      headerRight: ({ tintColor }) => (
-        // @ts-ignore TODO Fix typing for navigating to parent
-        <TouchableOpacity onPress={() => navigation.navigate("QRCode")}>
-          <Ionicons name="scan" color={tintColor} style={tw`text-xl`} />
-        </TouchableOpacity>
+      headerRight: (props) => (
+        <HeaderButton icon="scan" onPress={() => navigation.navigate("QRCode")} {...props} />
       ),
     });
   });
@@ -155,70 +148,36 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   // Events
 
-  console.log(events);
   const specialEvents = events.filter((e) => e.id === 6);
   const regularEvents = events.filter((e) => e.id !== 6);
 
-  const getFile = async (event: any) => {
-    const fileRequest = async (requestType: number) => {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        quality: 0,
-        mediaTypes:
-          requestType == 0
-            ? ImagePicker.MediaTypeOptions.Images
-            : ImagePicker.MediaTypeOptions.Videos,
-      });
+  const getFile = async (event: Event) => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 0,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+    });
 
-      if (result.cancelled) return; // User canceled
+    if (result.cancelled) return;
 
-      const resp = await fetch(result.uri);
-      const blob = await resp.blob();
-
-      console.log(blob.type);
-      try {
-        await request<Event>("POST", "/users/me/events/", { id: event.id })
-        Alert.alert(
-          "File Uploaded",
-          `You have successfully uploaded your file and received ${event.points} ASB spirit points and overall class points for the competition. (Check the Viking Games event page for current class standings). Your image will be reviewed by ASB to confirm that it follows submission guidelines. Thank you for participating!`,
-          [{ text: "OK", onPress: () => {} }],
-          { cancelable: false }
-        );
-        // Done!
-      } catch (error) {
-        // Error!
-      }
-    };
-    await Alert.alert(
-      "File Upload Selection",
-      `Are you uploading an image or a video?`,
-      [
-        {
-          text: "Image",
-          onPress: () => {
-            fileRequest(0);
-          },
-        },
-        {
-          text: "Video",
-          onPress: () => {
-            fileRequest(1);
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+    navigation.navigate("QRCodeScanned", {
+      event,
+      type: EventSubmissionType.FILE,
+      fileUri: result.uri,
+    });
   };
 
   return (
     <ScrollView>
       <Stack spacing={4} style={tw`p-4`}>
         <Text style={tw`text-2xl font-bold text-center`}>Lynbrook High School</Text>
+
         <Profile
           name={user.first_name ? `${user.first_name} ${user.last_name}` : "Guest User"}
           email={user.email}
           uri={user.picture_url}
         />
+
         {asb && nextAsbPrize && (
           <SpiritPoints
             points={asb.points}
@@ -227,6 +186,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             headerText="ASB Spirit Points"
           />
         )}
+
         {cls && nextClsPrize && (
           <SpiritPoints
             points={cls.points}
@@ -235,26 +195,24 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             headerText={`${cls.organization.name} Spirit Points`}
           />
         )}
+
+        <Text style={tw`text-xl font-bold text-center`}>Ongoing Events</Text>
+
         {specialEvents.map((x) => (
-          <EventItem
-            name={x.name}
-            description={x.description}
-            organization={x.organization.name}
-            points={x.points}
+          <SpecialEventItem
+            key={x.id}
+            event={x}
             onPress={() => navigation.navigate("Special", { id: x.id })}
           />
         ))}
+
         {regularEvents.map((x) => (
           <EventItem
-            name={x.name}
-            description={x.description}
-            organization={x.organization.name}
-            points={x.points}
-            type={x.submission_type}
+            key={x.id}
+            event={x}
             onPress={
               x.submission_type === EventSubmissionType.CODE
-                ? // @ts-ignore TODO Fix typing for navigating to parent
-                  () => navigation.navigate("QRCode")
+                ? () => navigation.navigate("QRCode")
                 : () => getFile(x)
             }
           />

@@ -5,7 +5,7 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
 import { useRequest } from "../../helpers/api";
-import { Event } from "../../helpers/api/models";
+import { Event, EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeScannedModalProps } from "../../navigation";
 
 type ContentProps = Pick<QRCodeScannedModalProps, "navigation"> & {
@@ -18,7 +18,7 @@ const Content = ({ navigation, icon, title, description }: ContentProps) => (
   <Stack style={tw`flex-1 p-8 justify-center`} align="center" spacing={4}>
     {cloneElement(icon, { style: [icon.props.style, { fontSize: 64 }] })}
     <Text style={tw`text-xl font-bold text-center`}>{title}</Text>
-    <Text style={tw`text-gray-500 text-center`}>{description}</Text>
+    <Text style={tw`text-sm text-gray-500 text-center`}>{description}</Text>
     <Button title="Close" onPress={() => navigation.goBack()} />
   </Stack>
 );
@@ -27,11 +27,20 @@ const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
   const [event, setEvent] = useState<Event | undefined>(undefined);
   const { request, error } = useRequest();
 
+  console.log(route.params);
+
   useEffect(() => {
     (async () => {
-      setEvent(await request<Event>("POST", "/users/me/events/", { code: route.params.code }));
+      if (route.params.type === EventSubmissionType.CODE) {
+        setEvent(await request<Event>("POST", "/users/me/events/", { code: route.params.code }));
+      } else if (route.params.type === EventSubmissionType.FILE) {
+        const file = await fetch(route.params.fileUri);
+        const blob = await file.blob();
+        console.log(blob.type);
+        setEvent(await request<Event>("POST", "/users/me/events/", { id: route.params.event.id }));
+      }
     })();
-  }, [route.params.code]);
+  }, [route.params]);
 
   if (error?.status === 404) {
     return (

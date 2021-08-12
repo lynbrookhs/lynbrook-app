@@ -7,14 +7,21 @@ export type FilledButton = PressableProps & {
   textStyle?: StyleProp<TextStyle>;
 };
 
-const FilledButton = ({ color = "indigo", textStyle, children, ...props }: FilledButton) => {
+const FilledButton = ({
+  color = "indigo",
+  textStyle,
+  disabled,
+  children,
+  ...props
+}: FilledButton) => {
   return (
-    <Pressable {...props}>
+    <Pressable disabled={disabled} {...props}>
       {({ pressed }) => (
         <View
           style={[
             tw`bg-${color}-600 px-3 py-2 border border-transparent rounded shadow-md`,
             pressed && tw`bg-${color}-700`,
+            disabled && tw`opacity-50`,
           ]}
         >
           <Text style={[tw`text-white text-base font-medium`, textStyle]}>{children}</Text>
