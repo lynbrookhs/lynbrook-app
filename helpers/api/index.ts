@@ -13,7 +13,7 @@ import {
   Post,
   Prize,
   Schedule,
-  User
+  User,
 } from "./models";
 
 export type Error = {
@@ -29,7 +29,8 @@ type PaginatedResponse<T> = {
   results: T[];
 };
 
-export const apiFetcher = (token?: string) => async (url: string, options?: RequestInit) => {
+export const apiFetcher = (token?: string) => async (path: string, options?: RequestInit) => {
+  const url = path.startsWith("http") ? path : apiPath(path).toString();
   const auth_headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
   const res = await fetch(url, {
     ...options,
@@ -58,7 +59,7 @@ const useAPIRequest = <T>(path: string) => {
   const { token } = useAuth();
   const signOut = useSignOut();
 
-  const ret = useSWRNative<T, Error>(apiPath(path).toString(), apiFetcher(token ?? ""));
+  const ret = useSWRNative<T, Error>(path, apiFetcher(token ?? ""));
   const loggedOut = ret.error && ret.error.status === 401;
 
   useEffect(() => {
@@ -71,7 +72,7 @@ const useAPIRequest = <T>(path: string) => {
 const useAPIRequestPaginated = <T>(path: string) => {
   const getKey = (_: number, previous: PaginatedResponse<T> | null) => {
     if (previous) return previous.next ?? null;
-    return apiPath(path).toString();
+    return path;
   };
 
   const { token } = useAuth();
@@ -139,7 +140,7 @@ export const useRequest = (throw_on_error?: boolean) => {
       if (typeof data !== "string") data = JSON.stringify(data);
       const fetcher = apiFetcher(token ?? "");
       try {
-        const result = await fetcher(apiPath(path).toString(), {
+        const result = await fetcher(path, {
           method,
           headers: { "Content-Type": contentType },
           body: data,

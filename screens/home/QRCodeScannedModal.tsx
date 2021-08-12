@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { cloneElement, ReactElement, useEffect, useState } from "react";
 import { ActivityIndicator, Button, Text } from "react-native";
+import { mutate } from "swr";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
@@ -27,8 +28,6 @@ const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
   const [event, setEvent] = useState<Event | undefined>(undefined);
   const { request, error } = useRequest();
 
-  console.log(route.params);
-
   useEffect(() => {
     (async () => {
       if (route.params.type === EventSubmissionType.CODE) {
@@ -39,6 +38,9 @@ const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
         console.log(blob.type);
         setEvent(await request<Event>("POST", "/users/me/events/", { id: route.params.event.id }));
       }
+      mutate("/events/");
+      mutate("/users/me/");
+      mutate("/users/me/memberships/");
     })();
   }, [route.params]);
 
