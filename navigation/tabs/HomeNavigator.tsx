@@ -12,28 +12,20 @@ import SpecialEventsScreen from "../../screens/home/SpecialEventsScreen";
 import { screenOptions } from "../config";
 import { MainParamList } from "../MainNavigator";
 
-type ParentNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<MainParamList>,
-  NativeStackNavigationProp<RootStackParamList>
->;
-
-export type HomeScreenProps = {
+type HomeTabScreenProps<T extends keyof HomeTabParamList> = {
   navigation: CompositeNavigationProp<
-    NativeStackNavigationProp<HomeTabParamList, "Home">,
-    ParentNavigationProp
+    NativeStackNavigationProp<HomeTabParamList, T>,
+    CompositeNavigationProp<
+      BottomTabNavigationProp<MainParamList>,
+      NativeStackNavigationProp<RootStackParamList>
+    >
   >;
-  route: RouteProp<HomeTabParamList, "Home">;
+  route: RouteProp<HomeTabParamList, T>;
 };
 
-export type RewardsScreenProps = {
-  navigation: NativeStackNavigationProp<HomeTabParamList, "Rewards">;
-  route: RouteProp<HomeTabParamList, "Rewards">;
-};
-
-export type SpecialEventsScreenProps = {
-  navigation: NativeStackNavigationProp<HomeTabParamList, "Special">;
-  route: RouteProp<HomeTabParamList, "Special">;
-};
+export type HomeScreenProps = HomeTabScreenProps<"Home">;
+export type RewardsScreenProps = HomeTabScreenProps<"Rewards">;
+export type SpecialEventsScreenProps = HomeTabScreenProps<"Special">;
 
 export type HomeTabParamList = {
   Home: undefined;

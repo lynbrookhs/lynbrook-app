@@ -1,22 +1,29 @@
-import { RouteProp } from "@react-navigation/native";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import React from "react";
+import { RootStackParamList } from "..";
 import PostDetailScreen from "../../screens/news/PostDetailScreen";
 import PostsScreen from "../../screens/news/PostsScreen";
 import { screenOptions } from "../config";
+import { MainParamList } from "../MainNavigator";
 
-export type PostsScreenProps = {
-  navigation: NativeStackNavigationProp<NewsTabParamList, "Posts">;
-  route: RouteProp<NewsTabParamList, "Posts">;
+type NewsTabScreenProps<T extends keyof NewsTabParamList> = {
+  navigation: CompositeNavigationProp<
+    NativeStackNavigationProp<NewsTabParamList, T>,
+    CompositeNavigationProp<
+      BottomTabNavigationProp<MainParamList>,
+      NativeStackNavigationProp<RootStackParamList>
+    >
+  >;
+  route: RouteProp<NewsTabParamList, T>;
 };
 
-export type PostDetailScreenProps = {
-  navigation: NativeStackNavigationProp<NewsTabParamList, "PostDetail">;
-  route: RouteProp<NewsTabParamList, "PostDetail">;
-};
+export type PostsScreenProps = NewsTabScreenProps<"Posts">;
+export type PostDetailScreenProps = NewsTabScreenProps<"PostDetail">;
 
 export type NewsTabParamList = {
   Posts: undefined;
