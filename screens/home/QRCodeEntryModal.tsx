@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -6,15 +7,25 @@ import { EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeEntryModalProps } from "../../navigation";
 
 type NumberButtonProps = {
-  digit: number;
-  onPress: (digit: number) => void;
+  digit?: number;
+  onPress: (digit?: number) => void;
   disabled: boolean;
 };
 
 const NumberButton = ({ digit, onPress, disabled }: NumberButtonProps) => (
   <TouchableOpacity style={tw`flex-1`} onPress={() => onPress(digit)}>
-    <View style={[tw`bg-gray-200 items-center justify-center rounded-full`, { aspectRatio: 1 }]}>
-      <Text style={[tw`text-3xl`, disabled && tw`opacity-30`]}>{digit}</Text>
+    <View
+      style={[
+        tw`items-center justify-center rounded-full`,
+        digit !== undefined && tw`bg-gray-200`,
+        { aspectRatio: 1 },
+      ]}
+    >
+      {digit !== undefined ? (
+        <Text style={[tw`text-3xl`, disabled && tw`opacity-30`]}>{digit}</Text>
+      ) : (
+        <Ionicons name="backspace" style={[tw`text-3xl`, disabled && tw`opacity-30`]} />
+      )}
     </View>
   </TouchableOpacity>
 );
@@ -59,7 +70,8 @@ type NumberInputButtonsProps = {
 
 const NumberInputButtons = ({ code, setCode }: NumberInputButtonsProps) => {
   const handlePress = useCallback(
-    (digit: number) => {
+    (digit?: number) => {
+      if (digit === undefined) return setCode(code.slice(0, code.length - 1));
       if (code.length < 6) setCode(`${code}${digit}`);
     },
     [code]
@@ -90,7 +102,7 @@ const NumberInputButtons = ({ code, setCode }: NumberInputButtonsProps) => {
       <ButtonRow>
         <View style={tw`flex-1`} />
         <NumberButton digit={0} {...props} />
-        <View style={tw`flex-1`} />
+        <NumberButton {...props} />
       </ButtonRow>
     </Stack>
   );
