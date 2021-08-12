@@ -119,6 +119,11 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
         renderItem={ScheduleItem}
         keyExtractor={(_, idx) => idx.toString()}
         ListEmptyComponent={EmptyDay}
+        ListFooterComponent={
+          <ListItem style={tw`bg-transparent`} border="none">
+            <Text style={tw`text-center text-gray-500`}>{schedule.weekdays[day].name}</Text>
+          </ListItem>
+        }
       />
 
       <TouchableHighlight onPress={() => navigation.navigate("Clubs")}>

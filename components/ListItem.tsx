@@ -7,13 +7,14 @@ const BORDER_STYLES = {
   top: tw`border-t`,
   bottom: tw`border-b`,
   both: tw`border-t border-b`,
+  none: tw``,
 };
 
 export type ListItemProps = PropsWithChildren<StackProps> & {
   primary?: string;
   secondary?: string;
   text?: string;
-  border?: "top" | "bottom" | "both";
+  border?: "top" | "bottom" | "both" | "none";
 };
 
 const ListItem = ({
