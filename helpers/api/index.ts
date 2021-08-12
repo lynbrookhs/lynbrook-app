@@ -6,13 +6,14 @@ import { apiPath } from "../utils";
 import { useSignOut } from "./auth";
 import {
   APIDate,
+  Event,
   Membership,
   NestedSchedule,
   Organization,
   Post,
   Prize,
   Schedule,
-  User,
+  User
 } from "./models";
 
 export type Error = {
