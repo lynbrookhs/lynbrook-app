@@ -9,10 +9,7 @@ import AuthProvider from "./components/AuthProvider";
 import useCachedResources from "./helpers/useCachedResources";
 import Navigation from "./navigation";
 
-Sentry.init({
-  dsn: "https://24af5d48ffe84346ad39a6dd6f304ff0@o951004.ingest.sentry.io/5899693",
-  enableInExpoDevelopment: true,
-});
+Sentry.init({ dsn: "https://24af5d48ffe84346ad39a6dd6f304ff0@o951004.ingest.sentry.io/5899693" });
 
 const isActive = (x: AppStateStatus) => x === "active";
 
