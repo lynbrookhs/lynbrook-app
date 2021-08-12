@@ -111,6 +111,8 @@ export const useOrgs = () => useAPIRequest<Organization[]>(`/orgs/`);
 export const useOrg = (id: number) => useAPIRequest<Organization>(`/orgs/${id}/`);
 
 export const useEvents = () => useAPIRequest<Event[]>("/events/");
+export const useEvent = (id: number) => useAPIRequest<Event>(`/events/${id}/`);
+
 export const usePrizes = () => useAPIRequest<Prize[]>("/prizes/");
 
 export const usePosts = () => useAPIRequestPaginated<Post>("/posts/");
