@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "574771813931",
+    "project_id": "lynbrook-high",
+    "storage_bucket": "lynbrook-high.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574771813931:android:3fccceb815e2da52e7d46e",
+        "android_client_info": {
+          "package_name": "org.fuhsd.lhs.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574771813931-q7srp65022b0pdlscgbljv27hksfnqae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKscPaJxn596Z7PK3iR2I2yUxZUmG-ASA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574771813931-q7srp65022b0pdlscgbljv27hksfnqae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

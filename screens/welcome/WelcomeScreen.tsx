@@ -26,7 +26,6 @@ const WelcomeItem = ({ icon, children }: WelcomeItemProps) => (
 
 const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
   const { signInWithProvider, error } = useSignInWithProvider("google");
-  console.log(error);
 
   return (
     <ScrollView contentContainerStyle={tw`flex-1`}>
