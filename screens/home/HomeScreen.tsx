@@ -162,10 +162,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const regularEvents = events.filter((e) => e.id !== 6);
 
   const getFile = async (event: Event) => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") return;
+
     const result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 0,
       mediaTypes: ImagePicker.MediaTypeOptions.All,
+      quality: 0,
     });
 
     if (result.cancelled) return;
@@ -173,7 +175,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     navigation.navigate("QRCodeScanned", {
       event,
       type: EventSubmissionType.FILE,
-      fileUri: result.uri,
+      file: result,
     });
   };
 

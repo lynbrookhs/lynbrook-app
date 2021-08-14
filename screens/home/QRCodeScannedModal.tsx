@@ -28,20 +28,32 @@ const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
   const [event, setEvent] = useState<Event | undefined>(undefined);
   const { request, error } = useRequest();
 
+  const submitCode = async () => {
+    if (route.params.type !== EventSubmissionType.CODE) return;
+    const event = await request<Event>("POST", "/users/me/events/", {
+      code: route.params.code,
+    });
+    setEvent(event);
+  };
+
+  const submitFile = async () => {
+    if (route.params.type !== EventSubmissionType.FILE) return;
+
+    const form = new FormData();
+    form.append("event_id", route.params.event.id.toString());
+    // @ts-ignore Stupid react native doesn't have this typed properly
+    form.append("file", { ...route.params.file, name: "file" });
+
+    const event = await request<Event>("POST", "/users/me/events/", form, {});
+    setEvent(event);
+  };
+
   useEffect(() => {
-    (async () => {
-      if (route.params.type === EventSubmissionType.CODE) {
-        setEvent(await request<Event>("POST", "/users/me/events/", { code: route.params.code }));
-      } else if (route.params.type === EventSubmissionType.FILE) {
-        const file = await fetch(route.params.fileUri);
-        const blob = await file.blob();
-        console.log(blob.type);
-        setEvent(await request<Event>("POST", "/users/me/events/", { id: route.params.event.id }));
-      }
+    Promise.all([submitCode(), submitFile()]).then(() => {
       mutate("/events/");
       mutate("/users/me/");
       mutate("/users/me/memberships/");
-    })();
+    });
   }, [route.params]);
 
   if (error?.status === 404) {

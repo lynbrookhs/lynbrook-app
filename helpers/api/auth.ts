@@ -29,12 +29,9 @@ export const useSignInWithProvider = (provider: Provider, throw_on_error?: boole
       body.append(field, authRes.params[field]);
     }
 
-    const { access } = await request(
-      "POST",
-      `/auth/o/${provider}/`,
-      body.toString(),
-      "application/x-www-form-urlencoded"
-    );
+    const { access } = await request("POST", `/auth/o/${provider}/`, body.toString(), {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
     if (access === undefined) return;
 
     await SecureStore.setItemAsync("token", access);

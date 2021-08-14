@@ -3,6 +3,7 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
+import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
 import * as React from "react";
 import { useAuth } from "../components/AuthProvider";
 import { Event, EventSubmissionType } from "../helpers/api/models";
@@ -35,7 +36,7 @@ export type RootStackParamList = {
   QRCodeEntry: undefined;
   QRCodeScanned:
     | { type: EventSubmissionType.CODE; code: number }
-    | { type: EventSubmissionType.FILE; event: Event; fileUri: string };
+    | { type: EventSubmissionType.FILE; event: Event; file: ImageInfo };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

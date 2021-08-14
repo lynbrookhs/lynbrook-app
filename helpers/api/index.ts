@@ -32,6 +32,7 @@ type PaginatedResponse<T> = {
 export const apiFetcher = (token?: string) => async (path: string, options?: RequestInit) => {
   const url = path.startsWith("http") ? path : apiPath(path).toString();
   const auth_headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+  console.log(path, options);
   const res = await fetch(url, {
     ...options,
     headers: {
@@ -131,20 +132,14 @@ export const useRequest = (throw_on_error?: boolean) => {
   const { token } = useAuth();
 
   const request = useCallback(
-    async <T = any>(
-      method: string,
-      path: string,
-      data?: any,
-      contentType: string = "application/json"
-    ) => {
-      if (typeof data !== "string") data = JSON.stringify(data);
+    async <T = any>(method: string, path: string, data?: any, options?: RequestInit) => {
+      if (options === undefined) {
+        options = { headers: { "Content-Type": "application/json" } };
+        if (typeof data !== "string") data = JSON.stringify(data);
+      }
       const fetcher = apiFetcher(token ?? "");
       try {
-        const result = await fetcher(path, {
-          method,
-          headers: { "Content-Type": contentType },
-          body: data,
-        });
+        const result = await fetcher(path, { ...options, method, body: data });
         return result as T;
       } catch (error) {
         setError(error);
