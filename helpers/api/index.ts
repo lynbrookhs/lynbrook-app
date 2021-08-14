@@ -32,7 +32,6 @@ type PaginatedResponse<T> = {
 export const apiFetcher = (token?: string) => async (path: string, options?: RequestInit) => {
   const url = path.startsWith("http") ? path : apiPath(path).toString();
   const auth_headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
-  console.log(path, options);
   const res = await fetch(url, {
     ...options,
     headers: {
