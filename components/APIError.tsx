@@ -9,6 +9,7 @@ export type APIErrorProps = ViewProps & {
 };
 
 const TEXT: { [key: number]: [string, string] } = {
+  413: ["Payload Too Large", "The file you uploaded was too large."],
   404: ["Not Found", "The requested resource was not found."],
   401: ["Unauthorized", "You don't seem to be logged in. Try again?"],
   [-1]: ["Error", "An unknown error has occurred. Please try again."],

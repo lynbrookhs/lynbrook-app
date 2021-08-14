@@ -130,16 +130,10 @@ export const useRequest = (throw_on_error?: boolean) => {
   const [error, setError] = useState<Error | undefined>(undefined);
   const { token } = useAuth();
 
-  const request = useCallback(
-    async <T = any>(method: string, path: string, data?: any, options?: RequestInit) => {
-      if (options === undefined) {
-        options = { headers: { "Content-Type": "application/json" } };
-        if (typeof data !== "string") data = JSON.stringify(data);
-      }
-      const fetcher = apiFetcher(token ?? "");
+  const requestWithFunc = useCallback(
+    async <T = any>(func: (token: string) => Promise<T>) => {
       try {
-        const result = await fetcher(path, { ...options, method, body: data });
-        return result as T;
+        return (await func(token ?? "")) as T;
       } catch (error) {
         setError(error);
         if (throw_on_error) throw error;
@@ -148,5 +142,18 @@ export const useRequest = (throw_on_error?: boolean) => {
     [token]
   );
 
-  return { request, error };
+  const request = useCallback(
+    async <T = any>(method: string, path: string, data?: any, options?: RequestInit) => {
+      return await requestWithFunc<T>((token) => {
+        if (options === undefined) {
+          options = { headers: { "Content-Type": "application/json" } };
+          if (typeof data !== "string") data = JSON.stringify(data);
+        }
+        return apiFetcher(token ?? "")(path, { ...options, method, body: data });
+      });
+    },
+    [token]
+  );
+
+  return { requestWithFunc, request, error };
 };

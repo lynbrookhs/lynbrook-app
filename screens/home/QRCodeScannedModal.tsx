@@ -1,4 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as FileSystem from "expo-file-system";
+import { FileSystemUploadType } from "expo-file-system";
 import React, { cloneElement, ReactElement, useEffect, useState } from "react";
 import { ActivityIndicator, Button, Text } from "react-native";
 import { mutate } from "swr";
@@ -7,6 +9,7 @@ import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
 import { useRequest } from "../../helpers/api";
 import { Event, EventSubmissionType } from "../../helpers/api/models";
+import { apiPath } from "../../helpers/utils";
 import { QRCodeScannedModalProps } from "../../navigation";
 
 type ContentProps = Pick<QRCodeScannedModalProps, "navigation"> & {
@@ -26,7 +29,7 @@ const Content = ({ navigation, icon, title, description }: ContentProps) => (
 
 const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
   const [event, setEvent] = useState<Event | undefined>(undefined);
-  const { request, error } = useRequest();
+  const { requestWithFunc, request, error } = useRequest();
 
   const submitCode = async () => {
     if (route.params.type !== EventSubmissionType.CODE) return;
@@ -38,13 +41,25 @@ const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
 
   const submitFile = async () => {
     if (route.params.type !== EventSubmissionType.FILE) return;
+    const { uri } = route.params.file;
+    const event_id = route.params.event.id.toString();
 
-    const form = new FormData();
-    form.append("event_id", route.params.event.id.toString());
-    // @ts-ignore Stupid react native doesn't have this typed properly
-    form.append("file", { ...route.params.file, name: "file" });
+    const event = await requestWithFunc<Event>(async (token) => {
+      const url = apiPath("/users/me/events/").toString();
+      const result = await FileSystem.uploadAsync(url, uri, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        uploadType: FileSystemUploadType.MULTIPART,
+        fieldName: "file",
+        parameters: { event_id },
+      });
+      if (result.status < 200 || result.status > 299) {
+        throw { status: result.status, url };
+      }
+      return JSON.parse(result.body);
+    });
 
-    const event = await request<Event>("POST", "/users/me/events/", form, {});
     setEvent(event);
   };
 
