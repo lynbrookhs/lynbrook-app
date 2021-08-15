@@ -9,7 +9,8 @@ import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import Stack from "../../components/Stack";
 import { Error, useMemberships } from "../../helpers/api";
-import { COLORS } from "../../helpers/utils";
+
+const COLORS = ["red", "yellow", "green", "blue", "indigo", "purple", "pink", "gray"];
 
 type Event = {
   id: string;

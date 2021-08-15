@@ -1,9 +1,8 @@
 import * as AuthSession from "expo-auth-session";
 import * as SecureStore from "expo-secure-store";
 import { useCallback } from "react";
-import { useRequest } from ".";
+import { apiPath, useRequest } from ".";
 import { useAuth } from "../../components/AuthProvider";
-import { apiPath } from "../utils";
 import { UserType } from "./models";
 
 type Provider = "schoology" | "google";

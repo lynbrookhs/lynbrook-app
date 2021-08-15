@@ -30,11 +30,11 @@ export type NestedUser = {
   id: number;
   first_name: string;
   last_name: string;
+  type: UserType;
 };
 
 export type User = NestedUser & {
   email: string;
-  type: UserType;
   picture_url: string;
   grad_year?: number;
   is_staff: boolean;

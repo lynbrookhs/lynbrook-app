@@ -7,9 +7,8 @@ import { mutate } from "swr";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
-import { useRequest } from "../../helpers/api";
+import { apiPath, useRequest } from "../../helpers/api";
 import { Event, EventSubmissionType } from "../../helpers/api/models";
-import { apiPath } from "../../helpers/utils";
 import { QRCodeScannedModalProps } from "../../navigation";
 
 type ContentProps = Pick<QRCodeScannedModalProps, "navigation"> & {

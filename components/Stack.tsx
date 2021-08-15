@@ -1,7 +1,7 @@
 import React, { Fragment, PropsWithChildren, ReactNode } from "react";
+import flattenChildren from "react-flatten-children";
 import { View, ViewProps } from "react-native";
 import tw from "tailwind-react-native-classnames";
-import { getValidChildren } from "../helpers/utils";
 
 export type StackProps = PropsWithChildren<ViewProps> & {
   direction?: "row" | "col";
@@ -19,12 +19,12 @@ const Stack = ({
   children,
   ...props
 }: StackProps) => {
-  const validChildren = getValidChildren(children);
+  const flattened = flattenChildren(children);
   const spacer = direction === "col" ? "mt" : "mr";
 
   return (
     <View style={[tw`flex-${direction} items-${align}`, style]} {...props}>
-      {validChildren.map((elem, idx) => (
+      {flattened.map((elem, idx) => (
         <Fragment key={idx}>
           {idx > 0 && spacing && <View style={tw`${spacer}-${spacing}`}></View>}
           {idx > 0 && divider}

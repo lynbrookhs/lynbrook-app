@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useSWRInfinite } from "swr";
 import useSWRNative, { useSWRNativeRevalidate } from "swr-react-native";
 import { useAuth } from "../../components/AuthProvider";
-import { apiPath } from "../utils";
 import { useSignOut } from "./auth";
 import {
   APIDate,
@@ -15,6 +14,10 @@ import {
   Schedule,
   User,
 } from "./models";
+
+export const apiPath = (path: string) => {
+  return new URL(path, "https://lynbrookasb.org/api/");
+};
 
 export type Error = {
   url: string;
