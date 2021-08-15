@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useRequest } from ".";
 import { useAuth } from "../../components/AuthProvider";
 import { apiPath } from "../utils";
+import { UserType } from "./models";
 
 type Provider = "schoology" | "google";
 
@@ -59,8 +60,8 @@ export const useRegisterAsGuest = (throw_on_error?: boolean) => {
   const { request, error } = useRequest(throw_on_error);
   const { signInAsGuest, error: error2 } = useSignInAsGuest(throw_on_error);
   const registerAsGuest = useCallback(async (creds: GuestRegisterCredentials) => {
-    await request("POST", "/auth/users/", creds);
-    await signInAsGuest(creds);
+    const resp = await request("POST", "/auth/users/", { ...creds, type: UserType.GUEST });
+    if (resp) await signInAsGuest(creds);
   }, []);
   return { registerAsGuest, error: error ?? error2 };
 };
@@ -75,10 +76,10 @@ export const useSignInAsGuest = (throw_on_error?: boolean) => {
   const { setToken } = useAuth();
   const signInAsGuest = useCallback(
     async (creds: GuestLoginCredentials) => {
-      const { access } = await request("POST", "/auth/jwt/create", creds);
-      if (access === undefined) return;
-      await SecureStore.setItemAsync("token", access);
-      setToken(access);
+      const resp = await request("POST", "/auth/jwt/create", creds);
+      if (resp?.access === undefined) return;
+      await SecureStore.setItemAsync("token", resp.access);
+      setToken(resp.access);
     },
     [request]
   );

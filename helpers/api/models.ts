@@ -20,6 +20,12 @@ export enum DayOfWeek {
 
 // User
 
+export enum UserType {
+  STUDENT = 1,
+  STAFF = 2,
+  GUEST = 3,
+}
+
 export type NestedUser = {
   id: number;
   first_name: string;
@@ -28,6 +34,7 @@ export type NestedUser = {
 
 export type User = NestedUser & {
   email: string;
+  type: UserType;
   picture_url: string;
   grad_year?: number;
   is_staff: boolean;

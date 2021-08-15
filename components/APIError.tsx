@@ -8,11 +8,11 @@ export type APIErrorProps = ViewProps & {
   error: Error;
 };
 
-const TEXT: { [key: number]: [string, string] } = {
+const TEXT: { [key: number]: [string | undefined, string] } = {
   413: ["Payload Too Large", "The file you uploaded was too large."],
   404: ["Not Found", "The requested resource was not found."],
   401: ["Unauthorized", "You don't seem to be logged in. Try again?"],
-  [-1]: ["Error", "An unknown error has occurred. Please try again."],
+  [-1]: [undefined, "An unknown error has occurred. Please try again."],
 };
 
 const traverse = (val: any): string | undefined => {
@@ -38,7 +38,7 @@ const APIError = ({ error, style, ...props }: APIErrorProps) => {
     <Alert
       style={[tw`m-6`, style]}
       status="error"
-      title={title}
+      title={title ?? `Error ${error.status}`}
       description={errorDesc ?? description}
       {...props}
     />
