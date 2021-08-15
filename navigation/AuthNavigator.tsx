@@ -1,27 +1,25 @@
-import { RouteProp } from "@react-navigation/native";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import React from "react";
+import { RootStackParamList } from ".";
 import GuestLoginModal from "../screens/welcome/GuestLoginModal";
 import GuestRegisterModal from "../screens/welcome/GuestRegisterModal";
 import WelcomeScreen from "../screens/welcome/WelcomeScreen";
 
-export type WelcomeScreenProps = {
-  navigation: NativeStackNavigationProp<AuthParamList, "Welcome">;
-  route: RouteProp<AuthParamList, "Welcome">;
+type AuthScreenProps<T extends keyof AuthParamList> = {
+  navigation: CompositeNavigationProp<
+    NativeStackNavigationProp<AuthParamList, T>,
+    NativeStackNavigationProp<RootStackParamList>
+  >;
+  route: RouteProp<AuthParamList, T>;
 };
 
-export type GuestLoginModalProps = {
-  navigation: NativeStackNavigationProp<AuthParamList, "GuestLogin">;
-  route: RouteProp<AuthParamList, "GuestLogin">;
-};
-
-export type GuestRegisterModalProps = {
-  navigation: NativeStackNavigationProp<AuthParamList, "GuestRegister">;
-  route: RouteProp<AuthParamList, "GuestRegister">;
-};
+export type WelcomeScreenProps = AuthScreenProps<"Welcome">;
+export type GuestLoginModalProps = AuthScreenProps<"GuestLogin">;
+export type GuestRegisterModalProps = AuthScreenProps<"GuestRegister">;
 
 export type AuthParamList = {
   Welcome: undefined;

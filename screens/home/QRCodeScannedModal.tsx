@@ -1,11 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as FileSystem from "expo-file-system";
+import { FileSystemUploadType } from "expo-file-system";
 import React, { cloneElement, ReactElement, useEffect, useState } from "react";
 import { ActivityIndicator, Button, Text } from "react-native";
+import { mutate } from "swr";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
 import { useRequest } from "../../helpers/api";
-import { Event } from "../../helpers/api/models";
+import { Event, EventSubmissionType } from "../../helpers/api/models";
+import { apiPath } from "../../helpers/utils";
 import { QRCodeScannedModalProps } from "../../navigation";
 
 type ContentProps = Pick<QRCodeScannedModalProps, "navigation"> & {
@@ -18,20 +22,54 @@ const Content = ({ navigation, icon, title, description }: ContentProps) => (
   <Stack style={tw`flex-1 p-8 justify-center`} align="center" spacing={4}>
     {cloneElement(icon, { style: [icon.props.style, { fontSize: 64 }] })}
     <Text style={tw`text-xl font-bold text-center`}>{title}</Text>
-    <Text style={tw`text-gray-500 text-center`}>{description}</Text>
+    <Text style={tw`text-sm text-gray-500 text-center`}>{description}</Text>
     <Button title="Close" onPress={() => navigation.goBack()} />
   </Stack>
 );
 
 const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
   const [event, setEvent] = useState<Event | undefined>(undefined);
-  const { request, error } = useRequest();
+  const { requestWithFunc, request, error } = useRequest();
+
+  const submitCode = async () => {
+    if (route.params.type !== EventSubmissionType.CODE) return;
+    const event = await request<Event>("POST", "/users/me/events/", {
+      code: route.params.code,
+    });
+    setEvent(event);
+  };
+
+  const submitFile = async () => {
+    if (route.params.type !== EventSubmissionType.FILE) return;
+    const { uri } = route.params.file;
+    const event_id = route.params.event.id.toString();
+
+    const event = await requestWithFunc<Event>(async (token) => {
+      const url = apiPath("/users/me/events/").toString();
+      const result = await FileSystem.uploadAsync(url, uri, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        uploadType: FileSystemUploadType.MULTIPART,
+        fieldName: "file",
+        parameters: { event_id },
+      });
+      if (result.status < 200 || result.status > 299) {
+        throw { status: result.status, url };
+      }
+      return JSON.parse(result.body);
+    });
+
+    setEvent(event);
+  };
 
   useEffect(() => {
-    (async () => {
-      setEvent(await request<Event>("POST", "/users/me/events/", { code: route.params.code }));
-    })();
-  }, [route.params.code]);
+    Promise.all([submitCode(), submitFile()]).then(() => {
+      mutate("/events/");
+      mutate("/users/me/");
+      mutate("/users/me/memberships/");
+    });
+  }, [route.params]);
 
   if (error?.status === 404) {
     return (

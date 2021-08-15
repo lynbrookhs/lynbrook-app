@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React, { useCallback, useState } from "react";
+import React from "react";
 import {
   Button,
   Keyboard,
@@ -14,21 +14,11 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
-import { Error } from "../../helpers/api";
 import { useRegisterAsGuest } from "../../helpers/api/auth";
 import { GuestRegisterModalProps } from "../../navigation/AuthNavigator";
 
 const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
-  const [error, setError] = useState<Error | undefined>(undefined);
-  const { registerAsGuest } = useRegisterAsGuest();
-
-  const handleRegister = useCallback(async (values) => {
-    try {
-      await registerAsGuest(values);
-    } catch (error) {
-      setError(error);
-    }
-  }, []);
+  const { registerAsGuest, error } = useRegisterAsGuest();
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={tw`flex-1`}>
@@ -36,7 +26,7 @@ const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
         <Pressable onPress={Keyboard.dismiss} style={tw`flex-1 justify-center p-8`}>
           <Formik
             initialValues={{ email: "", password: "", re_password: "" }}
-            onSubmit={handleRegister}
+            onSubmit={registerAsGuest}
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
               <Stack spacing={8}>

@@ -6,6 +6,7 @@ import { apiPath } from "../utils";
 import { useSignOut } from "./auth";
 import {
   APIDate,
+  Event,
   Membership,
   NestedSchedule,
   Organization,
@@ -28,7 +29,8 @@ type PaginatedResponse<T> = {
   results: T[];
 };
 
-export const apiFetcher = (token?: string) => async (url: string, options?: RequestInit) => {
+export const apiFetcher = (token?: string) => async (path: string, options?: RequestInit) => {
+  const url = path.startsWith("http") ? path : apiPath(path).toString();
   const auth_headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
   const res = await fetch(url, {
     ...options,
@@ -57,7 +59,7 @@ const useAPIRequest = <T>(path: string) => {
   const { token } = useAuth();
   const signOut = useSignOut();
 
-  const ret = useSWRNative<T, Error>(apiPath(path).toString(), apiFetcher(token ?? ""));
+  const ret = useSWRNative<T, Error>(path, apiFetcher(token ?? ""));
   const loggedOut = ret.error && ret.error.status === 401;
 
   useEffect(() => {
@@ -70,7 +72,7 @@ const useAPIRequest = <T>(path: string) => {
 const useAPIRequestPaginated = <T>(path: string) => {
   const getKey = (_: number, previous: PaginatedResponse<T> | null) => {
     if (previous) return previous.next ?? null;
-    return apiPath(path).toString();
+    return path;
   };
 
   const { token } = useAuth();
@@ -110,6 +112,8 @@ export const useOrgs = () => useAPIRequest<Organization[]>(`/orgs/`);
 export const useOrg = (id: number) => useAPIRequest<Organization>(`/orgs/${id}/`);
 
 export const useEvents = () => useAPIRequest<Event[]>("/events/");
+export const useEvent = (id: number) => useAPIRequest<Event>(`/events/${id}/`);
+
 export const usePrizes = () => useAPIRequest<Prize[]>("/prizes/");
 
 export const usePosts = () => useAPIRequestPaginated<Post>("/posts/");
@@ -126,22 +130,10 @@ export const useRequest = (throw_on_error?: boolean) => {
   const [error, setError] = useState<Error | undefined>(undefined);
   const { token } = useAuth();
 
-  const request = useCallback(
-    async <T = any>(
-      method: string,
-      path: string,
-      data?: any,
-      contentType: string = "application/json"
-    ) => {
-      if (typeof data !== "string") data = JSON.stringify(data);
-      const fetcher = apiFetcher(token ?? "");
+  const requestWithFunc = useCallback(
+    async <T = any>(func: (token: string) => Promise<T>) => {
       try {
-        const result = await fetcher(apiPath(path).toString(), {
-          method,
-          headers: { "Content-Type": contentType },
-          body: data,
-        });
-        return result as T;
+        return (await func(token ?? "")) as T;
       } catch (error) {
         setError(error);
         if (throw_on_error) throw error;
@@ -150,5 +142,18 @@ export const useRequest = (throw_on_error?: boolean) => {
     [token]
   );
 
-  return { request, error };
+  const request = useCallback(
+    async <T = any>(method: string, path: string, data?: any, options?: RequestInit) => {
+      return await requestWithFunc<T>((token) => {
+        if (options === undefined) {
+          options = { headers: { "Content-Type": "application/json" } };
+          if (typeof data !== "string") data = JSON.stringify(data);
+        }
+        return apiFetcher(token ?? "")(path, { ...options, method, body: data });
+      });
+    },
+    [token]
+  );
+
+  return { requestWithFunc, request, error };
 };

@@ -95,11 +95,21 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
         headerTitle,
         headerRight: (props) =>
           !preview && (
-            <HeaderButton icon="chevron-forward" onPress={() => setPreview(true)} {...props} />
+            <HeaderButton
+              side="right"
+              icon="chevron-forward"
+              onPress={() => setPreview(true)}
+              {...props}
+            />
           ),
         headerLeft: (props) =>
           preview && (
-            <HeaderButton icon="chevron-back" onPress={() => setPreview(false)} {...props} />
+            <HeaderButton
+              side="left"
+              icon="chevron-back"
+              onPress={() => setPreview(false)}
+              {...props}
+            />
           ),
       });
     }

@@ -20,6 +20,12 @@ export enum DayOfWeek {
 
 // User
 
+export enum UserType {
+  STUDENT = 1,
+  STAFF = 2,
+  GUEST = 3,
+}
+
 export type NestedUser = {
   id: number;
   first_name: string;
@@ -28,6 +34,7 @@ export type NestedUser = {
 
 export type User = NestedUser & {
   email: string;
+  type: UserType;
   picture_url: string;
   grad_year?: number;
   is_staff: boolean;
@@ -166,15 +173,22 @@ export type Post = {
 
 // Event
 
+export enum EventSubmissionType {
+  CODE = 1,
+  FILE = 2,
+}
+
 export type Event = {
   id: number;
   url: string;
   organization: NestedOrganization;
   name: string;
-  description: string;
+  description?: string;
   start: APIDateTime;
   end: APIDateTime;
   points: number;
+  submission_type: EventSubmissionType;
+  claimed: boolean;
 };
 
 // Prize

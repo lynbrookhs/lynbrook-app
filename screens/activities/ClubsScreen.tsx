@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
+import HeaderButton from "../../components/HeaderButton";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useMemberships, useOrgs, useRequest } from "../../helpers/api";
@@ -49,10 +50,8 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: ({ tintColor }) => (
-        <TouchableOpacity onPress={() => setSorted(!sorted)}>
-          <Ionicons name="list" color={tintColor} style={tw`text-xl`} />
-        </TouchableOpacity>
+      headerRight: (props) => (
+        <HeaderButton side="right" icon="list" onPress={() => setSorted(!sorted)} {...props} />
       ),
     });
   });

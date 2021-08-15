@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
 import Stack from "../../components/Stack";
+import { EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeModalProps } from "../../navigation";
 
 const NoPermission = () => (
@@ -67,7 +68,7 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
     ({ data }: BarCodeScanningResult) => {
       if (scanned) return;
       const code = Number(data.replace("lhs://", "")) || 0;
-      navigation.replace("QRCodeScanned", { code });
+      navigation.replace("QRCodeScanned", { type: EventSubmissionType.CODE, code });
       setScanned(true);
     },
     [scanned]

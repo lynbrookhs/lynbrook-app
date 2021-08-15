@@ -90,14 +90,19 @@ const EventsScreen = () => {
   useEffect(() => {
     if (cals) {
       const parsed = cals.flatMap((x, idx) => parseCalendar(x, COLORS[idx % COLORS.length]));
-      const newItems = parsed.reduce<Items>((acc, val, idx) => {
+      const newItems = parsed.reduce<Items>((acc, val) => {
         if (!val) return acc;
         const key = format(val.start, "yyyy-MM-dd");
         if (!acc.hasOwnProperty(key)) acc[key] = [];
         acc[key].push(val);
         return acc;
       }, {});
-      setItems(newItems);
+
+      // We need the empty arrays to stay.
+      setItems({
+        ...Object.fromEntries(Object.keys(items).map((x) => [x, []])),
+        ...newItems,
+      });
     }
   }, [cals]);
 
