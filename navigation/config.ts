@@ -1,4 +1,5 @@
 import { DefaultTheme, LinkingOptions } from "@react-navigation/native";
+
 import { RootStackParamList } from ".";
 
 export const linking: LinkingOptions<RootStackParamList> = {

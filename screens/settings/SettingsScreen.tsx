@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
@@ -92,7 +93,7 @@ const SettingsScreen = () => {
           />
           <ResourceLink
             idx={1}
-            title={"Lynbrook Principal Twitter"}
+            title="Lynbrook Principal Twitter"
             url="https://twitter.com/lhsvikingprin/"
           />
         </Stack>

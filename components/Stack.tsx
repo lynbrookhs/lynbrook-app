@@ -26,11 +26,9 @@ const Stack = ({
     <View style={[tw`flex-${direction} items-${align}`, style]} {...props}>
       {flattened.map((elem, idx) => (
         <Fragment key={idx}>
-          {idx > 0 && spacing !== undefined && <View style={tw`${spacer}-${spacing}`}></View>}
+          {idx > 0 && spacing !== undefined && <View style={tw`${spacer}-${spacing}`} />}
           {idx > 0 && divider}
-          {idx > 0 && divider && spacing !== undefined && (
-            <View style={tw`${spacer}-${spacing}`}></View>
-          )}
+          {idx > 0 && divider && spacing !== undefined && <View style={tw`${spacer}-${spacing}`} />}
           {elem}
         </Fragment>
       ))}

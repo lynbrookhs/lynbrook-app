@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+
 import EventsScreen from "../../screens/events/EventsScreen";
 import { screenOptions } from "../config";
 

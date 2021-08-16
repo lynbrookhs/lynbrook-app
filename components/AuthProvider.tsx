@@ -14,7 +14,7 @@ const AuthContext = createContext<AuthContextType>({
 
 export const useAuth = () => useContext(AuthContext);
 
-const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
+const AuthProvider = ({ children }: PropsWithChildren<object>) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string | undefined>(undefined);
 

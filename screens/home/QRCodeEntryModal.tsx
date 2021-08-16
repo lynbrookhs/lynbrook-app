@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
+
 import Stack from "../../components/Stack";
 import { EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeEntryModalProps } from "../../navigation";
@@ -57,7 +58,7 @@ const NumberInput = ({ code }: NumberInputProps) => (
   </Stack>
 );
 
-const ButtonRow = ({ children }: PropsWithChildren<{}>) => (
+const ButtonRow = ({ children }: PropsWithChildren<object>) => (
   <Stack direction="row" spacing={4}>
     {children}
   </Stack>

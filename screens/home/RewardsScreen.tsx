@@ -1,6 +1,7 @@
 import React from "react";
 import { ActivityIndicator, ScrollView, Text } from "react-native";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import FilledButton from "../../components/FilledButton";

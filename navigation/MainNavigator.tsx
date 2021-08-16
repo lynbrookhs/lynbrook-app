@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
+
 import TabBarIcon from "./TabBarIcon";
 import ActivitiesNavigator, { ActivitiesTabParamList } from "./tabs/ActivitiesNavigator";
 import EventsNavigator, { EventsTabParamList } from "./tabs/EventsNavigator";

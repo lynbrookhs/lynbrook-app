@@ -2,6 +2,7 @@ import { format, parseISO } from "date-fns";
 import React, { useEffect } from "react";
 import { ActivityIndicator, ScrollView, Text } from "react-native";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
 import { useEvent, useUser } from "../../helpers/api";

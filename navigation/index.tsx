@@ -5,14 +5,15 @@ import {
 } from "@react-navigation/native-stack";
 import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
 import * as React from "react";
+
 import { useAuth } from "../components/AuthProvider";
 import { Event, EventSubmissionType } from "../helpers/api/models";
 import QRCodeEntryModal from "../screens/home/QRCodeEntryModal";
 import QRCodeModal from "../screens/home/QRCodeModal";
 import QRCodeScannedModal from "../screens/home/QRCodeScannedModal";
 import AuthNavigator, { AuthParamList } from "./AuthNavigator";
-import { linking, Theme } from "./config";
 import MainNavigator, { MainParamList } from "./MainNavigator";
+import { linking, Theme } from "./config";
 
 export type QRCodeModalProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "QRCode">;

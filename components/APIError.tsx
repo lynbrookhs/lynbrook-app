@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { ViewProps } from "react-native";
 import tw from "tailwind-react-native-classnames";
+
 import { Error } from "../helpers/api";
 import Alert from "./Alert";
 
@@ -30,7 +31,7 @@ const traverse = (val: any): string | undefined => {
 };
 
 const APIError = ({ error, style, ...props }: APIErrorProps) => {
-  let [title, description] = TEXT[error.status] ?? TEXT[-1];
+  const [title, description] = TEXT[error.status] ?? TEXT[-1];
   const errorDesc = useMemo(() => traverse(error.inner), [error.inner]);
   useEffect(() => console.error(error), [error]);
 

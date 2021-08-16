@@ -8,9 +8,10 @@ import {
   TextStyle,
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
+
 import Stack from "./Stack";
 
-export type FilledButton = PressableProps & {
+export type FilledButtonProps = PressableProps & {
   color?: string;
   textStyle?: StyleProp<TextStyle>;
   loading?: boolean;
@@ -23,7 +24,7 @@ const FilledButton = ({
   textStyle,
   children,
   ...props
-}: FilledButton) => {
+}: FilledButtonProps) => {
   return (
     <Pressable disabled={disabled} {...props}>
       {({ pressed }) => (

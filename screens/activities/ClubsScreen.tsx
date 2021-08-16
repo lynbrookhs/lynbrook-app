@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import HeaderButton from "../../components/HeaderButton";
 import ListItem from "../../components/ListItem";
@@ -27,7 +28,7 @@ type ClubItemProps = {
 const ClubItem = ({ item, subscribed, onAdd, onRemove, onPress }: ClubItemProps) => (
   <TouchableHighlight onPress={onPress}>
     <ListItem text={item.name} direction="row" align="center">
-      {item.type == OrganizationType.CLUB && (
+      {item.type === OrganizationType.CLUB && (
         <Stack direction="row" spacing={2} align="center">
           <TouchableOpacity onPress={subscribed ? onRemove : onAdd}>
             <Ionicons

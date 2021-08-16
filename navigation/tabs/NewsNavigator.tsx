@@ -5,11 +5,12 @@ import {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import React from "react";
+
 import { RootStackParamList } from "..";
 import PostDetailScreen from "../../screens/news/PostDetailScreen";
 import PostsScreen from "../../screens/news/PostsScreen";
-import { screenOptions } from "../config";
 import { MainParamList } from "../MainNavigator";
+import { screenOptions } from "../config";
 
 type NewsTabScreenProps<T extends keyof NewsTabParamList> = {
   navigation: CompositeNavigationProp<

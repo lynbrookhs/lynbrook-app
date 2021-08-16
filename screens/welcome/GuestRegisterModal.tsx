@@ -11,6 +11,7 @@ import {
   TextInput,
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
@@ -21,7 +22,10 @@ const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
   const { registerAsGuest, error } = useRegisterAsGuest();
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={tw`flex-1`}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={tw`flex-1`}
+    >
       <ScrollView>
         <Pressable onPress={Keyboard.dismiss} style={tw`flex-1 justify-center p-8`}>
           <Formik
@@ -58,7 +62,7 @@ const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
                       placeholder="Create password"
                       autoCompleteType="password"
                       textContentType="newPassword"
-                      secureTextEntry={true}
+                      secureTextEntry
                       style={tw`bg-white py-2 px-4 border border-gray-300 rounded-md`}
                     />
                   </Stack>
@@ -72,7 +76,7 @@ const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
                       placeholder="Repeat password"
                       autoCompleteType="password"
                       textContentType="password"
-                      secureTextEntry={true}
+                      secureTextEntry
                       style={tw`bg-white py-2 px-4 border border-gray-300 rounded-md`}
                     />
                   </Stack>

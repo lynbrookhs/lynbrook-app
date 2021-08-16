@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { PropsWithChildren } from "react";
 import { Text, View, ViewProps } from "react-native";
 import tw from "tailwind-react-native-classnames";
+
 import Stack from "./Stack";
 
 type Status = "success" | "info" | "warning" | "error";

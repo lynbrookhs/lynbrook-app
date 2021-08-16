@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
+
 import Stack from "../../components/Stack";
 import { EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeModalProps } from "../../navigation";

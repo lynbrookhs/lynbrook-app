@@ -5,12 +5,13 @@ import {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import React from "react";
+
 import { RootStackParamList } from "..";
 import ClubDetailScreen from "../../screens/activities/ClubDetailScreen";
 import ClubsScreen from "../../screens/activities/ClubsScreen";
 import ScheduleScreen from "../../screens/activities/ScheduleScreen";
-import { screenOptions } from "../config";
 import { MainParamList } from "../MainNavigator";
+import { screenOptions } from "../config";
 
 type ActivitiesTabScreenProps<T extends keyof ActivitiesTabParamList> = {
   navigation: CompositeNavigationProp<

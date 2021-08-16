@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+
 import SettingScreen from "../../screens/settings/SettingsScreen";
 import { screenOptions } from "../config";
 

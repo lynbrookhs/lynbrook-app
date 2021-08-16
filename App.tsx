@@ -7,6 +7,7 @@ import { Alert, AppState, AppStateStatus, Platform } from "react-native";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Sentry from "sentry-expo";
+
 import AuthProvider, { useAuth } from "./components/AuthProvider";
 import { useRequest } from "./helpers/api";
 import useCachedResources from "./helpers/useCachedResources";
@@ -51,7 +52,7 @@ const Root = () => {
 const App = () => {
   const isLoadingComplete = useCachedResources();
   const appState = useRef(AppState.currentState);
-  const [active, setActive] = useState(appState.current === "active");
+  const [, setActive] = useState(appState.current === "active");
 
   const checkUpdate = useCallback(async () => {
     try {

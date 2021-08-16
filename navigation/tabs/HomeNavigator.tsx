@@ -5,12 +5,13 @@ import {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import React from "react";
+
 import { RootStackParamList } from "..";
 import HomeScreen from "../../screens/home/HomeScreen";
 import RewardsScreen from "../../screens/home/RewardsScreen";
 import SpecialEventsScreen from "../../screens/home/SpecialEventsScreen";
-import { screenOptions } from "../config";
 import { MainParamList } from "../MainNavigator";
+import { screenOptions } from "../config";
 
 type HomeTabScreenProps<T extends keyof HomeTabParamList> = {
   navigation: CompositeNavigationProp<

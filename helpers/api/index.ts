@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSWRInfinite } from "swr";
 import useSWRNative, { useSWRNativeRevalidate } from "swr-react-native";
+
 import { useAuth } from "../../components/AuthProvider";
 import { useSignOut } from "./auth";
 import {
@@ -44,7 +45,7 @@ export const apiFetcher = (token?: string) => async (path: string, options?: Req
   });
 
   if (!res.ok) {
-    let error: Error = { status: res.status, url };
+    const error: Error = { status: res.status, url };
     try {
       error.inner = await res.json();
     } catch {}

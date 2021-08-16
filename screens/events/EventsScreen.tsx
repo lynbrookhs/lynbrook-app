@@ -5,6 +5,7 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { Agenda, AgendaThemeStyle } from "react-native-calendars";
 import useSWRNative from "swr-react-native";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import Stack from "../../components/Stack";
@@ -31,7 +32,7 @@ const fetcher = async (url: string) => {
   if (!res.ok) {
     throw {
       status: res.status,
-      url: url,
+      url,
       detail: await res.text(),
     };
   }
