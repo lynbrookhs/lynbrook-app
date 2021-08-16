@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - production
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set environment variables
+        uses: iamtheyammer/branch-env-vars@v1.0.3
+        with:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          RELEASE_CHANNEL: |
+            master:staging
+            production:default
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Reconfigure git to use HTTPS
+        run: >
+          git config --global url."https://github.com/".insteadOf
+          ssh://git@github.com/
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v6
+        with:
+          expo-version: 4.x
+          token: ${{ secrets.EXPO_TOKEN }}
+          packager: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test:ci
+
+      - name: Publish update
+        run: expo publish --release-channel $RELEASE_CHANNEL
