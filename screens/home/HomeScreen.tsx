@@ -1,18 +1,56 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
+import { mutate } from "swr";
 import tw from "tailwind-react-native-classnames";
+import Alert from "../../components/Alert";
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import FilledButton from "../../components/FilledButton";
 import HeaderButton from "../../components/HeaderButton";
 import Stack from "../../components/Stack";
-import { useEvents, usePrizes, useUser } from "../../helpers/api";
-import { Event, EventSubmissionType, OrganizationType } from "../../helpers/api/models";
+import { useEvents, usePrizes, useRequest, useUser } from "../../helpers/api";
+import { Event, EventSubmissionType, OrganizationType, UserType } from "../../helpers/api/models";
 import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
+
+const ClassSelect = () => {
+  const [selected, setSelected] = useState<number | undefined>(undefined);
+  const { request } = useRequest();
+
+  const handleSelectYear = async (year: number) => {
+    if (selected !== undefined) return;
+    setSelected(year);
+    const res = await request("PUT", "/users/me/", { grad_year: year });
+    console.log(res);
+    mutate("/users/me/");
+  };
+
+  return (
+    <Alert
+      status="info"
+      title="Missing Graduation Year"
+      description="Please select your graduation year to gain access to all the features of this app."
+    >
+      <Stack direction="row" spacing={2}>
+        {[2025, 2024, 2023, 2022].map((x) => (
+          <FilledButton
+            key={x}
+            style={tw`flex-1`}
+            textStyle={tw`text-center`}
+            disabled={selected === x}
+            loading={selected === x}
+            onPress={() => handleSelectYear(x)}
+          >
+            {x}
+          </FilledButton>
+        ))}
+      </Stack>
+    </Alert>
+  );
+};
 
 type ProfileProps = { name: string; email: string; uri: string };
 
@@ -189,6 +227,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           email={user.email}
           uri={user.picture_url}
         />
+
+        {user.type === UserType.STUDENT && !user.grad_year && <ClassSelect />}
 
         {asb && nextAsbPrize && (
           <SpiritPoints
