@@ -7,8 +7,6 @@ const useCachedResources = () => {
   useEffect(() => {
     try {
       SplashScreen.preventAutoHideAsync();
-    } catch (e) {
-      console.warn(e);
     } finally {
       setLoadingComplete(true);
       SplashScreen.hideAsync();
