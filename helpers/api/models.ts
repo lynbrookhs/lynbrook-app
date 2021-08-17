@@ -4,7 +4,8 @@ export type APIDate = string;
 export type APITime = string;
 export type APIDateTime = string;
 
-export const parseTime = (time: APITime) => parse(time, "HH:mm:ss", new Date(0));
+export const parseTime = (time: APITime, date?: Date) =>
+  parse(time, "HH:mm:ss", date ?? new Date(0));
 export const parseDate = (date: APIDate) => parseISO(date);
 export const parseDateTime = (date: APIDateTime) => parseISO(date);
 
@@ -148,6 +149,7 @@ export type NestedSchedule = {
   id: number;
   url: string;
   name: string;
+  date: APIDate;
   periods: NestedSchedulePeriod[];
 };
 

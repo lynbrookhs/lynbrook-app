@@ -1,5 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
-import { addDays, format, getDay, getMonth, getYear, parseISO } from "date-fns";
+import {
+  addDays,
+  format,
+  getDay,
+  isAfter,
+  isBefore,
+  isSameMonth,
+  isSameYear,
+  parseISO,
+} from "date-fns";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -16,7 +25,8 @@ import HeaderButton from "../../components/HeaderButton";
 import ListItem from "../../components/ListItem";
 import Stack from "../../components/Stack";
 import { useCurrentSchedule, useNextSchedule } from "../../helpers/api";
-import { NestedSchedulePeriod, parseTime } from "../../helpers/api/models";
+import { NestedSchedulePeriod, parseDate, parseTime } from "../../helpers/api/models";
+import useTime from "../../helpers/useTime";
 import { ScheduleScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 
 const WEEKDAYS = ["Mon", "Tues", "Wed", "Thurs", "Fri"];
@@ -24,20 +34,27 @@ const WEEKDAYS = ["Mon", "Tues", "Wed", "Thurs", "Fri"];
 type ScheduleItemProps = {
   item: NestedSchedulePeriod;
   index: number;
+  date: Date;
 };
 
-const ScheduleItem = ({ item, index }: ScheduleItemProps) => (
-  <ListItem
-    primary={item.period.name}
-    direction="row"
-    align="center"
-    border={index === 0 ? "both" : "bottom"}
-  >
-    <Text style={tw`text-gray-500`}>
-      {format(parseTime(item.start), "h:mm a")} – {format(parseTime(item.end), "h:mm a")}
-    </Text>
-  </ListItem>
-);
+const ScheduleItem = ({ item, index, date }: ScheduleItemProps) => {
+  const time = useTime();
+  const start = parseTime(item.start, date);
+  const end = parseTime(item.end, date);
+  const ampm = format(start, "a") === format(end, "a");
+  const current = isBefore(start, time) && isAfter(end, time);
+
+  return (
+    <ListItem direction="row" align="center" border={index === 0 ? "both" : "bottom"}>
+      <Text style={[tw`flex-1 text-sm font-bold`, current && tw`text-indigo-500`]}>
+        {item.period.name}
+      </Text>
+      <Text style={current ? tw`text-indigo-500` : tw`text-gray-500`}>
+        {format(start, ampm ? "h:mm" : "h:mm a")} – {format(end, "h:mm a")}
+      </Text>
+    </ListItem>
+  );
+};
 
 type ScheduleDayTabsProps = {
   selected: number;
@@ -85,12 +102,11 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
       const start = parseISO(schedule.start);
       const end = addDays(parseISO(schedule.end), -2);
 
-      const headerTitle =
-        getMonth(start) === getMonth(end)
-          ? `${format(start, "MMMM d")}–${format(end, "d, yyyy")}`
-          : getYear(start) === getYear(end)
-          ? `${format(start, "MMMM d")} – ${format(end, "MMMM d, yyyy")}`
-          : `${format(start, "MMMM d, yyyy")} – ${format(end, "MMMM d, yyyy")}`;
+      const headerTitle = isSameMonth(start, end)
+        ? `${format(start, "MMMM d")}–${format(end, "d, yyyy")}`
+        : isSameYear(start, end)
+        ? `${format(start, "MMMM d")} – ${format(end, "MMMM d, yyyy")}`
+        : `${format(start, "MMMM d, yyyy")} – ${format(end, "MMMM d, yyyy")}`;
 
       navigation.setOptions({
         headerTitle,
@@ -120,19 +136,21 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
   if (error2) return <APIError error={error2} />;
   if (!schedule) return <ActivityIndicator style={tw`m-4`} />;
 
+  const shown = schedule.weekdays[day];
+
   return (
     <Stack style={tw`flex-1`}>
       <ScheduleDayTabs selected={day} onSelect={setDay} />
 
       <FlatList<NestedSchedulePeriod>
         style={tw`-mt-px`}
-        data={schedule.weekdays[day].periods}
-        renderItem={ScheduleItem}
+        data={shown.periods}
+        renderItem={(props) => <ScheduleItem {...props} date={parseDate(shown.date)} />}
         keyExtractor={(_, idx) => idx.toString()}
         ListEmptyComponent={EmptyDay}
         ListFooterComponent={
           <ListItem style={tw`bg-transparent`} border="none">
-            <Text style={tw`text-center text-gray-500`}>{schedule.weekdays[day].name}</Text>
+            <Text style={tw`text-center text-gray-500`}>{shown.name}</Text>
           </ListItem>
         }
       />
