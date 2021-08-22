@@ -144,7 +144,7 @@ const EventItem = ({ event, onPress }: EventItemProps) => (
           ? "Already Claimed"
           : event.submission_type === EventSubmissionType.CODE
           ? "Scan for Points"
-          : "Upload for Points"}
+          : "Upload Photo for Points"}
       </FilledButton>
     </Stack>
   </Card>
@@ -204,8 +204,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") return;
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0,
     });
 
