@@ -1,12 +1,16 @@
 import { format, parseISO } from "date-fns";
 import React, { useEffect } from "react";
-import { ActivityIndicator, ScrollView, Text } from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
 import Stack from "../../components/Stack";
+import markdownStyles from "../../helpers/markdownStyles";
 import { useEvent, useUser } from "../../helpers/api";
 import { SpecialEventsScreenProps } from "../../navigation/tabs/HomeNavigator";
+
+const CLASSES = ["2022", "2023", "2024", "2025"];
 
 const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) => {
   const { data: user, error } = useUser();
@@ -24,17 +28,26 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
   if (!event) return <ActivityIndicator style={tw`m-4`} />;
 
   return (
-    <ScrollView style={tw`flex-1`}>
-      <Stack spacing={4} style={tw`p-4`}>
-        <Stack spacing={1}>
-          <Text style={tw`text-3xl font-bold`}>{event.name}</Text>
-          <Text style={tw`text-sm`}>
-            {format(parseISO(event.start), "M/dd")} - {format(parseISO(event.end), "M/dd")}
-          </Text>
-        </Stack>
-        <Text style={tw`text-base`}>{event.description}</Text>
+    <Stack style={tw`flex-1`}>
+      <Stack spacing={1} style={tw`bg-white border-b border-gray-200 p-4`}>
+        <Text style={tw`text-2xl font-bold`}>{event.name}</Text>
+        <Text style={tw`text-sm`}>
+          {format(parseISO(event.start), "M/dd")} - {format(parseISO(event.end), "M/dd")}
+        </Text>
       </Stack>
-    </ScrollView>
+      <ScrollView style={tw`bg-white flex-1`}>
+        <View style={tw`p-3`}>
+          <Stack spacing={2}>
+            <Text style={tw`text-lg font-bold`}>Leaderboard</Text>
+            {CLASSES.map((c, idx) => (
+              <Text key={idx} style={tw`text-lg`}>{c}: {event.leaderboard[c] ? event.leaderboard[c] * event.points : 0}</Text>
+            ))}
+            <Text style={tw`text-lg font-bold`}>Event Description</Text>
+            <Markdown style={markdownStyles}>{event.description}</Markdown>
+          </Stack>
+        </View>
+      </ScrollView>
+    </Stack>
   );
 };
 

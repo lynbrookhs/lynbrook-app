@@ -197,8 +197,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   // Events
 
-  const specialEvents = events.filter((e) => e.id === 6);
-  const regularEvents = events.filter((e) => e.id !== 6);
+  const specialEvents = events.filter((e) => e.id === 9);
+  const regularEvents = events.filter((e) => e.id !== 9);
 
   const getFile = async (event: Event) => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();

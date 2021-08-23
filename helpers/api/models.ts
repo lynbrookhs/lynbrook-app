@@ -191,6 +191,7 @@ export type Event = {
   points: number;
   submission_type: EventSubmissionType;
   claimed: boolean;
+  leaderboard: { [key: string]: number };
 };
 
 // Prize
