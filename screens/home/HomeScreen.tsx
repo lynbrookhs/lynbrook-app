@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import React, { useLayoutEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import { mutate } from "swr";
@@ -122,10 +123,11 @@ const SpecialEventItem = ({ event, onPress }: SpecialEventItemProps) => (
 
 type EventItemProps = {
   event: Event;
+  buttonText: string;
   onPress: () => void;
 };
 
-const EventItem = ({ event, onPress }: EventItemProps) => (
+const EventItem = ({ event, buttonText, onPress }: EventItemProps) => (
   <Card
     header={
       <Stack direction="row" align="center">
@@ -140,17 +142,15 @@ const EventItem = ({ event, onPress }: EventItemProps) => (
     <Stack spacing={4}>
       {event.description && <Text style={tw`text-sm`}>{event.description}</Text>}
       <FilledButton textStyle={tw`text-center`} onPress={onPress} disabled={event.claimed}>
-        {event.claimed
-          ? "Already Claimed"
-          : event.submission_type === EventSubmissionType.CODE
-          ? "Scan for Points"
-          : "Upload Photo for Points"}
+        {buttonText}
       </FilledButton>
     </Stack>
   </Card>
 );
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
+  const [hasPermission, setHasPermission] = useState<boolean | undefined>(undefined);
+
   const { data: user, error } = useUser();
   const { data: prizes, error: error2 } = usePrizes();
   const { data: events, error: error3 } = useEvents();
@@ -176,12 +176,20 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     });
   });
 
+  useFocusEffect(() => {
+    (async () => {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  });
+
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
   if (error3) return <APIError error={error3} />;
   if (!user) return <ActivityIndicator style={tw`m-4`} />;
   if (!prizes) return <ActivityIndicator style={tw`m-4`} />;
   if (!events) return <ActivityIndicator style={tw`m-4`} />;
+  if (hasPermission === undefined) return <ActivityIndicator style={tw`m-4`} />;
 
   // Points
 
@@ -201,8 +209,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const regularEvents = events.filter((e) => e.id !== 9);
 
   const getFile = async (event: Event) => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== "granted") return;
+    if (!hasPermission) return;
 
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -266,7 +273,18 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             onPress={
               x.submission_type === EventSubmissionType.CODE
                 ? () => navigation.navigate("QRCode")
-                : () => getFile(x)
+                : hasPermission
+                ? () => getFile(x)
+                : () => Linking.openSettings()
+            }
+            buttonText={
+              x.claimed
+                ? "Already Claimed"
+                : x.submission_type === EventSubmissionType.CODE
+                ? "Scan for Points"
+                : hasPermission
+                ? "Upload Photo for Points"
+                : "Enable Camera Access"
             }
           />
         ))}
