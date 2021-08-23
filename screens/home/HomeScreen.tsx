@@ -201,7 +201,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const regularEvents = events.filter((e) => e.id !== 9);
 
   const getFile = async (event: Event) => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== "granted") return;
 
     const result = await ImagePicker.launchCameraAsync({
