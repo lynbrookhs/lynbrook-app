@@ -1,10 +1,11 @@
 import { format } from "date-fns";
 import React, { useEffect } from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { usePost } from "../../helpers/api";
 import markdownStyles from "../../helpers/markdownStyles";
@@ -20,7 +21,7 @@ const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
   }, [post]);
 
   if (error) return <APIError error={error} />;
-  if (!post) return <ActivityIndicator style={tw`m-4`} />;
+  if (!post) return <Loading />;
 
   return (
     <Stack style={tw`flex-1`}>

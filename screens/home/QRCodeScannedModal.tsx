@@ -2,11 +2,12 @@ import { Ionicons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { FileSystemUploadType } from "expo-file-system";
 import React, { cloneElement, ReactElement, useEffect, useState } from "react";
-import { ActivityIndicator, Button, Text } from "react-native";
+import { Button, Text } from "react-native";
 import { mutate } from "swr";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { apiPath, useRequest } from "../../helpers/api";
 import { Event, EventSubmissionType } from "../../helpers/api/models";
@@ -94,7 +95,7 @@ const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
   }
 
   if (error) return <APIError error={error} />;
-  if (!event) return <ActivityIndicator style={tw`m-4`} />;
+  if (!event) return <Loading />;
 
   return (
     <Content

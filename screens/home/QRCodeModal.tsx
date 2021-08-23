@@ -2,18 +2,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { BarCodeScanningResult, Camera } from "expo-camera";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Button,
-  Linking,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Button, Linking, Platform, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
 
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeModalProps } from "../../navigation";
@@ -75,7 +68,7 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
     [scanned]
   );
 
-  if (hasPermission === undefined) return <ActivityIndicator style={tw`m-4`} />;
+  if (hasPermission === undefined) return <Loading />;
   if (!hasPermission) return <NoPermission />;
 
   const Wrapper = Platform.OS === "android" ? SafeAreaView : View;

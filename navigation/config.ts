@@ -1,6 +1,7 @@
 import { DefaultTheme, LinkingOptions } from "@react-navigation/native";
 
 import { RootStackParamList } from ".";
+import { LYNBROOK_BLUE } from "../helpers/constants";
 
 export const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ["lhs://"],
@@ -20,7 +21,7 @@ export const linking: LinkingOptions<RootStackParamList> = {
 };
 
 export const screenOptions = {
-  headerStyle: { backgroundColor: "#043265" },
+  headerStyle: { backgroundColor: LYNBROOK_BLUE },
   headerTintColor: "#FFFFFF",
 };
 

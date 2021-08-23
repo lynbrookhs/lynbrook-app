@@ -1,13 +1,14 @@
 import { addDays, format, parseISO } from "date-fns";
 import ical from "node-ical";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { Agenda, AgendaThemeStyle } from "react-native-calendars";
 import useSWRNative from "swr-react-native";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { Error, useMemberships } from "../../helpers/api";
 
@@ -119,8 +120,8 @@ const EventsScreen = () => {
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
-  if (!memberships) return <ActivityIndicator style={tw`m-4`} />;
-  if (!cals) return <ActivityIndicator style={tw`m-4`} />;
+  if (!memberships) return <Loading />;
+  if (!cals) return <Loading />;
 
   return (
     <Agenda

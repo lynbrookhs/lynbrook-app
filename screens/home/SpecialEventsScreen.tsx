@@ -1,10 +1,11 @@
 import { format, parseISO } from "date-fns";
 import React, { useEffect } from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { useEvent } from "../../helpers/api";
 import markdownStyles from "../../helpers/markdownStyles";
@@ -24,8 +25,8 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
 
   if (error2) return <APIError error={error2} />;
   if (error3) return <APIError error={error3} />;
-  if (!event) return <ActivityIndicator style={tw`m-4`} />;
-  if (!event2) return <ActivityIndicator style={tw`m-4`} />;
+  if (!event) return <Loading />;
+  if (!event2) return <Loading />;
 
   return (
     <Stack style={tw`flex-1`}>

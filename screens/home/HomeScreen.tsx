@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import React, { useLayoutEffect, useState } from "react";
-import { ActivityIndicator, Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import { mutate } from "swr";
@@ -13,6 +13,7 @@ import Alert from "../../components/Alert";
 import Card from "../../components/Card";
 import FilledButton from "../../components/FilledButton";
 import HeaderButton from "../../components/HeaderButton";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { useEvents, usePrizes, useRequest, useUser } from "../../helpers/api";
 import { Event, EventSubmissionType, OrganizationType, UserType } from "../../helpers/api/models";
@@ -186,10 +187,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
   if (error3) return <APIError error={error3} />;
-  if (!user) return <ActivityIndicator style={tw`m-4`} />;
-  if (!prizes) return <ActivityIndicator style={tw`m-4`} />;
-  if (!events) return <ActivityIndicator style={tw`m-4`} />;
-  if (hasPermission === undefined) return <ActivityIndicator style={tw`m-4`} />;
+  if (!user) return <Loading />;
+  if (!prizes) return <Loading />;
+  if (!events) return <Loading />;
+  if (hasPermission === undefined) return <Loading />;
 
   // Points
 

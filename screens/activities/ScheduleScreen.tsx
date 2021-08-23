@@ -10,19 +10,13 @@ import {
   parseISO,
 } from "date-fns";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
 import HeaderButton from "../../components/HeaderButton";
 import ListItem from "../../components/ListItem";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { useCurrentSchedule, useNextSchedule } from "../../helpers/api";
 import { NestedSchedulePeriod, parseDate, parseTime } from "../../helpers/api/models";
@@ -134,7 +128,7 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
-  if (!schedule) return <ActivityIndicator style={tw`m-4`} />;
+  if (!schedule) return <Loading />;
 
   const shown = schedule.weekdays[day];
 

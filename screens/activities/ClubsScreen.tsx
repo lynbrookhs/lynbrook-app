@@ -1,17 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useCallback, useLayoutEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  SectionList,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native";
+import { SectionList, Text, TouchableHighlight, TouchableOpacity } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
 import HeaderButton from "../../components/HeaderButton";
 import ListItem from "../../components/ListItem";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { useMemberships, useOrgs, useRequest } from "../../helpers/api";
 import { ClubCategory, Organization, OrganizationType } from "../../helpers/api/models";
@@ -81,8 +76,8 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
   if (error3) return <APIError error={error3} />;
-  if (!memberships) return <ActivityIndicator style={tw`m-4`} />;
-  if (!orgs) return <ActivityIndicator style={tw`m-4`} />;
+  if (!memberships) return <Loading />;
+  if (!orgs) return <Loading />;
 
   const clubs = orgs.filter((x) => x.type === OrganizationType.CLUB);
 

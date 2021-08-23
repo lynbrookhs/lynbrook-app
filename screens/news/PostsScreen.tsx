@@ -1,11 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { format } from "date-fns";
 import React from "react";
-import { ActivityIndicator, FlatList, Text, TouchableHighlight } from "react-native";
+import { FlatList, Text, TouchableHighlight } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { usePosts } from "../../helpers/api";
 import { Post } from "../../helpers/api/models";
@@ -37,7 +38,7 @@ const PostsScreen = ({ navigation }: PostsScreenProps) => {
   const { data: posts, error, size, setSize } = usePosts();
 
   if (error) return <APIError error={error} />;
-  if (!posts) return <ActivityIndicator style={tw`m-4`} />;
+  if (!posts) return <Loading />;
 
   return (
     <FlatList<Post>

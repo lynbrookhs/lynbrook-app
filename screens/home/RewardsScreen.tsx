@@ -1,10 +1,11 @@
 import React from "react";
-import { ActivityIndicator, ScrollView, Text } from "react-native";
+import { ScrollView, Text } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import FilledButton from "../../components/FilledButton";
+import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { usePrizes, useUser } from "../../helpers/api";
 import { NestedMembership, Prize } from "../../helpers/api/models";
@@ -42,8 +43,8 @@ const RewardsScreen = ({ navigation }: RewardsScreenProps) => {
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
-  if (!user) return <ActivityIndicator style={tw`m-4`} />;
-  if (!prizes) return <ActivityIndicator style={tw`m-4`} />;
+  if (!user) return <Loading />;
+  if (!prizes) return <Loading />;
 
   const membershipsByOrg = user.memberships.reduce<{ [key: number]: NestedMembership }>(
     (acc, val) => ({ ...acc, [val.organization.id]: val }),
