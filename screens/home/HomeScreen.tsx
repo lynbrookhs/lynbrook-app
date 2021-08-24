@@ -7,9 +7,8 @@ import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import { mutate } from "swr";
 import tw from "tailwind-react-native-classnames";
-
-import APIError from "../../components/APIError";
 import Alert from "../../components/Alert";
+import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import FilledButton from "../../components/FilledButton";
 import HeaderButton from "../../components/HeaderButton";
@@ -18,6 +17,7 @@ import Stack from "../../components/Stack";
 import { useEvents, usePrizes, useRequest, useUser } from "../../helpers/api";
 import { Event, EventSubmissionType, OrganizationType, UserType } from "../../helpers/api/models";
 import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
+
 
 const ClassSelect = () => {
   const [selected, setSelected] = useState<number | undefined>(undefined);

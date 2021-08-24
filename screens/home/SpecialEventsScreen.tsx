@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
-
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
@@ -16,6 +15,7 @@ const CLASSES = ["2022", "2023", "2024", "2025"];
 const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) => {
   const { data: event, error: error2 } = useEvent(route.params.id);
   const { data: event2, error: error3 } = useEvent(10);
+  const { data: event3, error: error4 } = useEvent(12);
 
   useEffect(() => {
     if (event) {
@@ -25,8 +25,10 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
 
   if (error2) return <APIError error={error2} />;
   if (error3) return <APIError error={error3} />;
+  if (error4) return <APIError error={error4} />;
   if (!event) return <Loading />;
   if (!event2) return <Loading />;
+  if (!event3) return <Loading />;
 
   return (
     <Stack style={tw`flex-1`}>
@@ -42,7 +44,7 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
             <Text style={tw`text-lg font-bold`}>Leaderboard</Text>
             {CLASSES.map((c, idx) => (
               <Text key={idx} style={tw`text-lg`}>
-                {c}: {event2.leaderboard[c] ? event2.leaderboard[c] * event2.points : 0}
+                {c}: {(event2.leaderboard[c] ? event2.leaderboard[c] * event2.points : 0) + (event3.leaderboard[c] ? event3.leaderboard[c] * event3.points : 0)}
               </Text>
             ))}
             <Text style={tw`text-lg font-bold`}>Event Description</Text>
