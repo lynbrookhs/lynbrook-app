@@ -14,7 +14,7 @@
     },
     "primaryColor": "#043265",
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 5000
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {

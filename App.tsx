@@ -1,18 +1,45 @@
+import Constants, { AppOwnership } from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from "expo-updates";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Alert, AppState, AppStateStatus } from "react-native";
+import { Alert, AppState, AppStateStatus, Linking, Platform, Text } from "react-native";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import * as semver from "semver";
 import * as Sentry from "sentry-expo";
+import tw from "tailwind-react-native-classnames";
 
 import AuthProvider from "./components/AuthProvider";
+import FilledButton from "./components/FilledButton";
+import Stack from "./components/Stack";
+import { AppVersion } from "./helpers/api/models";
 import useCachedResources from "./helpers/useCachedResources";
 import Navigation from "./navigation";
 
 Sentry.init({ dsn: "https://24af5d48ffe84346ad39a6dd6f304ff0@o951004.ingest.sentry.io/5899693" });
 
 const isActive = (x: AppStateStatus) => x === "active";
+
+const NeedUpdate = () => (
+  <Stack style={tw`flex-1 justify-center p-8`} spacing={4} align="center">
+    <Text style={tw`text-lg font-bold`}>Update Required</Text>
+    <Text style={tw`text-base text-center`}>
+      Please download the latest update from the{" "}
+      {Platform.OS === "android" ? "Play Store" : "App Store"} in order to continue using the app.
+    </Text>
+    <FilledButton
+      onPress={() =>
+        Linking.openURL(
+          Platform.OS === "android"
+            ? "https://play.google.com/store/apps/details?id=org.fuhsd.lhs.app"
+            : "https://apps.apple.com/us/app/lynbrook-high-school/id1530326385"
+        )
+      }
+    >
+      Open Store
+    </FilledButton>
+  </Stack>
+);
 
 const Root = () => {
   // const { token } = useAuth();
@@ -50,6 +77,7 @@ const App = () => {
   const isLoadingComplete = useCachedResources();
   const appState = useRef(AppState.currentState);
   const [, setActive] = useState(appState.current === "active");
+  const [needUpdate, setNeedUpdate] = useState(false);
 
   const checkUpdate = useCallback(async () => {
     try {
@@ -82,7 +110,22 @@ const App = () => {
     return () => AppState.removeEventListener("change", handleAppStateChange);
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      if (Constants.appOwnership !== AppOwnership.Standalone) return;
+      const req = await fetch("https://lynbrookasb.org/api/app_version/");
+      const data = (await req.json()) as AppVersion;
+
+      const neededVersion = semver.coerce(data[Platform.OS] ?? 0);
+      const currentVersion = semver.coerce(Constants.nativeBuildVersion);
+      if (neededVersion && currentVersion && semver.gt(neededVersion, currentVersion)) {
+        setNeedUpdate(true);
+      }
+    })();
+  }, []);
+
   if (!isLoadingComplete) return null;
+  if (needUpdate) return <NeedUpdate />;
 
   return (
     <SafeAreaProvider>

@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import * as Camera from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -179,8 +178,19 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
+      try {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        setHasPermission(status === "granted");
+      } catch (e) {
+        try {
+          console.log("LHS ERROR", e);
+          const { status } = await ImagePicker.getCameraPermissionsAsync();
+          setHasPermission(status === "granted");
+        } catch (e2) {
+          console.log("LHS ERROR 2", e2);
+          setHasPermission(false);
+        }
+      }
     })();
   }, []);
 

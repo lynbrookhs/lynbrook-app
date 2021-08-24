@@ -204,3 +204,9 @@ export type Prize = {
   description: string;
   points: number;
 };
+
+// App Version
+
+type Version = string | number;
+
+export type AppVersion = { [key: string]: Version };

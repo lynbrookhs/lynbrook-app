@@ -30,7 +30,7 @@ const FilledButton = ({
       {({ pressed }) => (
         <Stack
           style={[
-            tw`flex-1 justify-center bg-${color}-600 px-3 py-2 border border-transparent rounded shadow-md`,
+            tw`justify-center bg-${color}-600 px-3 py-2 border border-transparent rounded shadow-md`,
             pressed && tw`bg-${color}-700`,
             disabled && tw`opacity-50`,
           ]}
