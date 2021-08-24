@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
@@ -177,12 +176,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     });
   });
 
-  useFocusEffect(() => {
+  useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
     })();
-  });
+  }, []);
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
