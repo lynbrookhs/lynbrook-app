@@ -96,14 +96,14 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
       const start = parseISO(schedule.start);
       const end = addDays(parseISO(schedule.end), -2);
 
-      const headerTitle = isSameMonth(start, end)
+      const title = isSameMonth(start, end)
         ? `${format(start, "MMMM d")}–${format(end, "d, yyyy")}`
         : isSameYear(start, end)
         ? `${format(start, "MMMM d")} – ${format(end, "MMMM d, yyyy")}`
         : `${format(start, "MMMM d, yyyy")} – ${format(end, "MMMM d, yyyy")}`;
 
       navigation.setOptions({
-        headerTitle,
+        title,
         headerRight: (props) =>
           !preview && (
             <HeaderButton

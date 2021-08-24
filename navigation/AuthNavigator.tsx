@@ -38,12 +38,12 @@ const AuthNavigator = () => {
         <AuthStack.Screen
           name="GuestLogin"
           component={GuestLoginModal}
-          options={{ headerTitle: "Guest Login" }}
+          options={{ title: "Guest Login" }}
         />
         <AuthStack.Screen
           name="GuestRegister"
           component={GuestRegisterModal}
-          options={{ headerTitle: "Guest Registration" }}
+          options={{ title: "Guest Registration" }}
         />
       </AuthStack.Group>
     </AuthStack.Navigator>

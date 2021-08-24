@@ -16,7 +16,7 @@ const HomeNavigator = () => {
       <SettingsStack.Screen
         name="Settings"
         component={SettingScreen}
-        options={{ headerTitle: "Settings" }}
+        options={{ title: "Settings" }}
       />
     </SettingsStack.Navigator>
   );

@@ -36,12 +36,8 @@ const NewsStack = createNativeStackNavigator<NewsTabParamList>();
 const NewsNavigator = () => {
   return (
     <NewsStack.Navigator screenOptions={screenOptions}>
-      <NewsStack.Screen name="Posts" component={PostsScreen} options={{ headerTitle: "Posts" }} />
-      <NewsStack.Screen
-        name="PostDetail"
-        component={PostDetailScreen}
-        options={{ headerTitle: "" }}
-      />
+      <NewsStack.Screen name="Posts" component={PostsScreen} options={{ title: "Posts" }} />
+      <NewsStack.Screen name="PostDetail" component={PostDetailScreen} options={{ title: "" }} />
     </NewsStack.Navigator>
   );
 };

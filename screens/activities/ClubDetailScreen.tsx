@@ -15,7 +15,7 @@ const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
 
   useEffect(() => {
     if (org) {
-      navigation.setOptions({ headerTitle: org.name });
+      navigation.setOptions({ title: org.name });
     }
   }, [org]);
 

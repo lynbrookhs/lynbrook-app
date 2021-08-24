@@ -16,7 +16,7 @@ const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
 
   useEffect(() => {
     if (post) {
-      navigation.setOptions({ headerTitle: post.title });
+      navigation.setOptions({ title: post.title });
     }
   }, [post]);
 

@@ -42,17 +42,13 @@ const ActivitiesNavigator = () => {
       <ActivitiesStack.Screen
         name="Schedule"
         component={ScheduleScreen}
-        options={{ headerTitle: "Schedule" }}
+        options={{ title: "Schedule" }}
       />
-      <ActivitiesStack.Screen
-        name="Clubs"
-        component={ClubsScreen}
-        options={{ headerTitle: "Clubs" }}
-      />
+      <ActivitiesStack.Screen name="Clubs" component={ClubsScreen} options={{ title: "Clubs" }} />
       <ActivitiesStack.Screen
         name="ClubDetail"
         component={ClubDetailScreen}
-        options={{ headerTitle: "" }}
+        options={{ title: "" }}
       />
     </ActivitiesStack.Navigator>
   );

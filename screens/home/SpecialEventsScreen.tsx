@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
@@ -19,7 +20,7 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
 
   useEffect(() => {
     if (event) {
-      navigation.setOptions({ headerTitle: event.name });
+      navigation.setOptions({ title: event.name });
     }
   }, [event]);
 
@@ -44,7 +45,9 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
             <Text style={tw`text-lg font-bold`}>Leaderboard</Text>
             {CLASSES.map((c, idx) => (
               <Text key={idx} style={tw`text-lg`}>
-                {c}: {(event2.leaderboard[c] ? event2.leaderboard[c] * event2.points : 0) + (event3.leaderboard[c] ? event3.leaderboard[c] * event3.points : 0)}
+                {c}:{" "}
+                {(event2.leaderboard[c] ? event2.leaderboard[c] * event2.points : 0) +
+                  (event3.leaderboard[c] ? event3.leaderboard[c] * event3.points : 0)}
               </Text>
             ))}
             <Text style={tw`text-lg font-bold`}>Event Description</Text>

@@ -39,17 +39,9 @@ const HomeStack = createNativeStackNavigator<HomeTabParamList>();
 const HomeNavigator = () => {
   return (
     <HomeStack.Navigator screenOptions={screenOptions}>
-      <HomeStack.Screen name="Home" component={HomeScreen} options={{ headerTitle: "Home" }} />
-      <HomeStack.Screen
-        name="Rewards"
-        component={RewardsScreen}
-        options={{ headerTitle: "Rewards" }}
-      />
-      <HomeStack.Screen
-        name="Special"
-        component={SpecialEventsScreen}
-        options={{ headerTitle: "" }}
-      />
+      <HomeStack.Screen name="Home" component={HomeScreen} options={{ title: "Home" }} />
+      <HomeStack.Screen name="Rewards" component={RewardsScreen} options={{ title: "Rewards" }} />
+      <HomeStack.Screen name="Special" component={SpecialEventsScreen} options={{ title: "" }} />
     </HomeStack.Navigator>
   );
 };

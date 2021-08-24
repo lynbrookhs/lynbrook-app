@@ -13,11 +13,7 @@ const EventsStack = createNativeStackNavigator<EventsTabParamList>();
 const EventsNavigator = () => {
   return (
     <EventsStack.Navigator screenOptions={screenOptions}>
-      <EventsStack.Screen
-        name="Events"
-        component={EventsScreen}
-        options={{ headerTitle: "Events" }}
-      />
+      <EventsStack.Screen name="Events" component={EventsScreen} options={{ title: "Events" }} />
     </EventsStack.Navigator>
   );
 };
