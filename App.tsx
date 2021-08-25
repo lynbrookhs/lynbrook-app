@@ -7,11 +7,13 @@ import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as semver from "semver";
 import * as Sentry from "sentry-expo";
+import useSWR from "swr";
 import tw from "tailwind-react-native-classnames";
 
 import AuthProvider from "./components/AuthProvider";
 import FilledButton from "./components/FilledButton";
 import Stack from "./components/Stack";
+import { apiFetcher } from "./helpers/api";
 import { AppVersion } from "./helpers/api/models";
 import useCachedResources from "./helpers/useCachedResources";
 import Navigation from "./navigation";
@@ -77,9 +79,16 @@ const App = () => {
   const isLoadingComplete = useCachedResources();
   const appState = useRef(AppState.currentState);
   const [, setActive] = useState(appState.current === "active");
-  const [needUpdate, setNeedUpdate] = useState(false);
+
+  const {
+    data: appVersion,
+    error,
+    revalidate,
+  } = useSWR<AppVersion>("https://lynbrookasb.org/api/app_version/", apiFetcher());
 
   const checkUpdate = useCallback(async () => {
+    revalidate();
+
     try {
       const check = await checkForUpdateAsync();
       if (!check.isAvailable) return;
@@ -110,22 +119,15 @@ const App = () => {
     return () => AppState.removeEventListener("change", handleAppStateChange);
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      if (Constants.appOwnership !== AppOwnership.Standalone) return;
-      const req = await fetch("https://lynbrookasb.org/api/app_version/");
-      const data = (await req.json()) as AppVersion;
+  if (!isLoadingComplete || !appVersion) return null;
 
-      const neededVersion = semver.coerce(data[Platform.OS] ?? 0);
-      const currentVersion = semver.coerce(Constants.nativeBuildVersion);
-      if (neededVersion && currentVersion && semver.gt(neededVersion, currentVersion)) {
-        setNeedUpdate(true);
-      }
-    })();
-  }, []);
-
-  if (!isLoadingComplete) return null;
-  if (needUpdate) return <NeedUpdate />;
+  if (!error && (Constants.appOwnership === AppOwnership.Standalone || !Constants.appOwnership)) {
+    const neededVersion = semver.coerce(appVersion[Platform.OS] ?? 0);
+    const currentVersion = semver.coerce(Constants.nativeBuildVersion);
+    if (neededVersion && currentVersion && semver.gt(neededVersion, currentVersion)) {
+      return <NeedUpdate />;
+    }
+  }
 
   return (
     <SafeAreaProvider>
