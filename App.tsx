@@ -1,6 +1,8 @@
 import Constants, { AppOwnership } from "expo-constants";
+import * as SecureStore from "expo-secure-store";
 import { StatusBar } from "expo-status-bar";
 import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from "expo-updates";
+import { apiFetcher, AppVersion, AuthProvider } from "lynbrook-app-api-hooks";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, AppState, AppStateStatus, Linking, Platform, Text } from "react-native";
 import "react-native-gesture-handler";
@@ -8,13 +10,12 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as semver from "semver";
 import * as Sentry from "sentry-expo";
 import useSWR from "swr";
+import { useSWRNativeRevalidate } from "swr-react-native";
 import tw from "tailwind-react-native-classnames";
 
-import AuthProvider from "./components/AuthProvider";
 import FilledButton from "./components/FilledButton";
+import Loading from "./components/Loading";
 import Stack from "./components/Stack";
-import { apiFetcher } from "./helpers/api";
-import { AppVersion } from "./helpers/api/models";
 import useCachedResources from "./helpers/useCachedResources";
 import Navigation from "./navigation";
 
@@ -129,9 +130,28 @@ const App = () => {
     }
   }
 
+  const loadToken = async () => {
+    try {
+      const token = await SecureStore.getItemAsync("token");
+      return token ?? undefined;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const onTokenChange = async (token: string | undefined) => {
+    if (token) await SecureStore.setItemAsync("token", token);
+    else await SecureStore.deleteItemAsync("token");
+  };
+
   return (
     <SafeAreaProvider>
-      <AuthProvider>
+      <AuthProvider
+        fallback={<Loading />}
+        loadToken={loadToken}
+        onTokenChange={onTokenChange}
+        afterRequest={useSWRNativeRevalidate}
+      >
         <Root />
       </AuthProvider>
       <StatusBar />

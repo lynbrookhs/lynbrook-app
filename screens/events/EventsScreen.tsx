@@ -1,4 +1,5 @@
 import { addDays, format, parseISO } from "date-fns";
+import { Error, useMemberships } from "lynbrook-app-api-hooks";
 import ical from "node-ical";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
@@ -10,7 +11,6 @@ import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { Error, useMemberships } from "../../helpers/api";
 
 const COLORS = ["red", "yellow", "green", "blue", "indigo", "purple", "pink", "gray"];
 

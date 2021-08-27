@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { FileSystemUploadType } from "expo-file-system";
+import { apiPath, Event, EventSubmissionType, useRequest } from "lynbrook-app-api-hooks";
 import React, { cloneElement, ReactElement, useEffect, useState } from "react";
 import { Button, Text } from "react-native";
 import { mutate } from "swr";
@@ -9,8 +10,6 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { apiPath, useRequest } from "../../helpers/api";
-import { Event, EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeScannedModalProps } from "../../navigation";
 
 type ContentProps = Pick<QRCodeScannedModalProps, "navigation"> & {

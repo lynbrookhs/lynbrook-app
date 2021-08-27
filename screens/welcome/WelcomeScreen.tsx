@@ -1,4 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as AuthSession from "expo-auth-session";
+import { useSignInWithProvider } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren } from "react";
 import { Button, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -7,7 +9,6 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
-import { useSignInWithProvider } from "../../helpers/api/auth";
 import { WelcomeScreenProps } from "../../navigation/AuthNavigator";
 
 type WelcomeItemProps = PropsWithChildren<{
@@ -26,7 +27,15 @@ const WelcomeItem = ({ icon, children }: WelcomeItemProps) => (
 );
 
 const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
-  const { signInWithProvider, error } = useSignInWithProvider("google");
+  const { makeAuthorizationUri, handleProviderCallback, error } = useSignInWithProvider("google");
+
+  const signInWithProvider = async () => {
+    const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
+    const authUrl = await makeAuthorizationUri(redirectUri);
+    const res = await AuthSession.startAsync({ authUrl });
+    if (res.type !== "success") return console.error(res);
+    await handleProviderCallback(res.params);
+  };
 
   return (
     <ScrollView contentContainerStyle={tw`flex-1`}>

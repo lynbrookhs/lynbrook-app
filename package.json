@@ -45,6 +45,7 @@
     "expo-updates": "~0.8.2",
     "expo-web-browser": "~9.2.0",
     "formik": "^2.2.9",
+    "lynbrook-app-api-hooks": "github:lynbrookhs/lynbrook-app-api-hooks",
     "node-ical": "github:lynbrookhs/node-ical",
     "path": "^0.12.7",
     "react": "16.13.1",

@@ -4,10 +4,9 @@ import {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
+import { Event, EventSubmissionType, useAuth } from "lynbrook-app-api-hooks";
 import * as React from "react";
 
-import { useAuth } from "../components/AuthProvider";
-import { Event, EventSubmissionType } from "../helpers/api/models";
 import QRCodeEntryModal from "../screens/home/QRCodeEntryModal";
 import QRCodeModal from "../screens/home/QRCodeModal";
 import QRCodeScannedModal from "../screens/home/QRCodeScannedModal";

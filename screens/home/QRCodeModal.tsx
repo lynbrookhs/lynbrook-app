@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { BarCodeScanningResult, Camera } from "expo-camera";
+import { EventSubmissionType } from "lynbrook-app-api-hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Linking, Platform, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,7 +9,6 @@ import tw from "tailwind-react-native-classnames";
 
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeModalProps } from "../../navigation";
 
 const NoPermission = () => (

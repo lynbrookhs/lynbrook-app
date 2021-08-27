@@ -1,10 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
+import { EventSubmissionType } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
 import Stack from "../../components/Stack";
-import { EventSubmissionType } from "../../helpers/api/models";
 import { QRCodeEntryModalProps } from "../../navigation";
 
 type NumberButtonProps = {

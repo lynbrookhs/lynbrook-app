@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
+import { OrganizationType, useMemberships, useSignOut, useUser } from "lynbrook-app-api-hooks";
 import React from "react";
 import { Button, ScrollView, Text, TouchableHighlight, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
@@ -9,9 +10,6 @@ import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { useMemberships, useUser } from "../../helpers/api";
-import { useSignOut } from "../../helpers/api/auth";
-import { OrganizationType } from "../../helpers/api/models";
 
 type ProfileProps = {
   name: string;

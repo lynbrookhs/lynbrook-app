@@ -1,15 +1,15 @@
 import { format, parseISO } from "date-fns";
+import { useEvent } from "lynbrook-app-api-hooks";
 import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { useEvent } from "../../helpers/api";
 import markdownStyles from "../../helpers/markdownStyles";
 import { SpecialEventsScreenProps } from "../../navigation/tabs/HomeNavigator";
-
 
 const CLASSES = ["2022", "2023", "2024", "2025"];
 

@@ -1,3 +1,4 @@
+import { useOrg } from "lynbrook-app-api-hooks";
 import React, { useEffect } from "react";
 import { ScrollView, Text } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -5,7 +6,6 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { useOrg } from "../../helpers/api";
 import { ClubDetailScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];

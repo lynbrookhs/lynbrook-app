@@ -1,4 +1,5 @@
 import { Formik } from "formik";
+import { Error, useSignInAsGuest } from "lynbrook-app-api-hooks";
 import React, { useCallback, useState } from "react";
 import {
   Button,
@@ -15,8 +16,6 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
-import { Error } from "../../helpers/api";
-import { useSignInAsGuest } from "../../helpers/api/auth";
 import { GuestLoginModalProps } from "../../navigation/AuthNavigator";
 
 const GuestLoginModal = ({ navigation }: GuestLoginModalProps) => {

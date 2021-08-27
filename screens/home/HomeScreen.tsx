@@ -1,20 +1,29 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import {
+  Event,
+  EventSubmissionType,
+  OrganizationType,
+  useEvents,
+  usePrizes,
+  useRequest,
+  UserType,
+  useUser,
+} from "lynbrook-app-api-hooks";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import { mutate } from "swr";
 import tw from "tailwind-react-native-classnames";
-import Alert from "../../components/Alert";
+
 import APIError from "../../components/APIError";
+import Alert from "../../components/Alert";
 import Card from "../../components/Card";
 import FilledButton from "../../components/FilledButton";
 import HeaderButton from "../../components/HeaderButton";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { useEvents, usePrizes, useRequest, useUser } from "../../helpers/api";
-import { Event, EventSubmissionType, OrganizationType, UserType } from "../../helpers/api/models";
 import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
 
 const ClassSelect = () => {
@@ -275,7 +284,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             onPress={() => navigation.navigate("Special", { id: x.id })}
           />
         ))}
-        
+
         {regularEvents.map((x) => (
           <EventItem
             key={x.id}

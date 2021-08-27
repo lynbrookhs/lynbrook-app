@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { usePost } from "lynbrook-app-api-hooks";
 import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
@@ -7,7 +8,6 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { usePost } from "../../helpers/api";
 import markdownStyles from "../../helpers/markdownStyles";
 import { PostDetailScreenProps } from "../../navigation/tabs/NewsNavigator";
 

@@ -9,6 +9,13 @@ import {
   isSameYear,
   parseISO,
 } from "date-fns";
+import {
+  NestedSchedulePeriod,
+  parseDate,
+  parseTime,
+  useCurrentSchedule,
+  useNextSchedule,
+} from "lynbrook-app-api-hooks";
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -18,8 +25,6 @@ import HeaderButton from "../../components/HeaderButton";
 import ListItem from "../../components/ListItem";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { useCurrentSchedule, useNextSchedule } from "../../helpers/api";
-import { NestedSchedulePeriod, parseDate, parseTime } from "../../helpers/api/models";
 import useTime from "../../helpers/useTime";
 import { ScheduleScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 

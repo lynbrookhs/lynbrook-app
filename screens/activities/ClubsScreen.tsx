@@ -1,4 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
+import {
+  ClubCategory,
+  Organization,
+  OrganizationType,
+  useMemberships,
+  useOrgs,
+  useRequest,
+} from "lynbrook-app-api-hooks";
 import React, { useCallback, useLayoutEffect, useState } from "react";
 import { SectionList, Text, TouchableHighlight, TouchableOpacity } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -8,8 +16,6 @@ import HeaderButton from "../../components/HeaderButton";
 import ListItem from "../../components/ListItem";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { useMemberships, useOrgs, useRequest } from "../../helpers/api";
-import { ClubCategory, Organization, OrganizationType } from "../../helpers/api/models";
 import { ClubsScreenProps } from "../../navigation/tabs/ActivitiesNavigator";
 
 type ClubItemProps = {

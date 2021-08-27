@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { format } from "date-fns";
+import { Post, usePosts } from "lynbrook-app-api-hooks";
 import React from "react";
 import { FlatList, Text, TouchableHighlight } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -8,8 +9,6 @@ import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { usePosts } from "../../helpers/api";
-import { Post } from "../../helpers/api/models";
 import { PostsScreenProps } from "../../navigation/tabs/NewsNavigator";
 
 type PostItemProps = {

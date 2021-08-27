@@ -1,3 +1,4 @@
+import { NestedMembership, Prize, usePrizes, useUser } from "lynbrook-app-api-hooks";
 import React from "react";
 import { ScrollView, Text } from "react-native";
 import tw from "tailwind-react-native-classnames";
@@ -7,8 +8,6 @@ import Card from "../../components/Card";
 import FilledButton from "../../components/FilledButton";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
-import { usePrizes, useUser } from "../../helpers/api";
-import { NestedMembership, Prize } from "../../helpers/api/models";
 import { RewardsScreenProps } from "../../navigation/tabs/HomeNavigator";
 
 type RewardItemProps = {

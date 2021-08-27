@@ -1,4 +1,5 @@
 import { Formik } from "formik";
+import { useRegisterAsGuest } from "lynbrook-app-api-hooks";
 import React from "react";
 import {
   Button,
@@ -15,7 +16,6 @@ import tw from "tailwind-react-native-classnames";
 import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
-import { useRegisterAsGuest } from "../../helpers/api/auth";
 import { GuestRegisterModalProps } from "../../navigation/AuthNavigator";
 
 const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
