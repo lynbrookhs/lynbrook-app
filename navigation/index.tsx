@@ -35,7 +35,7 @@ export type RootStackParamList = {
   QRCode: undefined;
   QRCodeEntry: undefined;
   QRCodeScanned:
-    | { type: EventSubmissionType.CODE; code: number }
+    | { type?: EventSubmissionType.CODE; code: number }
     | { type: EventSubmissionType.FILE; event: Event; file: ImageInfo };
 };
 

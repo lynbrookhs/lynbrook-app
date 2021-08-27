@@ -1,20 +1,18 @@
 import { DefaultTheme, LinkingOptions } from "@react-navigation/native";
+import * as Linking from "expo-linking";
 
 import { RootStackParamList } from ".";
 import { LYNBROOK_BLUE } from "../helpers/constants";
 
+const prefix = Linking.createURL("/");
+
 export const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: ["lhs://"],
+  prefixes: [prefix],
   config: {
     screens: {
-      Main: {
-        screens: {
-          HomeTab: {
-            screens: {
-              Home: "home",
-            },
-          },
-        },
+      QRCodeScanned: {
+        path: ":code",
+        parse: { code: Number },
       },
     },
   },

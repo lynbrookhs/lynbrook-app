@@ -32,7 +32,7 @@ const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
   const { requestWithFunc, request, error } = useRequest();
 
   const submitCode = async () => {
-    if (route.params.type !== EventSubmissionType.CODE) return;
+    if (route.params.type !== EventSubmissionType.CODE && route.params.type !== undefined) return;
     const event = await request<Event>("POST", "/users/me/events/", {
       code: route.params.code,
     });
