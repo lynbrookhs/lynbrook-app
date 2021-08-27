@@ -148,7 +148,7 @@ const EventItem = ({ event, buttonText, onPress }: EventItemProps) => (
     }
   >
     <Stack spacing={4}>
-      {event.description && <Text style={tw`text-sm`}>{event.description}</Text>}
+      {event.description !== "" && <Text style={tw`text-sm`}>{event.description}</Text>}
       <FilledButton textStyle={tw`text-center`} onPress={onPress} disabled={event.claimed}>
         {buttonText}
       </FilledButton>
@@ -298,7 +298,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             }
             buttonText={
               x.claimed
-                ? "Already Claimed"
+                ? "Already Signed In"
                 : x.submission_type === EventSubmissionType.CODE
                 ? "Scan for Points"
                 : hasPermission
