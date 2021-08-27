@@ -116,7 +116,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
     ...orgs.filter((x) => x.type !== OrganizationType.CLUB && x.membership),
     ...orgs.filter((x) => x.type === OrganizationType.CLUB && x.membership),
   ];
-  const otherClubs = orgs.filter((x) => !x.membership);
+  const otherClubs = orgs.filter((x) => x.type === OrganizationType.CLUB && !x.membership);
 
   const listData = sorted
     ? [
