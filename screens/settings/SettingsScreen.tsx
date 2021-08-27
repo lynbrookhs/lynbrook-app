@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import Constants from "expo-constants";
 import * as Linking from "expo-linking";
 import { OrganizationType, useMemberships, useSignOut, useUser } from "lynbrook-app-api-hooks";
 import React from "react";
@@ -90,9 +91,19 @@ const SettingsScreen = () => {
           />
         </Stack>
 
-        <ListItem border="both">
-          <Button title="Sign Out" onPress={signOut} />
-        </ListItem>
+        <Stack spacing={2}>
+          <ListItem border="both">
+            <Button title="Sign Out" onPress={signOut} />
+          </ListItem>
+
+          {Constants.manifest?.revisionId && (
+            <ListItem style={tw`bg-transparent`} border="none">
+              <Text style={tw`text-center text-gray-500`}>
+                Stable {Constants.manifest?.revisionId}
+              </Text>
+            </ListItem>
+          )}
+        </Stack>
       </Stack>
     </ScrollView>
   );
