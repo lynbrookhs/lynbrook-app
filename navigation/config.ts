@@ -12,7 +12,7 @@ export const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       QRCodeScanned: {
         path: ":code",
-        parse: { code: Number },
+        parse: { code: (code) => Number(code.replace("lhs://", "")) || 0 },
       },
     },
   },
