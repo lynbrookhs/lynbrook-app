@@ -112,25 +112,25 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
 
   const orgs = _orgs.map((x) => ({ ...x, membership: membershipsById.get(x.id) }));
 
-  const userOrgs = [
-    ...orgs.filter((x) => x.type !== OrganizationType.CLUB && x.membership),
-    ...orgs.filter((x) => x.type === OrganizationType.CLUB && x.membership),
-  ];
+  const userOrgs = orgs.filter((x) => x.type !== OrganizationType.CLUB && x.membership);
+  const userClubs = orgs.filter((x) => x.type === OrganizationType.CLUB && x.membership);
   const otherClubs = orgs.filter((x) => x.type === OrganizationType.CLUB && !x.membership);
+
+  const filterByCategory = (arr: typeof userClubs, category: ClubCategory) =>
+    arr.filter((x) => x.category === category);
 
   const listData = sorted
     ? [
-        { title: "My Organizations", data: userOrgs },
-        {
-          title: "Competition",
-          data: otherClubs.filter((x) => x.category === ClubCategory.COMPETITION),
-        },
-        { title: "Interest", data: otherClubs.filter((x) => x.category === ClubCategory.INTEREST) },
-        { title: "Service", data: otherClubs.filter((x) => x.category === ClubCategory.SERVICE) },
+        { title: "Default Organizations", data: userOrgs },
+        { title: "My Clubs", data: userClubs },
+        { title: "Competition", data: filterByCategory(otherClubs, ClubCategory.COMPETITION) },
+        { title: "Service", data: filterByCategory(otherClubs, ClubCategory.SERVICE) },
+        { title: "Interest", data: filterByCategory(otherClubs, ClubCategory.INTEREST) },
       ]
     : [
-        { title: "My Organizations", data: userOrgs },
-        { title: "Other Organizations", data: otherClubs },
+        { title: "Default Organizations", data: userOrgs },
+        { title: "My Clubs", data: userClubs },
+        { title: "Other Clubs", data: otherClubs },
       ];
 
   return (
@@ -148,10 +148,10 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
       )}
       renderSectionHeader={({ section: { title } }) => (
         <ListItem
-          style={tw`bg-gray-100`}
+          style={tw`bg-gray-100 py-2`}
           border={listData.findIndex((x) => x.title === title) === 0 ? "both" : "bottom"}
         >
-          <Text style={tw`font-medium text-center`}>{title}</Text>
+          <Text style={tw`font-bold text-gray-700 text-center uppercase`}>{title}</Text>
         </ListItem>
       )}
       keyExtractor={(item) => item.id.toString()}
