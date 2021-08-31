@@ -34,7 +34,6 @@ const ClassSelect = () => {
     if (selected !== undefined) return;
     setSelected(year);
     const res = await request("PUT", "/users/me/", { grad_year: year });
-    console.log(res);
     mutate("/users/me/");
   };
 
