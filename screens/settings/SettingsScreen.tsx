@@ -46,7 +46,7 @@ const StudentID = () => {
   }, []);
 
   const setId = async (text: string) => {
-    if (text.length > 7) return;
+    if (!text.match(/^[0-9]{0,7}$/)) return;
     _setId(text);
     if (text) await SecureStore.setItemAsync("id", text);
     else await SecureStore.deleteItemAsync("id");
@@ -61,7 +61,7 @@ const StudentID = () => {
         style={[tw`flex-1 text-base bg-white`, { lineHeight: 20 }]}
         value={id}
         onChangeText={setId}
-        keyboardType="numeric"
+        keyboardType="number-pad"
       />
       {id.length === 7 ? (
         <Barcode format="CODE128" value={id} width={2} height={32} />
