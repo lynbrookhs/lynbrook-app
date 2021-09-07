@@ -4,12 +4,12 @@ import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
-
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import markdownStyles from "../../helpers/markdownStyles";
 import { SpecialEventsScreenProps } from "../../navigation/tabs/HomeNavigator";
+
 
 const CLASSES = ["2022", "2023", "2024", "2025"];
 
@@ -39,6 +39,7 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
   if (!event4) return <Loading />;
   if (!event5) return <Loading />;
   if (!event6) return <Loading />;
+  console.log(event.description)
 
   return (
     <Stack style={tw`flex-1`}>
@@ -51,7 +52,7 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
       <ScrollView style={tw`bg-white flex-1`}>
         <View style={tw`p-3`}>
           <Stack spacing={2}>
-            <Text style={tw`text-lg font-bold`}>Leaderboard</Text>
+            {/* <Text style={tw`text-lg font-bold`}>Leaderboard</Text>
             {CLASSES.map((c, idx) => (
               <Text key={idx} style={tw`text-lg`}>
                 {c}:{" "}
@@ -61,7 +62,7 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
                   (event5.leaderboard[c] ? event5.leaderboard[c] * event5.points : 0) +
                   (event6.leaderboard[c] ? event6.leaderboard[c] * event6.points : 0)}
               </Text>
-            ))}
+            ))} */}
             <Text style={tw`text-lg font-bold`}>Event Description</Text>
             <Markdown style={markdownStyles}>{event.description}</Markdown>
           </Stack>
