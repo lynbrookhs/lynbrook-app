@@ -9,6 +9,7 @@ const prefix = Linking.createURL("/");
 export const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [prefix],
   config: {
+    initialRouteName: "Main",
     screens: {
       QRCodeScanned: {
         path: ":code",
