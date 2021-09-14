@@ -23,7 +23,10 @@ const Content = ({ navigation, icon, title, description }: ContentProps) => (
     {cloneElement(icon, { style: [icon.props.style, { fontSize: 64 }] })}
     <Text style={tw`text-xl font-bold text-center`}>{title}</Text>
     <Text style={tw`text-sm text-gray-500 text-center`}>{description}</Text>
-    <Button title="Close" onPress={() => navigation.goBack()} />
+    <Button
+      title="Close"
+      onPress={() => navigation.navigate("Main", { screen: "HomeTab", params: { screen: "Home" } })}
+    />
   </Stack>
 );
 

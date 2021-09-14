@@ -84,7 +84,12 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
     >
       <Wrapper style={tw`flex-1 relative`}>
         <View style={tw`flex-1 justify-center items-center relative`}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={tw`absolute top-0 left-0`}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Main", { screen: "HomeTab", params: { screen: "Home" } })
+            }
+            style={tw`absolute top-0 left-0`}
+          >
             <Ionicons name="close" style={tw`m-4 text-2xl text-white`} />
           </TouchableOpacity>
           <View style={tw`w-1/2`}>
