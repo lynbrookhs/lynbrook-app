@@ -1,6 +1,10 @@
 # Admin Panel Instruction Manual
 
-Welcome to the Lynbrook App Admin Panel Instruction Manual! This document outlines some of the features of the app and how to use them. This document is meant to be viewed by club officers and advisors, ASB members, and staff, but if you're not one of those, that's fine too :)
+Welcome to the Lynbrook App Admin Panel Instruction Manual!
+
+This document outlines some of the features of the app and how to use them. This document is meant to be viewed by club officers and advisors, ASB members, and staff, but if you're not one of those, that's fine too :)
+
+For a table of contents, feel free to press the list button on the top left.
 
 If you have any questions, please contact one (or both) of the following people:
 
@@ -45,7 +49,7 @@ There are a couple fields here you can edit:
 
 **iCal Links.** A link to a public `.ics` file that will be populated in the Events tab on the app for users who have added your club. If you use Google Calendar, you can retrieve a link by heading to the following section in your google calendar settings under _Public address in iCal format_.
 
-*Please double check that you are adding the iCal link corresponding to your organization calendar, not your personal calendar.*
+_Please double check that you are adding the iCal link corresponding to your organization calendar, not your personal calendar._
 
 ![](./calendar.png)
 
@@ -55,9 +59,10 @@ There are a couple fields here you can edit:
 
 ## Club Attendance & Points
 
-Attendance and points can be tracked through the app. This works through setting up different _events_, which are each worth a certain number of points. 
+Attendance and points can be tracked through the app. This works through setting up different _events_, which are each worth a certain number of points.
 
 Members can sign into these events in one of the following ways:
+
 - Scanning the auto-generated QR code using the Lynbrook App
 - Entering the 6-digit code manually on the Lynbrook App
 - Entering the 6-digit code in the web form at lynbrookasb.org
@@ -84,7 +89,7 @@ There are a couple fields you can edit:
 
 **Submission Type.** There are two "submission types". The normal one is _Code_, where users sign in by scanning a QR code or entering a numeric one. However, you can also use _File_ if you would like members to submit a photo. (File is mostly meant for ASB, but clubs can use it too.)
 
-*If your event submission type is CODE, click on your event after you save it to obtain the auto-generated QR code and corresponding 6-digit code.*
+_If your event submission type is CODE, click on your event after you save it to obtain the auto-generated QR code and corresponding 6-digit code._
 
 ### Viewing Points
 
@@ -121,5 +126,3 @@ There are a couple fields you can edit:
 **Published.** Check the box for your announcement to be published.
 
 **Polls.** Feature coming out soon!
-
-
