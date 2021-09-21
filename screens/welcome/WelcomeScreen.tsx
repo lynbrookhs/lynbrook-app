@@ -5,11 +5,11 @@ import React, { PropsWithChildren } from "react";
 import { Button, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import tw from "tailwind-react-native-classnames";
-
 import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
 import { WelcomeScreenProps } from "../../navigation/AuthNavigator";
+
 
 type WelcomeItemProps = PropsWithChildren<{
   icon: keyof typeof Ionicons.glyphMap;
@@ -46,7 +46,7 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
 
         <Stack spacing={4} divider={<Divider />}>
           <WelcomeItem icon="newspaper">
-            Stay up-to-date with announcements from LHS, ASB, and your clubs.
+            Stay up-to-date with announcements from MVHS, ASB, and your clubs.
           </WelcomeItem>
           <WelcomeItem icon="calendar">
             Check out upcoming school events and other important dates.

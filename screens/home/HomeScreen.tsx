@@ -8,7 +8,7 @@ import {
   usePrizes,
   useRequest,
   UserType,
-  useUser,
+  useUser
 } from "lynbrook-app-api-hooks";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -16,15 +16,15 @@ import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import { mutate } from "swr";
 import tw from "tailwind-react-native-classnames";
-
-import APIError from "../../components/APIError";
 import Alert from "../../components/Alert";
+import APIError from "../../components/APIError";
 import Card from "../../components/Card";
 import FilledButton from "../../components/FilledButton";
 import HeaderButton from "../../components/HeaderButton";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
+
 
 const ClassSelect = () => {
   const [selected, setSelected] = useState<number | undefined>(undefined);
@@ -191,11 +191,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         setHasPermission(status === "granted");
       } catch (e) {
         try {
-          console.log("LHS ERROR", e);
+          console.log("MVHS ERROR", e);
           const { status } = await ImagePicker.getCameraPermissionsAsync();
           setHasPermission(status === "granted");
         } catch (e2) {
-          console.log("LHS ERROR 2", e2);
+          console.log("MVHS ERROR 2", e2);
           setHasPermission(false);
         }
       }
@@ -247,7 +247,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   return (
     <ScrollView>
       <Stack spacing={4} style={tw`p-4`}>
-        <Text style={tw`text-2xl font-bold text-center`}>Lynbrook High School</Text>
+        <Text style={tw`text-2xl font-bold text-center`}>Monta Vista High School</Text>
 
         <Profile
           name={user.first_name ? `${user.first_name} ${user.last_name}` : "Guest User"}

@@ -1,8 +1,8 @@
 import { DefaultTheme, LinkingOptions } from "@react-navigation/native";
 import * as Linking from "expo-linking";
-
 import { RootStackParamList } from ".";
-import { LYNBROOK_BLUE } from "../helpers/constants";
+import { MONTAVISTA_PURPLE } from "../helpers/constants";
+
 
 const prefix = Linking.createURL("/");
 
@@ -20,7 +20,7 @@ export const linking: LinkingOptions<RootStackParamList> = {
 };
 
 export const screenOptions = {
-  headerStyle: { backgroundColor: LYNBROOK_BLUE },
+  headerStyle: { backgroundColor: MONTAVISTA_PURPLE },
   headerTintColor: "#FFFFFF",
 };
 

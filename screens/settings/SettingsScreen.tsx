@@ -6,11 +6,11 @@ import React from "react";
 import { Button, ScrollView, Text, TouchableHighlight, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import tw from "tailwind-react-native-classnames";
-
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
+
 
 type ProfileProps = {
   name: string;
@@ -82,12 +82,7 @@ const SettingsScreen = () => {
           <ResourceLink
             idx={0}
             title="Guidance & Student Support Resources"
-            url="https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
-          />
-          <ResourceLink
-            idx={1}
-            title="Lynbrook Principal Twitter"
-            url="https://twitter.com/lhsvikingprin/"
+            url="https://mvhs.fuhsd.org/guidance-student-support"
           />
         </Stack>
 
