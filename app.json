@@ -1,25 +1,25 @@
 {
   "expo": {
-    "name": "Lynbrook High School",
-    "slug": "lhs-app",
+    "name": "Monta Vista High School",
+    "slug": "mvhs-app",
     "version": "2.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "lhs",
+    "scheme": "mvhs",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#033265"
+      "backgroundColor": "#4B2D9B"
     },
-    "primaryColor": "#043265",
+    "primaryColor": "#4B2D9B",
     "updates": {
       "fallbackToCacheTimeout": 5000
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "org.fuhsd.lhs.app",
+      "bundleIdentifier": "org.fuhsd.mvhs.app",
       "buildNumber": "2.2.0",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow camera access to scan barcodes and get spirit points for events."
@@ -28,9 +28,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#033265"
+        "backgroundColor": "#4B2D9B"
       },
-      "package": "org.fuhsd.lhs.app",
+      "package": "org.fuhsd.mvhs.app",
       "versionCode": 26,
       "permissions": ["CAMERA"],
       "googleServicesFile": "./google-services.json"
@@ -42,7 +42,7 @@
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
             "organization": "lynbrook-asb",
-            "project": "app"
+            "project": "mvhs"
           }
         }
       ]

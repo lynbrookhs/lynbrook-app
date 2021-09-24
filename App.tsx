@@ -34,8 +34,8 @@ const NeedUpdate = () => (
       onPress={() =>
         Linking.openURL(
           Platform.OS === "android"
-            ? "https://play.google.com/store/apps/details?id=org.fuhsd.lhs.app"
-            : "https://apps.apple.com/us/app/lynbrook-high-school/id1530326385"
+            ? "https://play.google.com/store/apps/details?id=org.fuhsd.mvhs.app"
+            : "https://apps.apple.com/us/app/lynbrook-high-school/1444934579"
         )
       }
     >
@@ -57,7 +57,7 @@ const Root = () => {
   //       if (status !== "granted") return;
 
   //       const { data } = await Notifications.getExpoPushTokenAsync({
-  //         experienceId: "@mcparadip/lhs-app",
+  //         experienceId: "@mcparadip/mvhs-app",
   //       });
   //       await request("POST", "/users/me/tokens/", { token: data });
   //     }
@@ -85,7 +85,7 @@ const App = () => {
     data: appVersion,
     error,
     revalidate,
-  } = useSWR<AppVersion>("https://lynbrookasb.org/api/app_version/", apiFetcher());
+  } = useSWR<AppVersion>("https://mvhs.lynbrookasb.org/api/app_version/", apiFetcher());
 
   const checkUpdate = useCallback(async () => {
     revalidate();

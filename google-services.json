@@ -21,6 +21,41 @@
       "api_key": [
         {
           "current_key": "AIzaSyAKscPaJxn596Z7PK3iR2I2yUxZUmG-ASA"
+        },
+        {
+          "current_key": "AIzaSyBIFpm2IlixUmc7K_823DzWpHooEgryfhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574771813931-q7srp65022b0pdlscgbljv27hksfnqae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574771813931:android:a5a0e08e1cec839be7d46e",
+        "android_client_info": {
+          "package_name": "org.fuhsd.mvhs.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574771813931-q7srp65022b0pdlscgbljv27hksfnqae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKscPaJxn596Z7PK3iR2I2yUxZUmG-ASA"
+        },
+        {
+          "current_key": "AIzaSyBIFpm2IlixUmc7K_823DzWpHooEgryfhY"
         }
       ],
       "services": {
