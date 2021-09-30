@@ -4,7 +4,12 @@ import { BarCodeScanningResult, Camera } from "expo-camera";
 import { EventSubmissionType } from "lynbrook-app-api-hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Linking, Platform, Text, TouchableOpacity, View } from "react-native";
-import { PinchGestureHandler } from 'react-native-gesture-handler';
+import {
+  GestureEvent,
+  HandlerStateChangeEvent,
+  PinchGestureHandler,
+  PinchGestureHandlerEventPayload,
+} from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
 
@@ -83,16 +88,16 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
   );
 
   const handlePinch = useCallback(
-    event => {
+    (event: GestureEvent<PinchGestureHandlerEventPayload>) => {
       scaleZoom(event.nativeEvent.scale, pinchStartZoom);
     },
     [pinchStartZoom]
   );
 
   const handlePinchStart = useCallback(
-    event => {
+    (event: HandlerStateChangeEvent<PinchGestureHandlerEventPayload>) => {
       // only execute on pinch start
-      if (event.nativeEvent.oldState != 2) return;
+      if (event.nativeEvent.oldState !== 2) return;
       setPinchStartZoom(zoom);
       scaleZoom(event.nativeEvent.scale, zoom);
     },
@@ -114,10 +119,7 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
         barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
       }}
     >
-      <PinchGestureHandler
-        onGestureEvent={handlePinch}
-        onHandlerStateChange={handlePinchStart}
-      >
+      <PinchGestureHandler onGestureEvent={handlePinch} onHandlerStateChange={handlePinchStart}>
         <Wrapper style={tw`flex-1 relative`}>
           <View style={tw`flex-1 justify-center items-center relative`}>
             <TouchableOpacity

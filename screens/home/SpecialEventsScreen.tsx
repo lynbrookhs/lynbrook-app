@@ -4,12 +4,12 @@ import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
+
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import markdownStyles from "../../helpers/markdownStyles";
 import { SpecialEventsScreenProps } from "../../navigation/tabs/HomeNavigator";
-
 
 const CLASSES = ["2022", "2023", "2024", "2025"];
 
@@ -39,7 +39,7 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
   if (!event4) return <Loading />;
   if (!event5) return <Loading />;
   if (!event6) return <Loading />;
-  console.log(event.description)
+  console.log(event.description);
 
   return (
     <Stack style={tw`flex-1`}>
