@@ -10,6 +10,7 @@ import tw from "tailwind-react-native-classnames";
 
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
+import { MIN_ZOOM } from "../../helpers/constants";
 import { QRCodeModalProps } from "../../navigation";
 
 const NoPermission = () => (
@@ -51,6 +52,7 @@ const BorderOverlay = () => {
 const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
   const [hasPermission, setHasPermission] = useState<boolean | undefined>(undefined);
   const [scanned, setScanned] = useState(false);
+  const [pinchStartZoom, setPinchStartZoom] = useState(MIN_ZOOM);
   const [zoom, setZoom] = useState(0);
 
   useEffect(() => {
@@ -70,9 +72,31 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
     [scanned]
   );
 
-  const handlePinch = useCallback(
-    (event) => setZoom(event?.nativeEvent?.scale ?? zoom),
+  const scaleZoom = useCallback(
+    (scaleFactor: number, initialZoom: number) => {
+      const newZoom = scaleFactor * Math.max(initialZoom, MIN_ZOOM);
+      if (MIN_ZOOM <= newZoom && newZoom <= 1) {
+        setZoom(newZoom);
+      }
+    },
     [zoom]
+  );
+
+  const handlePinch = useCallback(
+    event => {
+      scaleZoom(event.nativeEvent.scale, pinchStartZoom);
+    },
+    [pinchStartZoom]
+  );
+
+  const handlePinchStart = useCallback(
+    event => {
+      // only execute on pinch start
+      if (event.nativeEvent.oldState != 2) return;
+      setPinchStartZoom(zoom);
+      scaleZoom(event.nativeEvent.scale, zoom);
+    },
+    [pinchStartZoom, zoom]
   );
 
   if (hasPermission === undefined) return <Loading />;
@@ -82,41 +106,42 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
   const Wrapper2 = Platform.OS === "android" ? View : SafeAreaView;
 
   return (
-    <PinchGestureHandler onGestureEvent={handlePinch}>
-      <View>
-        <Camera
-          zoom={zoom}
-          style={tw`flex-1`}
-          onBarCodeScanned={handleBarCodeScanned}
-          barCodeScannerSettings={{
-            barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
-          }}
-        >
-          <Wrapper style={tw`flex-1 relative`}>
-            <View style={tw`flex-1 justify-center items-center relative`}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Main", { screen: "HomeTab", params: { screen: "Home" } })
-                }
-                style={tw`absolute top-0 left-0`}
-              >
-                <Ionicons name="close" style={tw`m-4 text-2xl text-white`} />
-              </TouchableOpacity>
-              <View style={tw`w-1/2`}>
-                <BorderOverlay />
-              </View>
+    <Camera
+      zoom={zoom}
+      style={tw`flex-1`}
+      onBarCodeScanned={handleBarCodeScanned}
+      barCodeScannerSettings={{
+        barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+      }}
+    >
+      <PinchGestureHandler
+        onGestureEvent={handlePinch}
+        onHandlerStateChange={handlePinchStart}
+      >
+        <Wrapper style={tw`flex-1 relative`}>
+          <View style={tw`flex-1 justify-center items-center relative`}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Main", { screen: "HomeTab", params: { screen: "Home" } })
+              }
+              style={tw`absolute top-0 left-0`}
+            >
+              <Ionicons name="close" style={tw`m-4 text-2xl text-white`} />
+            </TouchableOpacity>
+            <View style={tw`w-1/2`}>
+              <BorderOverlay />
             </View>
-            <Wrapper2 style={tw`absolute bottom-0 left-0 right-0 items-center pb-4`}>
-              <TouchableOpacity onPress={() => navigation.replace("QRCodeEntry")}>
-                <View style={tw`bg-black bg-opacity-20 py-2 px-4 rounded-full`}>
-                  <Text style={tw`text-lg text-white`}>Enter Manually</Text>
-                </View>
-              </TouchableOpacity>
-            </Wrapper2>
-          </Wrapper>
-        </Camera>
-      </View>
-    </PinchGestureHandler>
+          </View>
+          <Wrapper2 style={tw`absolute bottom-0 left-0 right-0 items-center pb-4`}>
+            <TouchableOpacity onPress={() => navigation.replace("QRCodeEntry")}>
+              <View style={tw`bg-black bg-opacity-20 py-2 px-4 rounded-full`}>
+                <Text style={tw`text-lg text-white`}>Enter Manually</Text>
+              </View>
+            </TouchableOpacity>
+          </Wrapper2>
+        </Wrapper>
+      </PinchGestureHandler>
+    </Camera>
   );
 };
 
