@@ -104,7 +104,7 @@ If you have more advanced needs for points that are not covered by the app, you 
 In order to do so, press the _View Points_ button and copy the URL. Then, append an extra `csv/` to the end of the the URL. Lastly, you can use the `IMPORTDATA` function in Google Sheets to import the CSV file into the spreadsheet like below:
 
 ```js
-=IMPORTDATA("https://lynbrookasb.org/admin/core/organization/2/points/csv/")
+=IMPORTDATA("https://lynbrookasb.org/admin/core/organization/95/points/csv/")
 ```
 
 It is important to note that **the imported data will be read only.** Trying to overwrite values will simply break the formula. We recommend leaving this imported data alone in its own sheet, and using spreadsheet formulas in a different sheet if you need to do anything advanced.
