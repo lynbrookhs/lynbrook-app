@@ -26,7 +26,7 @@ const GuestLoginModal = ({ navigation }: GuestLoginModalProps) => {
     try {
       await signInAsGuest(values);
     } catch (error) {
-      setError(error);
+      setError(error as Error);
     }
   }, []);
 
