@@ -1,18 +1,20 @@
 import { format } from "date-fns";
-import { usePost } from "lynbrook-app-api-hooks";
+import { usePolls, usePost } from "lynbrook-app-api-hooks";
 import React, { useEffect } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";
+import Poll from "../../components/Poll";
 import Stack from "../../components/Stack";
 import markdownStyles from "../../helpers/markdownStyles";
 import { PostDetailScreenProps } from "../../navigation/tabs/NewsNavigator";
 
 const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
   const { data: post, error } = usePost(route.params.id);
+  const { data: polls, error: error2 } = usePolls(route.params.id);
 
   useEffect(() => {
     if (post) {
@@ -21,6 +23,7 @@ const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
   }, [post]);
 
   if (error) return <APIError error={error} />;
+  if (error2) return <APIError error={error2} />;
   if (!post) return <Loading />;
 
   return (
@@ -33,9 +36,12 @@ const PostDetailScreen = ({ navigation, route }: PostDetailScreenProps) => {
         </Text>
       </Stack>
       <ScrollView style={tw`bg-white flex-1`}>
-        <View style={tw`p-3`}>
+        <Stack style={tw`p-3`} spacing={2}>
           <Markdown style={markdownStyles}>{post.content}</Markdown>
-        </View>
+          {polls?.map((x) => (
+            <Poll key={x.id} poll={x} submission={x.submissions[0]} />
+          ))}
+        </Stack>
       </ScrollView>
     </Stack>
   );
