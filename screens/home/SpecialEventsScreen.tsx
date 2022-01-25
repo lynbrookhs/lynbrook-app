@@ -67,13 +67,12 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
             <Text style={tw`text-lg font-bold`}>Event Description</Text>
             <Markdown style={markdownStyles}>{event.description}</Markdown>
             {route.params.id === 278 && (
-              <Pressable onPress={() => navigation.navigate("PostDetail", { id: 363 })} disabled>
+              <Pressable onPress={() => navigation.navigate("PostDetail", { id: 363 })}>
                 {({ pressed }) => (
                   <Stack
                     style={[
                       tw`px-3 py-2 border border-transparent rounded shadow-md`,
                       pressed ? tw`bg-indigo-700` : tw`bg-indigo-600`,
-                      tw`opacity-50`,
                     ]}
                     direction="row"
                     align="center"

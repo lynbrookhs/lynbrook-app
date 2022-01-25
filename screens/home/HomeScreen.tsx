@@ -224,8 +224,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   // Events
 
-  const specialEvents = events.filter((e) => e.id === 260 || e.id === 279);
-  const regularEvents = events.filter((e) => e.id !== 260 && e.id !== 279);
+  const specialEvents = events.filter((e) => e.id === 260 || e.id === 278);
+  const regularEvents = events.filter((e) => e.id !== 260 && e.id !== 278);
 
   const getFile = async (event: Event) => {
     if (!hasPermission) return;
