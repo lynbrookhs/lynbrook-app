@@ -1,7 +1,8 @@
+import { Ionicons } from "@expo/vector-icons";
 import { format, parseISO } from "date-fns";
 import { useEvent } from "lynbrook-app-api-hooks";
 import React, { useEffect } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "tailwind-react-native-classnames";
 
@@ -65,6 +66,27 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
             ))} */}
             <Text style={tw`text-lg font-bold`}>Event Description</Text>
             <Markdown style={markdownStyles}>{event.description}</Markdown>
+            {route.params.id === 278 && (
+              <Pressable onPress={() => navigation.navigate("PostDetail", { id: 363 })} disabled>
+                {({ pressed }) => (
+                  <Stack
+                    style={[
+                      tw`px-3 py-2 border border-transparent rounded shadow-md`,
+                      pressed ? tw`bg-indigo-700` : tw`bg-indigo-600`,
+                      tw`opacity-50`,
+                    ]}
+                    direction="row"
+                    align="center"
+                    spacing={2}
+                  >
+                    <Text style={[tw`text-base text-white`]}>
+                      Voting starts at the end of lunch!
+                    </Text>
+                    <Ionicons name="arrow-forward" color="white" style={tw`text-base`} />
+                  </Stack>
+                )}
+              </Pressable>
+            )}
           </Stack>
         </View>
       </ScrollView>
