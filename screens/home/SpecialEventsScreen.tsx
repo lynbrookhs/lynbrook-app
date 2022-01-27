@@ -67,7 +67,7 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
             <Text style={tw`text-lg font-bold`}>Event Description</Text>
             <Markdown style={markdownStyles}>{event.description}</Markdown>
             {route.params.id === 278 && (
-              <Pressable onPress={() => navigation.navigate("PostDetail", { id: 364 })}>
+              <Pressable onPress={() => navigation.navigate("PostDetail", { id: 365 })}>
                 {({ pressed }) => (
                   <Stack
                     style={[
