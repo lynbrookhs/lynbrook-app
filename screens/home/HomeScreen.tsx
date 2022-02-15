@@ -216,10 +216,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const cls = user.memberships.find((x) => x.organization.type === OrganizationType.CLASS);
 
   const nextAsbPrize = prizes.find(
-    (x) => x.organization.id === asb?.organization.id && x.points > asb.points
+    (x) => x.organization.id === asb?.organization.id && x.points > asb.points - asb.points_spent
   );
   const nextClsPrize = prizes.find(
-    (x) => x.organization.id === cls?.organization.id && x.points > cls.points
+    (x) => x.organization.id === cls?.organization.id && x.points > cls.points - cls.points_spent
   );
 
   // Events
@@ -259,7 +259,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
         {asb && nextAsbPrize && (
           <SpiritPoints
-            points={asb.points}
+            points={asb.points - asb.points_spent}
             checkpoint={nextAsbPrize.points}
             checkpointPrize={nextAsbPrize.name}
             headerText="ASB Spirit Points"
@@ -268,7 +268,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
         {cls && nextClsPrize && (
           <SpiritPoints
-            points={cls.points}
+            points={cls.points - cls.points_spent}
             checkpoint={nextClsPrize.points}
             checkpointPrize={nextClsPrize.name}
             headerText={`${cls.organization.name} Spirit Points`}

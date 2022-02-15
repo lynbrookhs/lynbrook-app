@@ -13,9 +13,10 @@ import { RewardsScreenProps } from "../../navigation/tabs/HomeNavigator";
 type RewardItemProps = {
   prize: Prize;
   canClaim: boolean;
+  onPress: () => void;
 };
 
-const RewardItem = ({ prize, canClaim }: RewardItemProps) => (
+const RewardItem = ({ prize, canClaim, onPress }: RewardItemProps) => (
   <Card
     header={
       <Stack direction="row" align="center">
@@ -29,7 +30,7 @@ const RewardItem = ({ prize, canClaim }: RewardItemProps) => (
   >
     <Stack spacing={4}>
       <Text style={tw`text-sm`}>{prize.description}</Text>
-      <FilledButton textStyle={tw`text-center`} disabled={!canClaim}>
+      <FilledButton textStyle={tw`text-center`} disabled={!canClaim} onPress={onPress}>
         {canClaim ? "Claim" : "Not Enough Points"}
       </FilledButton>
     </Stack>
@@ -57,7 +58,12 @@ const RewardsScreen = ({ navigation }: RewardsScreenProps) => {
           <RewardItem
             key={item.id}
             prize={item}
-            canClaim={membershipsByOrg[item.organization.id].points >= item.points}
+            canClaim={
+              membershipsByOrg[item.organization.id].points -
+                membershipsByOrg[item.organization.id].points_spent >=
+              item.points
+            }
+            onPress={() => navigation.navigate("RewardsClaimed", { prize: item })}
           />
         ))}
       </Stack>
