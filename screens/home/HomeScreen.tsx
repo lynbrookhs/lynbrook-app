@@ -79,13 +79,20 @@ const Profile = ({ name, email, uri }: ProfileProps) => (
 );
 
 type SpiritPointsProps = {
+  navigation: HomeScreenProps["navigation"];
   points: number;
   checkpoint: number;
   checkpointPrize: string;
   headerText?: string;
 };
 
-const SpiritPoints = ({ points, checkpoint, checkpointPrize, headerText }: SpiritPointsProps) => (
+const SpiritPoints = ({
+  navigation,
+  points,
+  checkpoint,
+  checkpointPrize,
+  headerText,
+}: SpiritPointsProps) => (
   <Card header={headerText && <Text style={tw`text-lg font-bold`}>{headerText}</Text>}>
     <Stack direction="row" spacing={6} align="center">
       <ProgressCircle
@@ -102,9 +109,24 @@ const SpiritPoints = ({ points, checkpoint, checkpointPrize, headerText }: Spiri
           <Text style={tw`text-4xl font-bold`}>{points}</Text>
           <Text style={tw`text-xl`}>/ {checkpoint}</Text>
         </Stack>
-        <Text>
-          {checkpoint - points} points to a <Text style={tw`text-blue-500`}>{checkpointPrize}</Text>
-        </Text>
+
+        <Stack spacing={2}>
+          {checkpoint > points ? (
+            <Text>
+              {checkpoint - points} points to a{" "}
+              <Text style={tw`text-blue-500`}>{checkpointPrize}</Text>
+            </Text>
+          ) : (
+            <>
+              <Text>
+                You can claim a <Text style={tw`text-blue-500`}>{checkpointPrize}</Text>!
+              </Text>
+              <FilledButton onPress={() => navigation.navigate("Rewards")}>
+                Claim Reward
+              </FilledButton>
+            </>
+          )}
+        </Stack>
       </Stack>
     </Stack>
   </Card>
@@ -215,12 +237,15 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const asb = user.memberships.find((x) => x.organization.id === 2);
   const cls = user.memberships.find((x) => x.organization.type === OrganizationType.CLASS);
 
-  const nextAsbPrize = prizes.find(
-    (x) => x.organization.id === asb?.organization.id && x.points > asb.points - asb.points_spent
-  );
-  const nextClsPrize = prizes.find(
-    (x) => x.organization.id === cls?.organization.id && x.points > cls.points - cls.points_spent
-  );
+  const nextAsbPrize =
+    prizes.find(
+      (x) => x.organization.id === asb?.organization.id && x.points > asb.points - asb.points_spent
+    ) ?? prizes.find((x) => x.organization.id === asb?.organization.id);
+
+  const nextClsPrize =
+    prizes.find(
+      (x) => x.organization.id === cls?.organization.id && x.points > cls.points - cls.points_spent
+    ) ?? prizes.find((x) => x.organization.id === cls?.organization.id);
 
   // Events
 
@@ -261,6 +286,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
         {asb && nextAsbPrize && (
           <SpiritPoints
+            navigation={navigation}
             points={asb.points - asb.points_spent}
             checkpoint={nextAsbPrize.points}
             checkpointPrize={nextAsbPrize.name}
