@@ -225,7 +225,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // Events
 
   const specialEvents = events.filter((e) => e.id === 260 || e.id === 278);
-  const regularEvents = events.filter((e) => e.id !== 260 && e.id !== 278);
+  const regularEvents = events.filter((e) => ![260, 278, 386].includes(e.id));
+
+  const wordleEvents = events.filter((e) => e.id === 386);
 
   const getFile = async (event: Event) => {
     if (!hasPermission) return;
@@ -283,6 +285,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             event={x}
             onPress={() => navigation.navigate("Special", { id: x.id })}
           />
+        ))}
+
+        {wordleEvents.map((x) => (
+          <SpecialEventItem key={x.id} event={x} onPress={() => navigation.navigate("Wordle")} />
         ))}
 
         {regularEvents.map((x) => (

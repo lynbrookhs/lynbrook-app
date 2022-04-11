@@ -44,7 +44,7 @@ const Alert = ({
         </Stack>
         <Text style={tw`text-sm text-${color}-700 ml-8`}>{description}</Text>
       </View>
-      <View>{children}</View>
+      {children && <View>{children}</View>}
     </Stack>
   );
 };
