@@ -1,8 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useCurrentWordleEntry, useRequest } from "lynbrook-app-api-hooks";
+import { useCurrentWordleEntry, useRequest, useUser, WordleEntry } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
@@ -18,22 +17,35 @@ type GuessLetterProps = {
   letter?: string;
 };
 
-const GuessLetter = ({ state, letter }: GuessLetterProps) => (
-  <View
-    style={[
-      tw`flex-1 border border-2 justify-center items-center pt-1`,
-      state === undefined && tw`bg-white border-gray-300`,
-      state === null && tw`bg-gray-400 border-gray-400`,
-      state === false && { backgroundColor: YELLOW, borderColor: YELLOW },
-      state === true && { backgroundColor: GREEN, borderColor: GREEN },
-      { aspectRatio: 1 },
-    ]}
-  >
-    <Text style={[tw`text-4xl font-bold`, state === undefined ? tw`text-black` : tw`text-white`]}>
-      {letter?.toUpperCase()}
-    </Text>
-  </View>
-);
+const GuessLetter = ({ state, letter }: GuessLetterProps) => {
+  const [size, setSize] = useState(0);
+
+  return (
+    <Stack
+      onLayout={({ nativeEvent }) => setSize(nativeEvent.layout.height)}
+      direction="row"
+      align="center"
+      style={[
+        tw`border border-2`,
+        state === undefined && tw`bg-white border-gray-300`,
+        state === null && tw`bg-gray-400 border-gray-400`,
+        state === false && { backgroundColor: YELLOW, borderColor: YELLOW },
+        state === true && { backgroundColor: GREEN, borderColor: GREEN },
+        { aspectRatio: 1 },
+      ]}
+    >
+      <Text
+        style={[
+          tw`w-full font-bold text-center`,
+          state === undefined ? tw`text-black` : tw`text-white`,
+          { fontSize: size / 2 },
+        ]}
+      >
+        {letter?.toUpperCase()}
+      </Text>
+    </Stack>
+  );
+};
 
 type GuessProps = {
   state?: (null | false | true)[];
@@ -41,7 +53,7 @@ type GuessProps = {
 };
 
 const Guess = ({ state, word }: GuessProps) => (
-  <Stack direction="row" spacing={2}>
+  <Stack direction="row" style={tw`flex-1 justify-center`} spacing={2}>
     {[...Array(5).keys()].map((x) => (
       <GuessLetter letter={word?.charAt(x)} state={state?.[x]} key={x} />
     ))}
@@ -112,7 +124,7 @@ const Keyboard = ({ state, onPress, onEnter, onBackspace }: KeyboardProps) => {
 
       <Stack direction="row">
         <KeyboardLetter onPress={onEnter} width={3}>
-          <Ionicons name="enter" style={tw`text-2xl`} />
+          <Ionicons name="return-down-back-sharp" style={tw`text-2xl`} />
         </KeyboardLetter>
 
         {[..."zxcvbnm"].map((x) => (
@@ -129,18 +141,41 @@ const Keyboard = ({ state, onPress, onEnter, onBackspace }: KeyboardProps) => {
   );
 };
 
+type WordleBoardProps = {
+  entry: WordleEntry;
+  guess: string;
+};
+
+const WordleBoard = ({ entry, guess }: WordleBoardProps) => (
+  <Stack style={{ flexBasis: 380, flexShrink: 1 }} spacing={2}>
+    {entry.guesses.map((x, idx) => (
+      <Guess key={x} word={x} state={entry.results[idx]} />
+    ))}
+    {entry.guesses.length < 6 && <Guess word={guess} />}
+    {entry.guesses.length <= 5 &&
+      [...Array(5 - entry.guesses.length).keys()].map((x) => <Guess key={x} />)}
+  </Stack>
+);
+
 const WordleScreen = ({ navigation }: WordleScreenProps) => {
   const [guess, setGuess] = useState("");
 
-  const { data: wordleEntry, error, mutate } = useCurrentWordleEntry();
-  const { request, error: error2 } = useRequest();
+  const { data: user, error, mutate } = useUser();
+  const { data: wordleEntry, error: error2, mutate: mutate2 } = useCurrentWordleEntry();
+  const { request } = useRequest();
 
   if (error) return <APIError error={error} />;
+  if (error2) return <APIError error={error2} />;
+  if (!user) return <Loading />;
   if (!wordleEntry) return <Loading />;
 
   const handleEnter = async () => {
-    await request("PUT", "/users/me/wordle_entries/today/", { guesses: [guess.toLowerCase()] });
-    await mutate();
+    if (wordleEntry.solved) return;
+    const result = await request("PUT", "/users/me/wordle_entries/today/", {
+      guesses: [guess.toLowerCase()],
+    });
+    mutate();
+    mutate2(result);
     setGuess("");
   };
 
@@ -148,36 +183,32 @@ const WordleScreen = ({ navigation }: WordleScreenProps) => {
   const handleBackspace = () => setGuess(guess.substring(0, Math.max(guess.length - 1, 0)));
 
   return (
-    <ScrollView style={tw`bg-white flex-1`}>
-      <Stack style={tw`p-4`} align="center" spacing={6}>
-        {error2 && <APIError error={error2} style={tw`m-0 self-stretch`} />}
+    <Stack style={tw`bg-white flex-1 p-4 justify-between`} spacing={4}>
+      <WordleBoard entry={wordleEntry} guess={wordleEntry.solved ? "" : guess} />
 
-        <Stack style={tw`max-w-xs mx-auto`} align="center" spacing={2}>
-          {wordleEntry.guesses.map((x, idx) => (
-            <Guess key={x} word={x} state={wordleEntry.results[idx]} />
-          ))}
-          {wordleEntry.guesses.length < 6 && <Guess word={guess} />}
-          {wordleEntry.guesses.length <= 5 &&
-            [...Array(5 - wordleEntry.guesses.length).keys()].map((x) => <Guess key={x} />)}
+      {wordleEntry.solved ? (
+        <Stack align="center" style={tw`justify-center h-24`}>
+          <Text style={tw`text-lg text-gray-500`}>Congratulations!</Text>
+          <Text style={tw`text-lg text-gray-500`}>
+            Your streak: <Text style={tw`font-bold`}>{user.wordle_streak}</Text>
+          </Text>
         </Stack>
-
-        {wordleEntry.guesses.length < 6 ? (
-          <Keyboard
-            state={wordleEntry.state}
-            onPress={handlePress}
-            onEnter={handleEnter}
-            onBackspace={handleBackspace}
-          />
-        ) : (
-          <Stack align="center">
-            <Text style={tw`text-lg text-gray-500`}>
-              The word was <Text style={tw`font-bold`}>{wordleEntry.word.toUpperCase()}</Text>.
-            </Text>
-            <Text style={tw`text-lg text-gray-500`}>Better luck next time!</Text>
-          </Stack>
-        )}
-      </Stack>
-    </ScrollView>
+      ) : wordleEntry.guesses.length < 6 ? (
+        <Keyboard
+          state={wordleEntry.state}
+          onPress={handlePress}
+          onEnter={handleEnter}
+          onBackspace={handleBackspace}
+        />
+      ) : (
+        <Stack align="center">
+          <Text style={tw`text-lg text-gray-500`}>
+            The word was <Text style={tw`font-bold`}>{wordleEntry.word.toUpperCase()}</Text>.
+          </Text>
+          <Text style={tw`text-lg text-gray-500`}>Better luck next time!</Text>
+        </Stack>
+      )}
+    </Stack>
   );
 };
 
