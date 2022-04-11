@@ -187,9 +187,10 @@ const WordleScreen = ({ navigation }: WordleScreenProps) => {
       <WordleBoard entry={wordleEntry} guess={wordleEntry.solved ? "" : guess} />
 
       {wordleEntry.solved ? (
-        <Stack align="center" style={tw`justify-center h-24`}>
+        <Stack align="center" style={tw`justify-center h-48`} spacing={2}>
           <Text style={tw`text-lg text-gray-500`}>Congratulations!</Text>
-          <Text style={tw`text-lg text-gray-500`}>
+          <Text style={tw`text-base text-gray-500`}>You have received 2 Lynbrook ASB points.</Text>
+          <Text style={tw`text-base text-gray-500`}>
             Your streak: <Text style={tw`font-bold`}>{user.wordle_streak}</Text>
           </Text>
         </Stack>
@@ -201,11 +202,11 @@ const WordleScreen = ({ navigation }: WordleScreenProps) => {
           onBackspace={handleBackspace}
         />
       ) : (
-        <Stack align="center">
+        <Stack align="center" style={tw`justify-center h-48`} spacing={2}>
           <Text style={tw`text-lg text-gray-500`}>
             The word was <Text style={tw`font-bold`}>{wordleEntry.word.toUpperCase()}</Text>.
           </Text>
-          <Text style={tw`text-lg text-gray-500`}>Better luck next time!</Text>
+          <Text style={tw`text-base text-gray-500`}>Better luck next time!</Text>
         </Stack>
       )}
     </Stack>
