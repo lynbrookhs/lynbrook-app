@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useCurrentWordleEntry, useRequest, useUser, WordleEntry } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 
 import APIError from "../../components/APIError";
@@ -67,7 +67,7 @@ type KeyboardLetterProps = PropsWithChildren<{
 }>;
 
 const KeyboardLetter = ({ state, width = 2, children, onPress }: KeyboardLetterProps) => (
-  <Pressable onPress={onPress} style={[tw`flex-1 h-16`, { flexGrow: width, padding: 2 }]}>
+  <TouchableOpacity onPress={onPress} style={[tw`flex-1 h-16`, { flexGrow: width, padding: 2 }]}>
     <View
       style={[
         tw`flex-1 justify-center items-center rounded`,
@@ -81,7 +81,7 @@ const KeyboardLetter = ({ state, width = 2, children, onPress }: KeyboardLetterP
         {children}
       </Text>
     </View>
-  </Pressable>
+  </TouchableOpacity>
 );
 
 type KeyboardSpacerProps = {
