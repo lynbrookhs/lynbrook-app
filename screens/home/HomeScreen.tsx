@@ -224,8 +224,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   // Events
 
-  const specialEvents = events.filter((e) => e.id === 260 || e.id === 278);
-  const regularEvents = events.filter((e) => ![260, 278, 386].includes(e.id));
+  const specialEvents = events.filter((e) => [260, 278, 389].includes(e.id));
+  const regularEvents = events.filter((e) => ![260, 278, 386, 389].includes(e.id));
 
   const wordleEvents = events.filter((e) => e.id === 386);
 
