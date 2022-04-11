@@ -122,7 +122,7 @@ const SpecialEventItem = ({ event, onPress }: SpecialEventItemProps) => (
         <Text style={tw`text-lg font-bold`}>{event.name}</Text>
         <Text style={tw`text-sm`}>{event.organization.name}</Text>
       </Stack>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress} style={tw`bg-red-500 px-4 py-2`}>
         <Ionicons name="arrow-forward" style={tw`text-xl`} />
       </TouchableOpacity>
     </Stack>
