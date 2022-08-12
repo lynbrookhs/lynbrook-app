@@ -45,7 +45,7 @@ const ClassSelect = () => {
       description="Please select your graduation year to gain access to all the features of this app."
     >
       <Stack direction="row" spacing={2}>
-        {[2025, 2024, 2023, 2022].map((x) => (
+        {[2026, 2025, 2024, 2023].map((x) => (
           <FilledButton
             key={x}
             style={tw`flex-1`}
