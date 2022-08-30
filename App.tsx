@@ -1,8 +1,10 @@
 import Constants, { AppOwnership } from "expo-constants";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 import * as SecureStore from "expo-secure-store";
 import { StatusBar } from "expo-status-bar";
 import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from "expo-updates";
-import { apiFetcher, AppVersion, AuthProvider } from "lynbrook-app-api-hooks";
+import { apiFetcher, AppVersion, AuthProvider, useAuth, useRequest } from "lynbrook-app-api-hooks";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, AppState, AppStateStatus, Linking, Platform, Text } from "react-native";
 import "react-native-gesture-handler";
@@ -45,33 +47,33 @@ const NeedUpdate = () => (
 );
 
 const Root = () => {
-  // const { token } = useAuth();
-  // const { request } = useRequest();
+  const { token } = useAuth();
+  const { request } = useRequest();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (!token) return;
+  useEffect(() => {
+    (async () => {
+      if (!token) return;
 
-  //     if (Constants.isDevice) {
-  //       const { status } = await Notifications.requestPermissionsAsync();
-  //       if (status !== "granted") return;
+      if (Device.isDevice) {
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status !== "granted") return;
 
-  //       const { data } = await Notifications.getExpoPushTokenAsync({
-  //         experienceId: "@mcparadip/lhs-app",
-  //       });
-  //       await request("POST", "/users/me/tokens/", { token: data });
-  //     }
+        const { data } = await Notifications.getExpoPushTokenAsync({
+          experienceId: "@mcparadip/lhs-app",
+        });
+        await request("POST", "/users/me/tokens/", { token: data });
+      }
 
-  //     if (Platform.OS === "android") {
-  //       await Notifications.setNotificationChannelAsync("default", {
-  //         name: "default",
-  //         importance: Notifications.AndroidImportance.MAX,
-  //         vibrationPattern: [0, 250, 250, 250],
-  //         lightColor: "#FF231F7C",
-  //       });
-  //     }
-  //   })();
-  // }, [token]);
+      if (Platform.OS === "android") {
+        await Notifications.setNotificationChannelAsync("default", {
+          name: "default",
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: "#FF231F7C",
+        });
+      }
+    })();
+  }, [token]);
 
   return <Navigation />;
 };
