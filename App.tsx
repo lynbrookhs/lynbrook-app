@@ -10,7 +10,6 @@ import { Alert, AppState, AppStateStatus, Linking, Platform, Text } from "react-
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as semver from "semver";
-import * as Sentry from "sentry-expo";
 import useSWR from "swr";
 import { useSWRNativeRevalidate } from "swr-react-native";
 import tw from "tailwind-react-native-classnames";
@@ -20,8 +19,6 @@ import Loading from "./components/Loading";
 import Stack from "./components/Stack";
 import useCachedResources from "./helpers/useCachedResources";
 import Navigation from "./navigation";
-
-Sentry.init({ dsn: "https://24af5d48ffe84346ad39a6dd6f304ff0@o951004.ingest.sentry.io/5899693" });
 
 const isActive = (x: AppStateStatus) => x === "active";
 
