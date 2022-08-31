@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Lynbrook High School",
+    "owner": "lynbrookhs",
     "slug": "lhs-app",
     "version": "2.3.0",
     "orientation": "portrait",
@@ -48,7 +49,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon.png",
+          "icon": "./assets/images/icon.png",
           "color": "#ffffff"
         }
       ]
