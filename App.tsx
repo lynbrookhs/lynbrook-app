@@ -56,7 +56,7 @@ const Root = () => {
         if (status !== "granted") return;
 
         const { data } = await Notifications.getExpoPushTokenAsync({
-          experienceId: "@mcparadip/lhs-app",
+          experienceId: "@lynbrookhs/lhs-app",
         });
         await request("POST", "/users/me/tokens/", { token: data });
       }
