@@ -14,13 +14,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Set environment variables
-        uses: iamtheyammer/branch-env-vars@v1.0.3
-        with:
-          RELEASE_CHANNEL: |
-            master:staging
-            production:default
-
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -51,4 +44,4 @@ jobs:
         run: npm run test:ci
 
       - name: Publish update
-        run: expo publish --release-channel $RELEASE_CHANNEL
+        run: eas update --auto
