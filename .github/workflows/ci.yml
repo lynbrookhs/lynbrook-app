@@ -14,14 +14,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Set environment variables
-        uses: iamtheyammer/branch-env-vars@v1.0.3
-        with:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          RELEASE_CHANNEL: |
-            master:staging
-            production:default
-
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -38,7 +30,8 @@ jobs:
       - name: Setup Expo
         uses: expo/expo-github-action@v6
         with:
-          expo-version: 4.x
+          expo-version: latest
+          eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
           packager: npm
 
@@ -52,4 +45,4 @@ jobs:
         run: npm run test:ci
 
       - name: Publish update
-        run: expo publish --release-channel $RELEASE_CHANNEL
+        run: eas update --auto

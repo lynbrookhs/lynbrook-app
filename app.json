@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "Lynbrook High School",
+    "owner": "lynbrookhs",
     "slug": "lhs-app",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "lhs",
@@ -14,13 +15,14 @@
     },
     "primaryColor": "#043265",
     "updates": {
-      "fallbackToCacheTimeout": 5000
+      "fallbackToCacheTimeout": 5000,
+      "url": "https://u.expo.dev/292b39d0-78fe-49f6-b287-831989dafb2f"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.fuhsd.lhs.app",
-      "buildNumber": "2.2.0",
+      "buildNumber": "2.3.0",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow camera access to scan barcodes and get spirit points for events."
       }
@@ -31,21 +33,26 @@
         "backgroundColor": "#033265"
       },
       "package": "org.fuhsd.lhs.app",
-      "versionCode": 26,
+      "versionCode": 27,
       "permissions": ["CAMERA"],
       "googleServicesFile": "./google-services.json"
     },
-    "plugins": ["sentry-expo"],
-    "hooks": {
-      "postPublish": [
+    "extra": {
+      "eas": {
+        "projectId": "292b39d0-78fe-49f6-b287-831989dafb2f"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
         {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "lynbrook-asb",
-            "project": "app"
-          }
+          "icon": "./assets/images/icon.png",
+          "color": "#ffffff"
         }
       ]
-    }
+    ]
   }
 }
