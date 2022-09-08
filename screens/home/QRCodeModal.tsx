@@ -11,7 +11,7 @@ import {
   PinchGestureHandlerEventPayload,
 } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";

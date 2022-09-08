@@ -4,7 +4,7 @@ import { useEvent } from "lynbrook-app-api-hooks";
 import React, { useEffect } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";

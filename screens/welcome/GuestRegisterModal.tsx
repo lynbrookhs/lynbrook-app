@@ -11,7 +11,7 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";

@@ -5,7 +5,7 @@ import { OrganizationType, useMemberships, useSignOut, useUser } from "lynbrook-
 import React from "react";
 import { Button, ScrollView, Text, TouchableHighlight, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";

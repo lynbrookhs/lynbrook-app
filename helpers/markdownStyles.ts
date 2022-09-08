@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 const markdownStyles = StyleSheet.create({
   heading1: tw`text-3xl font-bold mb-2`,

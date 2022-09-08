@@ -7,7 +7,7 @@ import {
   Text,
   TextStyle,
 } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import Stack from "./Stack";
 

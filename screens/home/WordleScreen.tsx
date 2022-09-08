@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useCurrentWordleEntry, useRequest, useUser, WordleEntry } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";

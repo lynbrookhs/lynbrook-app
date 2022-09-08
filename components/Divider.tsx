@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ViewProps } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 export type DividerProps = ViewProps;
 

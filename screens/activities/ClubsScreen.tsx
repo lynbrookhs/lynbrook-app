@@ -10,7 +10,7 @@ import {
 } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren, useCallback, useLayoutEffect, useState } from "react";
 import { SectionList, Text, TouchableHighlight, TouchableOpacity } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import HeaderButton from "../../components/HeaderButton";

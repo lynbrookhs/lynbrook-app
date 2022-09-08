@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { Text } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import Stack, { StackProps } from "./Stack";
 

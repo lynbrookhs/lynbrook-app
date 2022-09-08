@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { EventSubmissionType } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import Stack from "../../components/Stack";
 import { QRCodeEntryModalProps } from "../../navigation";

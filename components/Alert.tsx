@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { PropsWithChildren } from "react";
 import { Text, View, ViewProps } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import Stack from "./Stack";
 

@@ -1,7 +1,7 @@
 import { NestedMembership, Prize, usePrizes, useUser } from "lynbrook-app-api-hooks";
 import React from "react";
 import { ScrollView, Text } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";

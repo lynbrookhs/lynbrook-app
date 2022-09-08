@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { Post, usePosts } from "lynbrook-app-api-hooks";
 import React from "react";
 import { FlatList, Text, TouchableHighlight } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import ListItem from "../../components/ListItem";

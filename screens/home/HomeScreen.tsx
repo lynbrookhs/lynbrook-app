@@ -15,7 +15,7 @@ import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native"
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import { mutate } from "swr";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Alert from "../../components/Alert";

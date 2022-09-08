@@ -1,6 +1,6 @@
 import React, { cloneElement, ReactElement } from "react";
 import { Button, Text } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";

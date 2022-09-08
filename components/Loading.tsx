@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import { LYNBROOK_BLUE } from "../helpers/constants";
 

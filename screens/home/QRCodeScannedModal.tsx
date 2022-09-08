@@ -5,7 +5,7 @@ import { apiPath, Event, EventSubmissionType, useRequest } from "lynbrook-app-ap
 import React, { cloneElement, ReactElement, useEffect, useState } from "react";
 import { Button, Text } from "react-native";
 import { mutate } from "swr";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";

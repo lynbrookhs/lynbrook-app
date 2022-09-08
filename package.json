@@ -64,7 +64,7 @@
     "semver": "^7.3.5",
     "swr": "^0.5.6",
     "swr-react-native": "^0.1.2",
-    "tailwind-react-native-classnames": "^1.4.2",
+    "twrnc": "^3.4.0",
     "use-subscription": "^1.5.1",
     "yargs": "^17.5.1"
   },

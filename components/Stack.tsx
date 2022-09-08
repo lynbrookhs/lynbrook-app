@@ -1,7 +1,7 @@
 import React, { Fragment, PropsWithChildren, ReactNode } from "react";
 import flattenChildren from "react-flatten-children";
 import { View, ViewProps } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 export type StackProps = PropsWithChildren<ViewProps> & {
   direction?: "row" | "col";

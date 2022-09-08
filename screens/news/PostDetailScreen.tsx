@@ -3,7 +3,7 @@ import { usePolls, usePost } from "lynbrook-app-api-hooks";
 import React, { useEffect } from "react";
 import { ScrollView, Text } from "react-native";
 import Markdown from "react-native-markdown-display";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Loading from "../../components/Loading";

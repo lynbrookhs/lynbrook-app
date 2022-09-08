@@ -3,7 +3,7 @@ import { Poll as Poll_, PollSubmission, PollType, useRequest } from "lynbrook-ap
 import React, { useState } from "react";
 import { Pressable, Text } from "react-native";
 import { mutate } from "swr";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "./APIError";
 import Card from "./Card";

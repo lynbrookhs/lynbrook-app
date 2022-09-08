@@ -1,7 +1,7 @@
 import { Error } from "lynbrook-app-api-hooks";
 import React, { useEffect, useMemo } from "react";
 import { ViewProps } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import Alert from "./Alert";
 

@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as React from "react";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 type TabBarIconProps = {
   name: React.ComponentProps<typeof Ionicons>["name"];

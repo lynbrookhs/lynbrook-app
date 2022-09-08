@@ -4,7 +4,7 @@ import { useSignInWithProvider } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren } from "react";
 import { Button, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";

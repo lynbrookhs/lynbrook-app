@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { Agenda, AgendaThemeStyle } from "react-native-calendars";
 import useSWRNative from "swr-react-native";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
 
 import APIError from "../../components/APIError";
 import Card from "../../components/Card";
