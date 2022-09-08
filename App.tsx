@@ -72,6 +72,15 @@ const Root = () => {
     })();
   }, [token]);
 
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response);
+      Linking.openURL("lhs://posts");
+    });
+
+    return () => subscription.remove();
+  });
+
   return <Navigation />;
 };
 
