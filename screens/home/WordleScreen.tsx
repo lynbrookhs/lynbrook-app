@@ -189,7 +189,9 @@ const WordleScreen = ({ navigation }: WordleScreenProps) => {
       {wordleEntry.solved ? (
         <Stack align="center" style={tw`justify-center h-48`} spacing={2}>
           <Text style={tw`text-lg text-gray-500`}>Congratulations!</Text>
-          <Text style={tw`text-base text-gray-500`}>You have received 2 Lynbrook ASB points.</Text>
+          <Text style={tw`text-base text-gray-500`}>
+            You have received {wordleEntry.points} Lynbrook ASB points.
+          </Text>
           <Text style={tw`text-base text-gray-500`}>
             Your streak: <Text style={tw`font-bold`}>{user.wordle_streak}</Text>
           </Text>
