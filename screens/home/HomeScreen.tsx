@@ -47,7 +47,7 @@ const ClassSelect = () => {
       <Stack direction="row" spacing={2}>
         {[2028, 2027, 2026, 2025].map((x) => (
           <FilledButton
-            key={x}
+            key={x} 
             style={tw`flex-1`}
             textStyle={tw`text-center`}
             disabled={selected === x}
