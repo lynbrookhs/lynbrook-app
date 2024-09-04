@@ -1,13 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
-import Barcode from "@kichiyaki/react-native-barcode-generator";
+// import Barcode from "@kichiyaki/react-native-barcode-generator";
 import Constants from "expo-constants";
 import * as Linking from "expo-linking";
-import * as SecureStore from "expo-secure-store";
+// import * as SecureStore from "expo-secure-store";
 import { OrganizationType, useMemberships, useSignOut, useUser } from "lynbrook-app-api-hooks";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button, ScrollView, Text, TouchableHighlight, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
-import { TextInput } from "react-native-gesture-handler";
+// import { TextInput } from "react-native-gesture-handler";
 import tw from "twrnc";
 
 import APIError from "../../components/APIError";
@@ -35,6 +35,7 @@ const Profile = ({ name, email, uri }: ProfileProps) => (
   </ListItem>
 );
 
+/*
 const StudentID = () => {
   const [id, _setId] = useState<string | undefined>(undefined);
 
@@ -73,6 +74,7 @@ const StudentID = () => {
     </ListItem>
   );
 };
+*/
 
 type ResourceLinkProps = {
   idx: number;
@@ -111,8 +113,8 @@ const SettingsScreen = () => {
           email={user.email}
           uri={user.picture_url}
         />
-
-        <StudentID />
+        
+        {/* <StudentID /> */}
 
         {mainOrgs.map((x) => (
           <Stack key={x.id}>
