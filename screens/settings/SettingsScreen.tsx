@@ -128,12 +128,12 @@ const SettingsScreen = () => {
           <ResourceLink
             idx={0}
             title="Guidance & Student Support Resources"
-            url="https://lhs.fuhsd.org/guidance-student-support/high-school-planning/forms-and-quicklinks"
+            url="https://lhs.fuhsd.org/guidance-student-support/high-school-planning/"
           />
           <ResourceLink
             idx={1}
-            title="Lynbrook Principal Twitter"
-            url="https://twitter.com/lhsvikingprin/"
+            title="Lynbrook Principal Instagram"
+            url="https://www.instagram.com/lynbrookvikes/"
           />
         </Stack>
 
