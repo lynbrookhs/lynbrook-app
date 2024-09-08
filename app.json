@@ -53,6 +53,9 @@
           "color": "#ffffff"
         }
       ]
-    ]
+    ],
+    "projectNameForProxy": "@owner/slug",
+    "currentFullName": "@owner/slug",
+    "originalFullName": "@owner/slug"
   }
 }
