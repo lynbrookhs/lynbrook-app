@@ -29,7 +29,7 @@ const RewardItem = ({ prize, canClaim, onPress }: RewardItemProps) => (
     }
   >
     <Stack spacing={4}>
-      <Text style={tw`text-sm`}>{prize.description}</Text>
+      <Text style={tw`text-sm`}>{prize.description + "\n \n Please only click the claim button below in front of Ms. Lawrence as that will subtract your points"}</Text>
       <FilledButton textStyle={tw`text-center`} disabled={!canClaim} onPress={onPress}>
         {canClaim ? "Claim" : "Not Enough Points"}
       </FilledButton>
