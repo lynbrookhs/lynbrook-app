@@ -1,5 +1,4 @@
 import { NestedMembership, Prize, usePrizes, useUser } from "lynbrook-app-api-hooks";
-import React from "react";
 import { ScrollView, Text } from "react-native";
 import tw from "twrnc";
 
@@ -29,7 +28,10 @@ const RewardItem = ({ prize, canClaim, onPress }: RewardItemProps) => (
     }
   >
     <Stack spacing={4}>
-      <Text style={tw`text-sm`}>{prize.description + "\n \n Please only click the claim button below in front of Ms. Lawrence as that will subtract your points"}</Text>
+      <Text style={tw`text-sm`}>
+        {prize.description +
+          "\n \n Please only click the claim button below in front of Ms. Lawrence as that will subtract your points"}
+      </Text>
       <FilledButton textStyle={tw`text-center`} disabled={!canClaim} onPress={onPress}>
         {canClaim ? "Claim" : "Not Enough Points"}
       </FilledButton>
@@ -60,7 +62,7 @@ const RewardsScreen = ({ navigation }: RewardsScreenProps) => {
             prize={item}
             canClaim={
               membershipsByOrg[item.organization.id].points -
-                membershipsByOrg[item.organization.id].points_spent >=
+              membershipsByOrg[item.organization.id].points_spent >=
               item.points
             }
             onPress={() => navigation.navigate("RewardsClaimed", { prize: item })}

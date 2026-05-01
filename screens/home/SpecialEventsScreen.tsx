@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { format, parseISO } from "date-fns";
 import { useEvent } from "lynbrook-app-api-hooks";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import tw from "twrnc";
@@ -11,8 +11,6 @@ import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import markdownStyles from "../../helpers/markdownStyles";
 import { SpecialEventsScreenProps } from "../../navigation/tabs/HomeNavigator";
-
-const CLASSES = ["2026", "2027", "2028", "2029"]; 
 
 const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) => {
   const { data: event, error } = useEvent(route.params.id);
@@ -40,8 +38,6 @@ const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) =>
   if (!event4) return <Loading />;
   if (!event5) return <Loading />;
   if (!event6) return <Loading />;
-  console.log(event.description);
-
   return (
     <Stack style={tw`flex-1`}>
       <Stack spacing={1} style={tw`bg-white border-b border-gray-200 p-4`}>

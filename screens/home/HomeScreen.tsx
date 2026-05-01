@@ -10,7 +10,7 @@ import {
   UserType,
   useUser,
 } from "lynbrook-app-api-hooks";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
@@ -34,7 +34,6 @@ const ClassSelect = () => {
     if (selected !== undefined) return;
     setSelected(year);
     const res = await request("PUT", "/users/me/", { grad_year: year });
-    console.log(res);
     mutate("/users/me/");
   };
 
@@ -47,7 +46,7 @@ const ClassSelect = () => {
       <Stack direction="row" spacing={2}>
         {[2029, 2028, 2027, 2026].map((x) => (
           <FilledButton
-            key={x} 
+            key={x}
             style={tw`flex-1`}
             textStyle={tw`text-center`}
             disabled={selected === x}
@@ -213,11 +212,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         setHasPermission(status === "granted");
       } catch (e) {
         try {
-          console.log("LHS ERROR", e);
           const { status } = await ImagePicker.getCameraPermissionsAsync();
           setHasPermission(status === "granted");
         } catch (e2) {
-          console.log("LHS ERROR 2", e2);
           setHasPermission(false);
         }
       }
@@ -325,17 +322,17 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
               x.submission_type === EventSubmissionType.CODE
                 ? () => navigation.navigate("QRCode")
                 : hasPermission
-                ? () => getFile(x)
-                : () => Linking.openSettings()
+                  ? () => getFile(x)
+                  : () => Linking.openSettings()
             }
             buttonText={
               x.claimed
                 ? "Already Signed In"
                 : x.submission_type === EventSubmissionType.CODE
-                ? "Scan for Points"
-                : hasPermission
-                ? "Upload Photo for Points"
-                : "Enable Camera Access"
+                  ? "Scan for Points"
+                  : hasPermission
+                    ? "Upload Photo for Points"
+                    : "Enable Camera Access"
             }
           />
         ))}
