@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRequest } from "lynbrook-app-api-hooks";
-import { cloneElement, ReactElement, useEffect, useState } from "react";
+import React from "react";
 import { Button, Text } from "react-native";
 import { mutate } from "swr";
 import tw from "twrnc";
@@ -11,14 +11,14 @@ import Stack from "../../components/Stack";
 import { RewardsClaimedModalProps } from "../../navigation/tabs/HomeNavigator";
 
 type ContentProps = Pick<RewardsClaimedModalProps, "navigation"> & {
-  icon: ReactElement;
+  icon: React.ReactElement;
   title: string;
   description: string;
 };
 
 const Content = ({ navigation, icon, title, description }: ContentProps) => (
   <Stack style={tw`flex-1 p-8 justify-center`} align="center" spacing={4}>
-    {cloneElement(icon, { style: [icon.props.style, { fontSize: 64 }] })}
+    {React.cloneElement(icon, { style: [icon.props.style, { fontSize: 64 }] })}
     <Text style={tw`text-xl font-bold text-center`}>{title}</Text>
     <Text style={tw`text-sm text-gray-500 text-center`}>{description}</Text>
     <Button title="Close" onPress={() => navigation.navigate("Rewards")} />
@@ -36,9 +36,9 @@ type RedeemResult = {
 const RewardsClaimedModal = ({ navigation, route }: RewardsClaimedModalProps) => {
   const prize = route.params.prize;
   const { request, error } = useRequest();
-  const [result, setResult] = useState<RedeemResult | undefined>(undefined);
+  const [result, setResult] = React.useState<RedeemResult | undefined>(undefined);
 
-  useEffect(() => {
+  React.useEffect(() => {
     let cancelled = false;
 
     (async () => {
