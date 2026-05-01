@@ -56,18 +56,21 @@ const RewardsScreen = ({ navigation }: RewardsScreenProps) => {
   return (
     <ScrollView style={tw`flex-1`}>
       <Stack spacing={4} style={tw`p-4`}>
-        {prizes.map((item) => (
-          <RewardItem
-            key={item.id}
-            prize={item}
-            canClaim={
-              membershipsByOrg[item.organization.id].points -
-              membershipsByOrg[item.organization.id].points_spent >=
-              item.points
-            }
-            onPress={() => navigation.navigate("RewardsClaimed", { prize: item })}
-          />
-        ))}
+        {prizes.map((item) => {
+          const membership = membershipsByOrg[item.organization.id];
+          const canClaim = Boolean(
+            membership && membership.points - membership.points_spent >= item.points
+          );
+
+          return (
+            <RewardItem
+              key={item.id}
+              prize={item}
+              canClaim={canClaim}
+              onPress={() => navigation.navigate("RewardsClaimed", { prize: item })}
+            />
+          );
+        })}
       </Stack>
     </ScrollView>
   );

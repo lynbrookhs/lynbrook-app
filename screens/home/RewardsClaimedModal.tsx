@@ -51,7 +51,13 @@ const RewardsClaimedModal = ({ navigation, route }: RewardsClaimedModalProps) =>
       if (cancelled) return;
 
       setResult(redeemResult);
-      await Promise.all([mutate("/users/me/"), mutate("/users/me/orgs/")]);
+      if (__DEV__) console.log("redeemResult", redeemResult);
+      // Refresh possible SWR keys used across the app so memberships update.
+      await Promise.all([
+        mutate("/users/me/"),
+        mutate("/users/me/memberships/"),
+        mutate("/users/me/orgs/"),
+      ]);
     })();
 
     return () => {
