@@ -12,6 +12,8 @@ import Stack from "../../components/Stack";
 import markdownStyles from "../../helpers/markdownStyles";
 import { SpecialEventsScreenProps } from "../../navigation/tabs/HomeNavigator";
 
+const CLASSES = ["2027", "2028", "2029", "2030"];
+
 const SpecialEventsScreen = ({ navigation, route }: SpecialEventsScreenProps) => {
   const { data: event, error } = useEvent(route.params.id);
   const { data: event2, error: error2 } = useEvent(10);
