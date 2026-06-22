@@ -110,7 +110,9 @@
     ],
     "rules": {
       "no-throw-literal": "off",
-      "@typescript-eslint/no-throw-literal": "off"
+      "@typescript-eslint/no-throw-literal": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off"
     }
   }
 }
