@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
 import tw from "twrnc";
 
@@ -46,12 +46,17 @@ const IDScreen = () => {
     try {
       let source = picked.uri;
       if (picked.width > MAX_WIDTH) {
-        const resized = await ImageManipulator.manipulateAsync(
-          picked.uri,
-          [{ resize: { width: MAX_WIDTH } }],
-          { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
-        );
-        source = resized.uri;
+        try {
+          const resized = await ImageManipulator.manipulateAsync(
+            picked.uri,
+            [{ resize: { width: MAX_WIDTH } }],
+            { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
+          );
+          source = resized.uri;
+        } catch {
+          // App builds older than 2.3.1 lack the expo-image-manipulator native
+          // module (OTA updates can't add it), so save the original photo instead.
+        }
       }
 
       const previous = await listSavedPhotos();
