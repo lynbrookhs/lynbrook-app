@@ -24,7 +24,8 @@
       "bundleIdentifier": "org.fuhsd.lhs.app",
       "buildNumber": "2.3.0",
       "infoPlist": {
-        "NSCameraUsageDescription": "Allow camera access to scan barcodes and get spirit points for events."
+        "NSCameraUsageDescription": "Allow camera access to scan barcodes and get spirit points for events.",
+        "NSPhotoLibraryUsageDescription": "Allow photo library access to upload a photo of your student ID."
       }
     },
     "android": {
@@ -34,7 +35,7 @@
       },
       "package": "org.fuhsd.lhs.app",
       "versionCode": 27,
-      "permissions": ["CAMERA"],
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"],
       "googleServicesFile": "./google-services.json"
     },
     "extra": {

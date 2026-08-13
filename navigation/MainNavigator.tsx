@@ -8,6 +8,7 @@ import TabBarIcon from "./TabBarIcon";
 import ActivitiesNavigator, { ActivitiesTabParamList } from "./tabs/ActivitiesNavigator";
 import EventsNavigator, { EventsTabParamList } from "./tabs/EventsNavigator";
 import HomeNavigator, { HomeTabParamList } from "./tabs/HomeNavigator";
+import IDNavigator, { IDTabParamList } from "./tabs/IDNavigator";
 import NewsNavigator, { NewsTabParamList } from "./tabs/NewsNavigator";
 import SettingsNavigator, { SettingsTabParamList } from "./tabs/SettingsNavigator";
 
@@ -16,6 +17,7 @@ export type MainParamList = {
   ActivitiesTab: NavigatorScreenParams<ActivitiesTabParamList>;
   HomeTab: NavigatorScreenParams<HomeTabParamList>;
   EventsTab: NavigatorScreenParams<EventsTabParamList>;
+  IDTab: NavigatorScreenParams<IDTabParamList>;
   SettingsTab: NavigatorScreenParams<SettingsTabParamList>;
 };
 
@@ -50,6 +52,11 @@ const MainNavigator = () => {
           name="EventsTab"
           component={EventsNavigator}
           options={{ tabBarIcon: ioniconsTabIcon("calendar"), tabBarLabel: "Events" }}
+        />
+        <BottomTab.Screen
+          name="IDTab"
+          component={IDNavigator}
+          options={{ tabBarIcon: ioniconsTabIcon("card"), tabBarLabel: "ID" }}
         />
         <BottomTab.Screen
           name="SettingsTab"

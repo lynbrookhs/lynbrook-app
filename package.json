@@ -68,7 +68,8 @@
     "swr-react-native": "^0.1.2",
     "twrnc": "^3.4.0",
     "use-subscription": "^1.5.1",
-    "yargs": "^17.5.1"
+    "yargs": "^17.5.1",
+    "expo-image-manipulator": "~10.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
