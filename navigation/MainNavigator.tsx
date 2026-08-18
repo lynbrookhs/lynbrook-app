@@ -41,7 +41,7 @@ const MainNavigator = () => {
         <BottomTab.Screen
           name="ActivitiesTab"
           component={ActivitiesNavigator}
-          options={{ tabBarIcon: ioniconsTabIcon("time"), tabBarLabel: "Activities" }}
+          options={{ tabBarIcon: ioniconsTabIcon("people"), tabBarLabel: "Clubs" }}
         />
         <BottomTab.Screen
           name="HomeTab"
@@ -51,7 +51,7 @@ const MainNavigator = () => {
         <BottomTab.Screen
           name="EventsTab"
           component={EventsNavigator}
-          options={{ tabBarIcon: ioniconsTabIcon("calendar"), tabBarLabel: "Events" }}
+          options={{ tabBarIcon: ioniconsTabIcon("calendar"), tabBarLabel: "Calendar" }}
         />
         <BottomTab.Screen
           name="IDTab"
