@@ -81,7 +81,13 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
   const handleAdd = useCallback(
     async (organization: Organization) => {
       if (!memberships) return;
-      mutate([...memberships, { organization, points: 0 }], false);
+      mutate(
+        [
+          ...memberships,
+          { organization, points: 0, points_spent: 0, calendar_events: true, receive_pings: true },
+        ],
+        false
+      );
       await request("POST", "/users/me/orgs/", { organization: organization.id });
       mutate();
     },

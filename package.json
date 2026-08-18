@@ -33,6 +33,7 @@
     "expo-device": "~4.3.0",
     "expo-file-system": "~14.1.0",
     "expo-font": "~10.2.0",
+    "expo-image-manipulator": "~10.4.0",
     "expo-image-picker": "~13.3.1",
     "expo-linking": "~3.2.2",
     "expo-media-library": "~14.2.0",
@@ -68,8 +69,7 @@
     "swr-react-native": "^0.1.2",
     "twrnc": "^3.4.0",
     "use-subscription": "^1.5.1",
-    "yargs": "^17.5.1",
-    "expo-image-manipulator": "~10.4.0"
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
