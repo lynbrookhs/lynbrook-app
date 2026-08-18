@@ -84,7 +84,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
       mutate(
         [
           ...memberships,
-          { organization, points: 0, points_spent: 0, calendar_events: true, receive_pings: true },
+          { organization, points: 0, points_spent: 0, calendar_events: false, receive_pings: false },
         ],
         false
       );

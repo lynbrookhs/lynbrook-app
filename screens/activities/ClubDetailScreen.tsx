@@ -78,14 +78,14 @@ const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
             <ToggleRow
               title="Meetings in my calendar"
               subtitle="Show this club's meeting times in the Calendar tab."
-              value={membership.calendar_events ?? true}
+              value={membership.calendar_events ?? false}
               onChange={(v) => setFlag("calendar_events", v)}
             />
           )}
           <ToggleRow
             title="Club notifications"
             subtitle="Get pings from club officers, like meeting reminders."
-            value={membership.receive_pings ?? true}
+            value={membership.receive_pings ?? false}
             onChange={(v) => setFlag("receive_pings", v)}
           />
           {error2 && <APIError error={error2} style={tw`m-3`} />}
