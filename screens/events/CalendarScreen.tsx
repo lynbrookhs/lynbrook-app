@@ -317,6 +317,7 @@ const CalendarScreen = ({ navigation }: CalendarScreenProps) => {
   const { request } = useRequest();
 
   const [selected, setSelected] = useState(() => dateKey(new Date()));
+  const selectedDate = useMemo(() => parseISO(selected), [selected]);
   const [adding, setAdding] = useState(false);
   const [range, setRange] = useState(() => ({
     min: startOfDay(addDays(new Date(), -45)),
@@ -466,7 +467,7 @@ const CalendarScreen = ({ navigation }: CalendarScreenProps) => {
       />
       <AddEventModal
         visible={adding}
-        initialDate={parseISO(selected)}
+        initialDate={selectedDate}
         onClose={() => setAdding(false)}
         onSaved={() => mutatePersonal()}
       />
