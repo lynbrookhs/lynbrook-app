@@ -1,6 +1,8 @@
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 import { useMemberships, useOrg, useRequest } from "lynbrook-app-api-hooks";
 import React, { useCallback, useEffect } from "react";
-import { ScrollView, Switch, Text } from "react-native";
+import { Alert, Linking, ScrollView, Switch, Text } from "react-native";
 import tw from "twrnc";
 
 import APIError from "../../components/APIError";
@@ -41,6 +43,39 @@ const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
     }
   }, [org]);
 
+  // Opting in to pings is only useful if the phone can actually show notifications:
+  // ask for permission if we never have, re-register the push token, and point at
+  // Settings if notifications were previously denied.
+  const ensureNotificationsReady = useCallback(async () => {
+    if (!Device.isDevice) return;
+
+    let { status } = await Notifications.getPermissionsAsync();
+    if (status !== "granted") {
+      ({ status } = await Notifications.requestPermissionsAsync());
+    }
+
+    if (status !== "granted") {
+      Alert.alert(
+        "Notifications are off",
+        "To get club pings, allow notifications for the Lynbrook app in your phone's Settings.",
+        [
+          { text: "Not Now", style: "cancel" },
+          { text: "Open Settings", onPress: () => Linking.openSettings() },
+        ]
+      );
+      return;
+    }
+
+    try {
+      const { data } = await Notifications.getExpoPushTokenAsync({
+        experienceId: "@lynbrookhs/lhs-app",
+      });
+      await request("POST", "/users/me/tokens/", { token: data });
+    } catch {
+      // Token registration also happens on every app launch; failing here is not fatal.
+    }
+  }, [request]);
+
   const setFlag = useCallback(
     async (field: "calendar_events" | "receive_pings", value: boolean) => {
       if (!memberships) return;
@@ -52,8 +87,9 @@ const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
       );
       await request("PATCH", `/users/me/orgs/${route.params.id}/`, { [field]: value });
       mutate();
+      if (field === "receive_pings" && value) await ensureNotificationsReady();
     },
-    [memberships, route.params.id, request, mutate]
+    [memberships, route.params.id, request, mutate, ensureNotificationsReady]
   );
 
   if (error) return <APIError error={error} />;
