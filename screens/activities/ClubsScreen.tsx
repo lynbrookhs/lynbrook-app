@@ -146,7 +146,9 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
       renderItem={({ item }) => (
         <ClubItem
           item={item}
-          points={item.membership?.points}
+          points={
+            item.membership && item.membership.points - item.membership.points_spent
+          }
           onAdd={() => handleAdd(item)}
           onRemove={() => handleRemove(item)}
           onPress={() => navigation.navigate("ClubDetail", { id: item.id })}
