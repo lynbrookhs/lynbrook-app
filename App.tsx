@@ -22,6 +22,15 @@ import Navigation from "./navigation";
 
 const isActive = (x: AppStateStatus) => x === "active";
 
+// Show notifications (banner + sound) even while the app is open in the foreground.
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 const NeedUpdate = () => (
   <Stack style={tw`flex-1 justify-center p-8`} spacing={4} align="center">
     <Text style={tw`text-lg font-bold`}>Update Required</Text>

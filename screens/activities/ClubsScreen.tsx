@@ -84,7 +84,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
       mutate(
         [
           ...memberships,
-          { organization, points: 0, points_spent: 0, calendar_events: true, receive_pings: true },
+          { organization, points: 0, points_spent: 0, calendar_events: false, receive_pings: false },
         ],
         false
       );
@@ -146,7 +146,9 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
       renderItem={({ item }) => (
         <ClubItem
           item={item}
-          points={item.membership?.points}
+          points={
+            item.membership && item.membership.points - item.membership.points_spent
+          }
           onAdd={() => handleAdd(item)}
           onRemove={() => handleRemove(item)}
           onPress={() => navigation.navigate("ClubDetail", { id: item.id })}
