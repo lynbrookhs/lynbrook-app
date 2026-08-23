@@ -3,7 +3,7 @@
     "name": "Lynbrook High School",
     "owner": "lynbrookhs",
     "slug": "lhs-app",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "lhs",
@@ -18,11 +18,13 @@
       "fallbackToCacheTimeout": 5000,
       "url": "https://u.expo.dev/292b39d0-78fe-49f6-b287-831989dafb2f"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.fuhsd.lhs.app",
-      "buildNumber": "2.3.0",
+      "buildNumber": "2.4.0",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow camera access to scan barcodes and get spirit points for events.",
         "NSPhotoLibraryUsageDescription": "Allow photo library access to upload a photo of your student ID."
@@ -34,8 +36,11 @@
         "backgroundColor": "#033265"
       },
       "package": "org.fuhsd.lhs.app",
-      "versionCode": 27,
-      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"],
+      "versionCode": 28,
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE"
+      ],
       "googleServicesFile": "./google-services.json"
     },
     "extra": {
@@ -44,7 +49,7 @@
       }
     },
     "runtimeVersion": {
-      "policy": "sdkVersion"
+      "policy": "appVersion"
     },
     "plugins": [
       [
@@ -53,7 +58,8 @@
           "icon": "./assets/images/icon.png",
           "color": "#ffffff"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "originalFullName": "@lynbrookhs/lhs-app"
   }

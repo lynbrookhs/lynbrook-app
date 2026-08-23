@@ -47,7 +47,7 @@ const ClassSelect = () => {
       <Stack direction="row" spacing={2}>
         {[2030, 2029, 2028, 2027].map((x) => (
           <FilledButton
-            key={x} 
+            key={x}
             style={tw`flex-1`}
             textStyle={tw`text-center`}
             disabled={selected === x}
@@ -262,12 +262,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       quality: 0,
     });
 
-    if (result.cancelled) return;
+    if (result.canceled) return;
 
     navigation.navigate("QRCodeScanned", {
       event,
       type: EventSubmissionType.FILE,
-      file: result,
+      file: result.assets[0],
     });
   };
 
@@ -296,6 +296,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
         {cls && nextClsPrize && (
           <SpiritPoints
+            navigation={navigation}
             points={cls.points - cls.points_spent}
             checkpoint={nextClsPrize.points}
             checkpointPrize={nextClsPrize.name}

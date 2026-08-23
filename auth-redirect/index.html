@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Signing in&hellip;</title>
+    <style>
+      body {
+        font-family: -apple-system, system-ui, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        color: #333;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p>Returning to the Lynbrook app&hellip;</p>
+      <p><a id="open" href="#">Tap here if nothing happens.</a></p>
+    </div>
+    <script>
+      // Google redirects here (https is required by the OAuth client); forward the
+      // code/state params into the app via its custom scheme.
+      var target = "lhs://auth" + window.location.search;
+      document.getElementById("open").href = target;
+      window.location.replace(target);
+    </script>
+  </body>
+</html>

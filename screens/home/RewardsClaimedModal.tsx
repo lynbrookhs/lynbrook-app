@@ -7,7 +7,7 @@ import Stack from "../../components/Stack";
 import { RewardsClaimedModalProps } from "../../navigation/tabs/HomeNavigator";
 
 type ContentProps = Pick<RewardsClaimedModalProps, "navigation"> & {
-  icon: ReactElement;
+  icon: ReactElement<{ style?: any }>;
   title: string;
   description: string;
 };

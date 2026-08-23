@@ -3,16 +3,16 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
-import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
+import { ImagePickerAsset } from "expo-image-picker";
 import { Event, EventSubmissionType, useAuth } from "lynbrook-app-api-hooks";
 import * as React from "react";
 
-import QRCodeEntryModal from "../screens/home/QRCodeEntryModal";
-import QRCodeModal from "../screens/home/QRCodeModal";
-import QRCodeScannedModal from "../screens/home/QRCodeScannedModal";
 import AuthNavigator, { AuthParamList } from "./AuthNavigator";
 import MainNavigator, { MainParamList } from "./MainNavigator";
 import { linking, Theme } from "./config";
+import QRCodeEntryModal from "../screens/home/QRCodeEntryModal";
+import QRCodeModal from "../screens/home/QRCodeModal";
+import QRCodeScannedModal from "../screens/home/QRCodeScannedModal";
 
 export type QRCodeModalProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "QRCode">;
@@ -36,7 +36,7 @@ export type RootStackParamList = {
   QRCodeEntry: undefined;
   QRCodeScanned:
     | { type?: EventSubmissionType.CODE; code: number }
-    | { type: EventSubmissionType.FILE; event: Event; file: ImageInfo };
+    | { type: EventSubmissionType.FILE; event: Event; file: ImagePickerAsset };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

@@ -47,7 +47,7 @@ const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
                       value={values.email}
                       placeholder="Enter email address"
                       keyboardType="email-address"
-                      autoCompleteType="email"
+                      autoComplete="email"
                       textContentType="emailAddress"
                       style={tw`bg-white py-2 px-4 border border-gray-300 rounded-md`}
                     />
@@ -60,7 +60,7 @@ const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
                       onBlur={handleBlur("password")}
                       value={values.password}
                       placeholder="Create password"
-                      autoCompleteType="password"
+                      autoComplete="password"
                       textContentType="newPassword"
                       secureTextEntry
                       style={tw`bg-white py-2 px-4 border border-gray-300 rounded-md`}
@@ -74,7 +74,7 @@ const GuestRegisterModal = ({ navigation }: GuestRegisterModalProps) => {
                       onBlur={handleBlur("re_password")}
                       value={values.re_password}
                       placeholder="Repeat password"
-                      autoCompleteType="password"
+                      autoComplete="password"
                       textContentType="password"
                       secureTextEntry
                       style={tw`bg-white py-2 px-4 border border-gray-300 rounded-md`}

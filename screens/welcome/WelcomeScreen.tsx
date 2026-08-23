@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import * as AuthSession from "expo-auth-session";
+import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
 import { useSignInWithProvider } from "lynbrook-app-api-hooks";
 import React, { PropsWithChildren } from "react";
 import { Button, Text, View } from "react-native";
@@ -10,6 +11,11 @@ import APIError from "../../components/APIError";
 import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
 import { WelcomeScreenProps } from "../../navigation/AuthNavigator";
+
+// Hosted bounce page whitelisted on the Google OAuth client; it forwards the OAuth
+// callback params to the app via the lhs:// scheme (see auth-redirect/ in this repo).
+const AUTH_REDIRECT_PAGE = "https://lynbrookhs.github.io/lhs-app-auth/";
+const APP_RETURN_URL = Linking.createURL("auth");
 
 type WelcomeItemProps = PropsWithChildren<{
   icon: keyof typeof Ionicons.glyphMap;
@@ -30,11 +36,14 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
   const { makeAuthorizationUri, handleProviderCallback, error } = useSignInWithProvider("google");
 
   const signInWithProvider = async () => {
-    const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
-    const authUrl = await makeAuthorizationUri(redirectUri);
-    const res = await AuthSession.startAsync({ authUrl });
+    // Google's OAuth client only accepts https redirect URIs, so we redirect to a
+    // static bounce page that immediately forwards the code/state to the lhs:// scheme.
+    const authUrl = await makeAuthorizationUri(AUTH_REDIRECT_PAGE);
+    const res = await WebBrowser.openAuthSessionAsync(authUrl, APP_RETURN_URL);
     if (res.type !== "success") return console.error(res);
-    await handleProviderCallback(res.params);
+    const { queryParams } = Linking.parse(res.url);
+    if (!queryParams) return console.error(res);
+    await handleProviderCallback(queryParams as Record<string, string>);
   };
 
   return (
