@@ -12,9 +12,9 @@ import Divider from "../../components/Divider";
 import Stack from "../../components/Stack";
 import { WelcomeScreenProps } from "../../navigation/AuthNavigator";
 
-// Hosted bounce page whitelisted on the Google OAuth client; it forwards the OAuth
-// callback params to the app via the lhs:// scheme (see auth-redirect/ in this repo).
-const AUTH_REDIRECT_PAGE = "https://lynbrookhs.github.io/lhs-app-auth/";
+// Backend-hosted bounce page whitelisted on the Google OAuth client; it forwards
+// the OAuth callback params to the app via the lhs:// scheme.
+const AUTH_REDIRECT_PAGE = "https://lynbrookasb.org/auth/redirect/";
 const APP_RETURN_URL = Linking.createURL("auth");
 
 type WelcomeItemProps = PropsWithChildren<{
