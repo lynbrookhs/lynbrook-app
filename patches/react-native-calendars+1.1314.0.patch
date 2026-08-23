@@ -1,0 +1,16 @@
+diff --git a/node_modules/react-native-calendars/src/agenda/reservation-list/index.js b/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
+index 75d95c6..6abdd8c 100644
+--- a/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
++++ b/node_modules/react-native-calendars/src/agenda/reservation-list/index.js
+@@ -55,7 +55,10 @@ class ReservationList extends Component {
+             if (!sameDate(prevProps.topDay, this.props.topDay)) {
+                 this.setState({ reservations: [] }, () => this.updateReservations(this.props));
+             }
+-            else {
++            else if (prevProps.items !== this.props.items ||
++                !sameDate(prevProps.selectedDay, this.props.selectedDay)) {
++                // Only recompute when inputs actually change; identity-only prop
++                // churn from Agenda re-renders otherwise loops setState forever.
+                 this.updateReservations(this.props);
+             }
+         }

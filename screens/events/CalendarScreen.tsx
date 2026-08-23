@@ -19,7 +19,7 @@ import {
   View,
 } from "react-native";
 import { Agenda, AgendaEntry, DateData } from "react-native-calendars";
-import useSWRNative from "swr-react-native";
+import useSWRNative from "../../helpers/swrNative";
 import tw from "twrnc";
 
 import APIError from "../../components/APIError";
@@ -340,7 +340,7 @@ const CalendarScreen = ({ navigation }: CalendarScreenProps) => {
         <HeaderButton side="right" icon="add" onPress={() => setAdding(true)} {...props} />
       ),
     });
-  });
+  }, [navigation]);
 
   const loadItemsForMonth = useCallback((month: DateData) => {
     const first = new Date(month.year, month.month - 1, 1);

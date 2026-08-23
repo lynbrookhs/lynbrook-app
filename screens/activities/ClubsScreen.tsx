@@ -76,7 +76,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
         <HeaderButton side="right" icon="list" onPress={() => setSorted(!sorted)} {...props} />
       ),
     });
-  });
+  }, [navigation]);
 
   const handleAdd = useCallback(
     async (organization: Organization) => {

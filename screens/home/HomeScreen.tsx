@@ -204,7 +204,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         />
       ),
     });
-  });
+  }, [navigation]);
 
   useEffect(() => {
     (async () => {

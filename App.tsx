@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as semver from "semver";
 import useSWR from "swr";
-import { useSWRNativeRevalidate } from "swr-react-native";
+import { useSWRNativeRevalidate } from "./helpers/swrNative";
 import tw from "twrnc";
 
 import FilledButton from "./components/FilledButton";
