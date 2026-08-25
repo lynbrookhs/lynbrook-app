@@ -26,13 +26,13 @@ import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
 
-// Family Ties survey. The event itself lives in the admin under Lynbrook ASB — this matches it by
-// name so no id needs to be baked in. Set FAMILY_TIES_CODE to that event's 6-digit code to award
-// points when a student taps through; leave it null and the card only opens the form.
-const FAMILY_TIES_NAME = "Family Ties";
-const FAMILY_TIES_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSduNkimyawOZ0AqpV1G3aDBh2DH5BMt7liDpS7QgSM4PRiuUQ/viewform";
-const FAMILY_TIES_CODE: number | null = 712203;
+// Link events render like the Daily Wordle — name, org, and an arrow — but the arrow awards the
+// points once and then opens the event's URL. Nothing here is hardcoded: set an event's submission
+// type to Link in the admin and fill in its link, and it shows up here. EventSubmissionType.LINK
+// is not in the published api-hooks types yet, hence the literal.
+const LINK_SUBMISSION_TYPE = 3 as EventSubmissionType;
+
+type LinkEvent = Event & { link?: string };
 
 const ClassSelect = () => {
   const [selected, setSelected] = useState<number | undefined>(undefined);
@@ -262,21 +262,21 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const specialEvents = events.filter((e) => [260, 278, 389, 391].includes(e.id));
   const regularEvents = events.filter(
-    (e) => ![260, 278, 386, 389, 391].includes(e.id) && e.name !== FAMILY_TIES_NAME
+    (e) => ![260, 278, 386, 389, 391].includes(e.id) && e.submission_type !== LINK_SUBMISSION_TYPE
   );
 
-  const familyTiesEvents = events.filter((e) => e.name === FAMILY_TIES_NAME);
+  const linkEvents: LinkEvent[] = events.filter((e) => e.submission_type === LINK_SUBMISSION_TYPE);
   const wordleEvents = events.filter((e) => e.id === 386);
 
-  const openFamilyTies = async (event: Event) => {
-    if (FAMILY_TIES_CODE !== null && !event.claimed) {
-      await request("POST", "/users/me/events/", { code: FAMILY_TIES_CODE });
+  const openLinkEvent = async (event: LinkEvent) => {
+    if (!event.claimed) {
+      await request("POST", "/users/me/events/", { event_id: event.id });
       mutate("/events/");
       mutate("/users/me/");
       mutate("/users/me/memberships/");
     }
 
-    Linking.openURL(FAMILY_TIES_URL);
+    if (event.link) Linking.openURL(event.link);
   };
 
   const getFile = async (event: Event) => {
@@ -338,8 +338,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           />
         ))}
 
-        {familyTiesEvents.map((x) => (
-          <SpecialEventItem key={x.id} event={x} showClaimed onPress={() => openFamilyTies(x)} />
+        {linkEvents.map((x) => (
+          <SpecialEventItem key={x.id} event={x} showClaimed onPress={() => openLinkEvent(x)} />
         ))}
 
         {wordleEvents.map((x) => (
