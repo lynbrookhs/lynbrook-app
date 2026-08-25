@@ -76,7 +76,7 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
         <HeaderButton side="right" icon="list" onPress={() => setSorted(!sorted)} {...props} />
       ),
     });
-  });
+  }, [navigation]);
 
   const handleAdd = useCallback(
     async (organization: Organization) => {
@@ -84,7 +84,13 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
       mutate(
         [
           ...memberships,
-          { organization, points: 0, points_spent: 0, calendar_events: false, receive_pings: false },
+          {
+            organization,
+            points: 0,
+            points_spent: 0,
+            calendar_events: false,
+            receive_pings: false,
+          },
         ],
         false
       );
@@ -140,15 +146,13 @@ const ClubsScreen = ({ navigation }: ClubsScreenProps) => {
       ];
 
   return (
-    <SectionList<typeof orgs[0]>
+    <SectionList<(typeof orgs)[0]>
       style={tw`-mb-px`}
       sections={listData}
       renderItem={({ item }) => (
         <ClubItem
           item={item}
-          points={
-            item.membership && item.membership.points - item.membership.points_spent
-          }
+          points={item.membership && item.membership.points - item.membership.points_spent}
           onAdd={() => handleAdd(item)}
           onRemove={() => handleRemove(item)}
           onPress={() => navigation.navigate("ClubDetail", { id: item.id })}

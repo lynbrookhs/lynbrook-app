@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 // import Barcode from "@kichiyaki/react-native-barcode-generator";
-import Constants from "expo-constants";
 import * as Linking from "expo-linking";
 // import * as SecureStore from "expo-secure-store";
+import * as Updates from "expo-updates";
 import { OrganizationType, useMemberships, useSignOut, useUser } from "lynbrook-app-api-hooks";
 import { Button, ScrollView, Text, TouchableHighlight, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
@@ -141,11 +141,9 @@ const SettingsScreen = () => {
             <Button title="Sign Out" onPress={signOut} />
           </ListItem>
 
-          {Constants.manifest?.revisionId && (
+          {Updates.updateId && (
             <ListItem style={tw`bg-transparent`} border="none">
-              <Text style={tw`text-center text-gray-500`}>
-                Stable {Constants.manifest?.revisionId}
-              </Text>
+              <Text style={tw`text-center text-gray-500`}>Stable {Updates.updateId}</Text>
             </ListItem>
           )}
         </Stack>

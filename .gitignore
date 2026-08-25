@@ -12,3 +12,7 @@ web-build/
 
 # macOS
 .DS_Store
+
+# Generated native project (managed workflow; expo run:android recreates it)
+/android
+/ios

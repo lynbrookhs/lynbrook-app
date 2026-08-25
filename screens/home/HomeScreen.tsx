@@ -26,6 +26,14 @@ import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
 
+// Family Ties survey. The event itself lives in the admin under Lynbrook ASB — this matches it by
+// name so no id needs to be baked in. Set FAMILY_TIES_CODE to that event's 6-digit code to award
+// points when a student taps through; leave it null and the card only opens the form.
+const FAMILY_TIES_NAME = "Family Ties";
+const FAMILY_TIES_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSduNkimyawOZ0AqpV1G3aDBh2DH5BMt7liDpS7QgSM4PRiuUQ/viewform";
+const FAMILY_TIES_CODE: number | null = null;
+
 const ClassSelect = () => {
   const [selected, setSelected] = useState<number | undefined>(undefined);
   const { request } = useRequest();
@@ -133,10 +141,11 @@ const SpiritPoints = ({
 
 type SpecialEventItemProps = {
   event: Event;
+  showClaimed?: boolean;
   onPress: () => void;
 };
 
-const SpecialEventItem = ({ event, onPress }: SpecialEventItemProps) => (
+const SpecialEventItem = ({ event, showClaimed, onPress }: SpecialEventItemProps) => (
   <Card>
     <Stack direction="row" style={tw`justify-between`} align="center">
       <Stack>
@@ -144,7 +153,11 @@ const SpecialEventItem = ({ event, onPress }: SpecialEventItemProps) => (
         <Text style={tw`text-sm`}>{event.organization.name}</Text>
       </Stack>
       <TouchableOpacity onPress={onPress} style={tw`pl-4 py-2`}>
-        <Ionicons name="arrow-forward" style={tw`text-xl`} />
+        {showClaimed && event.claimed ? (
+          <Ionicons name="checkmark" style={tw`text-xl text-green-600`} />
+        ) : (
+          <Ionicons name="arrow-forward" style={tw`text-xl`} />
+        )}
       </TouchableOpacity>
     </Stack>
   </Card>
@@ -183,6 +196,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { data: user, error } = useUser();
   const { data: prizes, error: error2 } = usePrizes();
   const { data: events, error: error3 } = useEvents();
+  const { request } = useRequest();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -203,7 +217,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         />
       ),
     });
-  });
+  }, [navigation]);
 
   useEffect(() => {
     (async () => {
@@ -247,9 +261,23 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // Events
 
   const specialEvents = events.filter((e) => [260, 278, 389, 391].includes(e.id));
-  const regularEvents = events.filter((e) => ![260, 278, 386, 389, 391].includes(e.id));
+  const regularEvents = events.filter(
+    (e) => ![260, 278, 386, 389, 391].includes(e.id) && e.name !== FAMILY_TIES_NAME
+  );
 
+  const familyTiesEvents = events.filter((e) => e.name === FAMILY_TIES_NAME);
   const wordleEvents = events.filter((e) => e.id === 386);
+
+  const openFamilyTies = async (event: Event) => {
+    if (FAMILY_TIES_CODE !== null && !event.claimed) {
+      await request("POST", "/users/me/events/", { code: FAMILY_TIES_CODE });
+      mutate("/events/");
+      mutate("/users/me/");
+      mutate("/users/me/memberships/");
+    }
+
+    Linking.openURL(FAMILY_TIES_URL);
+  };
 
   const getFile = async (event: Event) => {
     if (!hasPermission) return;
@@ -259,12 +287,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       quality: 0,
     });
 
-    if (result.cancelled) return;
+    if (result.canceled) return;
 
     navigation.navigate("QRCodeScanned", {
       event,
       type: EventSubmissionType.FILE,
-      file: result,
+      file: result.assets[0],
     });
   };
 
@@ -293,6 +321,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
         {cls && nextClsPrize && (
           <SpiritPoints
+            navigation={navigation}
             points={cls.points - cls.points_spent}
             checkpoint={nextClsPrize.points}
             checkpointPrize={nextClsPrize.name}
@@ -308,6 +337,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             event={x}
             onPress={() => navigation.navigate("Special", { id: x.id })}
           />
+        ))}
+
+        {familyTiesEvents.map((x) => (
+          <SpecialEventItem key={x.id} event={x} showClaimed onPress={() => openFamilyTies(x)} />
         ))}
 
         {wordleEvents.map((x) => (

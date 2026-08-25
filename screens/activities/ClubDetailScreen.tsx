@@ -1,3 +1,4 @@
+import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { useMemberships, useOrg, useRequest } from "lynbrook-app-api-hooks";
@@ -68,7 +69,7 @@ const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
 
     try {
       const { data } = await Notifications.getExpoPushTokenAsync({
-        experienceId: "@lynbrookhs/lhs-app",
+        projectId: Constants.expoConfig?.extra?.eas?.projectId,
       });
       await request("POST", "/users/me/tokens/", { token: data });
     } catch {

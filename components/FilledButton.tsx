@@ -11,10 +11,11 @@ import tw from "twrnc";
 
 import Stack from "./Stack";
 
-export type FilledButtonProps = PressableProps & {
+export type FilledButtonProps = Omit<PressableProps, "children"> & {
   color?: string;
   textStyle?: StyleProp<TextStyle>;
   loading?: boolean;
+  children?: React.ReactNode;
 };
 
 const FilledButton = ({
