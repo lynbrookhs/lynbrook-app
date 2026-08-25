@@ -32,7 +32,7 @@ import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
 const FAMILY_TIES_NAME = "Family Ties";
 const FAMILY_TIES_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSduNkimyawOZ0AqpV1G3aDBh2DH5BMt7liDpS7QgSM4PRiuUQ/viewform";
-const FAMILY_TIES_CODE: number | null = null;
+const FAMILY_TIES_CODE: number | null = 712203;
 
 const ClassSelect = () => {
   const [selected, setSelected] = useState<number | undefined>(undefined);
