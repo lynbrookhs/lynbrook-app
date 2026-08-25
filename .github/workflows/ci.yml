@@ -32,7 +32,7 @@ jobs:
         uses: expo/expo-github-action@v6
         with:
           expo-version: latest
-          eas-version: latest
+          eas-version: 5.3.0
           token: ${{ secrets.EXPO_TOKEN }}
           packager: npm
 

@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { BarcodeScanningResult, Camera, CameraView } from "expo-camera";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import { BarCodeScanningResult, Camera } from "expo-camera";
 import { EventSubmissionType } from "lynbrook-app-api-hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Linking, Platform, Text, TouchableOpacity, View } from "react-native";
@@ -61,13 +62,13 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
+      const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
   }, []);
 
   const handleBarCodeScanned = useCallback(
-    ({ data }: BarcodeScanningResult) => {
+    ({ data }: BarCodeScanningResult) => {
       if (scanned) return;
       const code = Number(data.replace("lhs://", "")) || 0;
       navigation.replace("QRCodeScanned", { type: EventSubmissionType.CODE, code });
@@ -110,12 +111,12 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
   const Wrapper2 = Platform.OS === "android" ? View : SafeAreaView;
 
   return (
-    <CameraView
+    <Camera
       zoom={zoom}
       style={tw`flex-1`}
-      onBarcodeScanned={handleBarCodeScanned}
-      barcodeScannerSettings={{
-        barcodeTypes: ["qr"],
+      onBarCodeScanned={handleBarCodeScanned}
+      barCodeScannerSettings={{
+        barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
       }}
     >
       <PinchGestureHandler onGestureEvent={handlePinch} onHandlerStateChange={handlePinchStart}>
@@ -142,7 +143,7 @@ const QRCodeModal = ({ navigation }: QRCodeModalProps) => {
           </Wrapper2>
         </Wrapper>
       </PinchGestureHandler>
-    </CameraView>
+    </Camera>
   );
 };
 

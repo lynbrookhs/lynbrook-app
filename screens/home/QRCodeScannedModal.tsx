@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import * as FileSystem from "expo-file-system/legacy";
-import { FileSystemUploadType } from "expo-file-system/legacy";
+import * as FileSystem from "expo-file-system";
+import { FileSystemUploadType } from "expo-file-system";
 import { apiPath, Event, EventSubmissionType, useRequest } from "lynbrook-app-api-hooks";
 import React, { cloneElement, ReactElement, useEffect, useState } from "react";
 import { Button, Text } from "react-native";
@@ -13,7 +13,7 @@ import Stack from "../../components/Stack";
 import { QRCodeScannedModalProps } from "../../navigation";
 
 type ContentProps = Pick<QRCodeScannedModalProps, "navigation"> & {
-  icon: ReactElement<{ style?: any }>;
+  icon: ReactElement;
   title: string;
   description: string;
 };

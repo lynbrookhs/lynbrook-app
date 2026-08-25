@@ -1,4 +1,4 @@
-import Constants from "expo-constants";
+import Constants, { AppOwnership } from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import * as SecureStore from "expo-secure-store";
@@ -7,11 +7,11 @@ import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from "expo-updates
 import { apiFetcher, AppVersion, AuthProvider, useAuth, useRequest } from "lynbrook-app-api-hooks";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, AppState, AppStateStatus, Linking, Platform, Text } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as semver from "semver";
 import useSWR from "swr";
-import { useSWRNativeRevalidate } from "./helpers/swrNative";
+import { useSWRNativeRevalidate } from "swr-react-native";
 import tw from "twrnc";
 
 import FilledButton from "./components/FilledButton";
@@ -25,8 +25,7 @@ const isActive = (x: AppStateStatus) => x === "active";
 // Show notifications (banner + sound) even while the app is open in the foreground.
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowBanner: true,
-    shouldShowList: true,
+    shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
   }),
@@ -66,7 +65,7 @@ const Root = () => {
         if (status !== "granted") return;
 
         const { data } = await Notifications.getExpoPushTokenAsync({
-          projectId: Constants.expoConfig?.extra?.eas?.projectId,
+          experienceId: "@lynbrookhs/lhs-app",
         });
         await request("POST", "/users/me/tokens/", { token: data });
       }
@@ -121,7 +120,7 @@ const App = () => {
     Alert.alert(
       "Update Available",
       "The app has been updated and will now reload.",
-      [{ text: "OK", onPress: () => reloadAsync() }],
+      [{ text: "OK", onPress: reloadAsync }],
       { cancelable: false }
     );
   }, []);
@@ -134,13 +133,13 @@ const App = () => {
 
   useEffect(() => {
     checkUpdate();
-    const subscription = AppState.addEventListener("change", handleAppStateChange);
-    return () => subscription.remove();
+    AppState.addEventListener("change", handleAppStateChange);
+    return () => AppState.removeEventListener("change", handleAppStateChange);
   }, []);
 
   if (!isLoadingComplete || !appVersion) return null;
 
-  if (!error && !Constants.appOwnership) {
+  if (!error && (Constants.appOwnership === AppOwnership.Standalone || !Constants.appOwnership)) {
     const neededVersion = semver.coerce(appVersion[Platform.OS] ?? 0);
     const currentVersion = semver.coerce(Constants.nativeBuildVersion);
     if (neededVersion && currentVersion && semver.gt(neededVersion, currentVersion)) {
@@ -163,19 +162,17 @@ const App = () => {
   };
 
   return (
-    <GestureHandlerRootView style={tw`flex-1`}>
-      <SafeAreaProvider>
-        <AuthProvider
-          fallback={<Loading />}
-          loadToken={loadToken}
-          onTokenChange={onTokenChange}
-          afterRequest={useSWRNativeRevalidate}
-        >
-          <Root />
-        </AuthProvider>
-        <StatusBar />
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
+    <SafeAreaProvider>
+      <AuthProvider
+        fallback={<Loading />}
+        loadToken={loadToken}
+        onTokenChange={onTokenChange}
+        afterRequest={useSWRNativeRevalidate}
+      >
+        <Root />
+      </AuthProvider>
+      <StatusBar />
+    </SafeAreaProvider>
   );
 };
 

@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import * as FileSystem from "expo-file-system/legacy";
+import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
@@ -91,8 +91,8 @@ const IDScreen = () => {
       source === "camera"
         ? await ImagePicker.launchCameraAsync(options)
         : await ImagePicker.launchImageLibraryAsync(options);
-    if (result.canceled) return;
-    await savePhoto(result.assets[0]);
+    if (result.cancelled) return;
+    await savePhoto(result);
   };
 
   const replace = () => {

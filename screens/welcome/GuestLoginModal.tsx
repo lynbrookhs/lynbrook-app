@@ -22,7 +22,7 @@ const GuestLoginModal = ({ navigation }: GuestLoginModalProps) => {
   const [error, setError] = useState<Error | undefined>(undefined);
   const { signInAsGuest } = useSignInAsGuest();
 
-  const handleSignIn = useCallback(async (values: { email: string; password: string }) => {
+  const handleSignIn = useCallback(async (values) => {
     try {
       await signInAsGuest(values);
     } catch (error) {
@@ -53,7 +53,7 @@ const GuestLoginModal = ({ navigation }: GuestLoginModalProps) => {
                       value={values.email}
                       placeholder="Enter email address"
                       keyboardType="email-address"
-                      autoComplete="email"
+                      autoCompleteType="email"
                       textContentType="emailAddress"
                       style={tw`bg-white py-2 px-4 border border-gray-300 rounded-md`}
                     />
@@ -66,7 +66,7 @@ const GuestLoginModal = ({ navigation }: GuestLoginModalProps) => {
                       onBlur={handleBlur("password")}
                       value={values.password}
                       placeholder="Enter password"
-                      autoComplete="password"
+                      autoCompleteType="password"
                       textContentType="password"
                       secureTextEntry
                       style={tw`bg-white py-2 px-4 border border-gray-300 rounded-md`}
