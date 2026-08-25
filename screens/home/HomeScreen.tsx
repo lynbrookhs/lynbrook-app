@@ -142,15 +142,24 @@ const SpiritPoints = ({
 type SpecialEventItemProps = {
   event: Event;
   showClaimed?: boolean;
+  showDescription?: boolean;
   onPress: () => void;
 };
 
-const SpecialEventItem = ({ event, showClaimed, onPress }: SpecialEventItemProps) => (
+const SpecialEventItem = ({
+  event,
+  showClaimed,
+  showDescription,
+  onPress,
+}: SpecialEventItemProps) => (
   <Card>
     <Stack direction="row" style={tw`justify-between`} align="center">
-      <Stack>
+      <Stack style={tw`flex-1`}>
         <Text style={tw`text-lg font-bold`}>{event.name}</Text>
         <Text style={tw`text-sm`}>{event.organization.name}</Text>
+        {showDescription && event.description !== "" && (
+          <Text style={tw`text-sm text-gray-500 pt-1`}>{event.description}</Text>
+        )}
       </Stack>
       <TouchableOpacity onPress={onPress} style={tw`pl-4 py-2`}>
         {showClaimed && event.claimed ? (
@@ -339,7 +348,13 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         ))}
 
         {linkEvents.map((x) => (
-          <SpecialEventItem key={x.id} event={x} showClaimed onPress={() => openLinkEvent(x)} />
+          <SpecialEventItem
+            key={x.id}
+            event={x}
+            showClaimed
+            showDescription
+            onPress={() => openLinkEvent(x)}
+          />
         ))}
 
         {wordleEvents.map((x) => (
