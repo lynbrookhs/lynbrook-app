@@ -26,14 +26,6 @@ import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { HomeScreenProps } from "../../navigation/tabs/HomeNavigator";
 
-// Link events render like the Daily Wordle — name, org, and an arrow — but the arrow awards the
-// points once and then opens the event's URL. Nothing here is hardcoded: set an event's submission
-// type to Link in the admin and fill in its link, and it shows up here. EventSubmissionType.LINK
-// is not in the published api-hooks types yet, hence the literal.
-const LINK_SUBMISSION_TYPE = 3 as EventSubmissionType;
-
-type LinkEvent = Event & { link?: string };
-
 const ClassSelect = () => {
   const [selected, setSelected] = useState<number | undefined>(undefined);
   const { request } = useRequest();
@@ -141,32 +133,18 @@ const SpiritPoints = ({
 
 type SpecialEventItemProps = {
   event: Event;
-  showClaimed?: boolean;
-  showDescription?: boolean;
   onPress: () => void;
 };
 
-const SpecialEventItem = ({
-  event,
-  showClaimed,
-  showDescription,
-  onPress,
-}: SpecialEventItemProps) => (
+const SpecialEventItem = ({ event, onPress }: SpecialEventItemProps) => (
   <Card>
     <Stack direction="row" style={tw`justify-between`} align="center">
-      <Stack style={tw`flex-1`}>
+      <Stack>
         <Text style={tw`text-lg font-bold`}>{event.name}</Text>
         <Text style={tw`text-sm`}>{event.organization.name}</Text>
-        {showDescription && event.description !== "" && (
-          <Text style={tw`text-sm text-gray-500 pt-1`}>{event.description}</Text>
-        )}
       </Stack>
       <TouchableOpacity onPress={onPress} style={tw`pl-4 py-2`}>
-        {showClaimed && event.claimed ? (
-          <Ionicons name="checkmark" style={tw`text-xl text-green-600`} />
-        ) : (
-          <Ionicons name="arrow-forward" style={tw`text-xl`} />
-        )}
+        <Ionicons name="arrow-forward" style={tw`text-xl`} />
       </TouchableOpacity>
     </Stack>
   </Card>
@@ -205,7 +183,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { data: user, error } = useUser();
   const { data: prizes, error: error2 } = usePrizes();
   const { data: events, error: error3 } = useEvents();
-  const { request } = useRequest();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -270,23 +247,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // Events
 
   const specialEvents = events.filter((e) => [260, 278, 389, 391].includes(e.id));
-  const regularEvents = events.filter(
-    (e) => ![260, 278, 386, 389, 391].includes(e.id) && e.submission_type !== LINK_SUBMISSION_TYPE
-  );
+  const regularEvents = events.filter((e) => ![260, 278, 386, 389, 391].includes(e.id));
 
-  const linkEvents: LinkEvent[] = events.filter((e) => e.submission_type === LINK_SUBMISSION_TYPE);
   const wordleEvents = events.filter((e) => e.id === 386);
-
-  const openLinkEvent = async (event: LinkEvent) => {
-    if (!event.claimed) {
-      await request("POST", "/users/me/events/", { event_id: event.id });
-      mutate("/events/");
-      mutate("/users/me/");
-      mutate("/users/me/memberships/");
-    }
-
-    if (event.link) Linking.openURL(event.link);
-  };
 
   const getFile = async (event: Event) => {
     if (!hasPermission) return;
@@ -344,16 +307,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             key={x.id}
             event={x}
             onPress={() => navigation.navigate("Special", { id: x.id })}
-          />
-        ))}
-
-        {linkEvents.map((x) => (
-          <SpecialEventItem
-            key={x.id}
-            event={x}
-            showClaimed
-            showDescription
-            onPress={() => openLinkEvent(x)}
           />
         ))}
 
