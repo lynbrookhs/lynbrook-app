@@ -11,6 +11,7 @@ import { WordleScreenProps } from "../../navigation/tabs/HomeNavigator";
 
 const YELLOW = "#c9b458";
 const GREEN = "#6aaa64";
+const WORD_LENGTH = 5;
 
 type GuessLetterProps = {
   state?: null | false | true;
@@ -54,7 +55,7 @@ type GuessProps = {
 
 const Guess = ({ state, word }: GuessProps) => (
   <Stack direction="row" style={tw`flex-1 justify-center`} spacing={2}>
-    {[...Array(5).keys()].map((x) => (
+    {[...Array(WORD_LENGTH).keys()].map((x) => (
       <GuessLetter letter={word?.charAt(x)} state={state?.[x]} key={x} />
     ))}
   </Stack>
@@ -171,6 +172,9 @@ const WordleScreen = ({ navigation }: WordleScreenProps) => {
 
   const handleEnter = async () => {
     if (wordleEntry.solved) return;
+    // The board only has five tiles, so anything else is a guess the server
+    // will reject with nothing on screen to explain why.
+    if (guess.length !== WORD_LENGTH) return;
     const result = await request("PUT", "/users/me/wordle_entries/today/", {
       guesses: [guess.toLowerCase()],
     });
@@ -179,7 +183,10 @@ const WordleScreen = ({ navigation }: WordleScreenProps) => {
     setGuess("");
   };
 
-  const handlePress = (letter: string) => setGuess(guess + letter);
+  // Ignore letters past the fifth: the board renders only five tiles, so extra
+  // ones were invisible but still in the guess, and had to be backspaced away.
+  const handlePress = (letter: string) =>
+    setGuess((prev) => (prev.length >= WORD_LENGTH ? prev : prev + letter));
   const handleBackspace = () => setGuess(guess.substring(0, Math.max(guess.length - 1, 0)));
 
   return (
