@@ -6,6 +6,8 @@ import { Alert, Linking, ScrollView, Switch, Text } from "react-native";
 import tw from "twrnc";
 
 import APIError from "../../components/APIError";
+import Card from "../../components/Card";
+import FilledButton from "../../components/FilledButton";
 import ListItem from "../../components/ListItem";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
@@ -30,23 +32,33 @@ const ToggleRow = ({ title, subtitle, value, onChange }: ToggleRowProps) => (
   </ListItem>
 );
 
-type PrizeRowProps = {
+type PrizeCardProps = {
   prize: Prize;
-  affordable: boolean;
+  canClaim: boolean;
+  onPress: () => void;
 };
 
-const PrizeRow = ({ prize, affordable }: PrizeRowProps) => (
-  <ListItem direction="row" align="center">
-    <Stack style={tw`flex-1 mr-3`}>
-      <Text style={tw`text-sm font-bold`}>{prize.name}</Text>
-      {prize.description !== "" && (
-        <Text style={tw`text-sm text-gray-500`}>{prize.description}</Text>
-      )}
+// Matches the cards on the Rewards screen, including its warning, so claiming
+// here behaves and reads exactly the same way.
+const PrizeCard = ({ prize, canClaim, onPress }: PrizeCardProps) => (
+  <Card
+    header={
+      <Stack direction="row" align="center">
+        <Text style={tw`flex-1 text-lg font-bold`}>{prize.name}</Text>
+        <Text style={tw`text-base`}>{prize.points} points</Text>
+      </Stack>
+    }
+  >
+    <Stack spacing={4}>
+      <Text style={tw`text-sm`}>
+        {prize.description +
+          "\n \n Please only click the claim button below in front of Ms. Lawrence as that will subtract your points"}
+      </Text>
+      <FilledButton textStyle={tw`text-center`} disabled={!canClaim} onPress={onPress}>
+        {canClaim ? "Claim" : "Not Enough Points"}
+      </FilledButton>
     </Stack>
-    <Text style={[tw`text-sm`, affordable ? tw`text-green-600 font-bold` : tw`text-gray-400`]}>
-      {prize.points} pts
-    </Text>
-  </ListItem>
+  </Card>
 );
 
 const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
@@ -161,16 +173,26 @@ const ClubDetailScreen = ({ navigation, route }: ClubDetailScreenProps) => {
             <Stack spacing={2}>
               <Stack direction="row" align="center">
                 <Text style={tw`flex-1 text-base font-bold`}>Prizes</Text>
-                {membership && <Text style={tw`text-sm text-gray-500`}>{available} points</Text>}
+                {membership && (
+                  <Text style={tw`text-sm text-gray-500`}>Total: {available} points</Text>
+                )}
               </Stack>
 
               {clubPrizes.map((prize) => (
-                <PrizeRow key={prize.id} prize={prize} affordable={available >= prize.points} />
+                <PrizeCard
+                  key={prize.id}
+                  prize={prize}
+                  canClaim={available >= prize.points}
+                  // RewardsClaimed lives in the Home tab's stack, so claiming from
+                  // here hands off to the same modal the Rewards screen uses.
+                  onPress={() =>
+                    navigation.navigate("Main", {
+                      screen: "HomeTab",
+                      params: { screen: "RewardsClaimed", params: { prize } },
+                    })
+                  }
+                />
               ))}
-
-              <Text style={tw`text-sm text-gray-500`}>
-                Claim these from Rewards on the Home tab.
-              </Text>
             </Stack>
           )}
         </Stack>
