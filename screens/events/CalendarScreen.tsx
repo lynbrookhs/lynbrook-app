@@ -59,6 +59,20 @@ type Items = { [key: string]: AgendaEvent[] };
 
 const dateKey = (d: Date) => format(d, "yyyy-MM-dd");
 
+// An event an organization publishes to its members, served by /calendar_events/.
+// Not in the api-hooks package yet, so the shape is declared here.
+type OrgCalendarEvent = {
+  id: number;
+  organization: { id: number; name: string; type: number };
+  title: string;
+  location: string;
+  start: string;
+  end: string;
+  all_day: boolean;
+};
+
+const ORG_TYPE_GLOBAL = 1;
+
 // A feed that fails to download or parse should never take down the calendar.
 const fetcher = async (url: string) => {
   try {
@@ -334,6 +348,14 @@ const CalendarScreen = ({ navigation }: CalendarScreenProps) => {
     dedupingInterval: 5 * 60 * 1000,
   });
 
+  const { data: orgEvents } = useSWRNative<OrgCalendarEvent[]>(
+    "/calendar_events/",
+    // A failed load should leave the rest of the calendar usable, so this
+    // resolves to an empty list rather than rejecting.
+    (path: string) => request<OrgCalendarEvent[]>("GET", path).then((r) => r ?? []),
+    { revalidateOnFocus: false, dedupingInterval: 5 * 60 * 1000 }
+  );
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
@@ -374,7 +396,35 @@ const CalendarScreen = ({ navigation }: CalendarScreenProps) => {
       parseCalendar(text, color).forEach(pushSpan);
     });
 
-    // 2. The student's own events.
+    // 2. Events organizations published through the admin. Each org keeps one color.
+    const orgColors = new Map<number, string>();
+    (orgEvents ?? []).forEach((ev) => {
+      const start = parseISO(ev.start);
+      if (isNaN(start.getTime())) return;
+      let end = parseISO(ev.end);
+      if (isNaN(end.getTime()) || end < start) end = start;
+
+      let color = orgColors.get(ev.organization.id);
+      if (color === undefined) {
+        color =
+          ev.organization.type === ORG_TYPE_GLOBAL
+            ? ASB_COLOR
+            : OTHER_FEED_COLORS[feedIdx++ % OTHER_FEED_COLORS.length];
+        orgColors.set(ev.organization.id, color);
+      }
+
+      pushSpan({
+        ...agendaBase,
+        id: `org-${ev.id}`,
+        name: ev.location ? `${ev.title} @ ${ev.location}` : ev.title,
+        allDay: ev.all_day,
+        start,
+        end,
+        color,
+      });
+    });
+
+    // 3. The student's own events.
     (personal ?? []).forEach((ev: CalendarEvent) => {
       const start = parseISO(ev.start);
       if (isNaN(start.getTime())) return;
@@ -392,7 +442,7 @@ const CalendarScreen = ({ navigation }: CalendarScreenProps) => {
       });
     });
 
-    // 3. Weekly club meetings (for clubs where the student left the calendar toggle on).
+    // 4. Weekly club meetings (for clubs where the student left the calendar toggle on).
     (memberships ?? []).forEach((mem) => {
       const org = mem.organization;
       if (org.day === undefined || org.day === null) return;
@@ -419,7 +469,7 @@ const CalendarScreen = ({ navigation }: CalendarScreenProps) => {
     Object.values(acc).forEach((day) => day.sort((a, b) => (sortKey(a) < sortKey(b) ? -1 : 1)));
 
     return acc;
-  }, [cals, urls, personal, memberships, range]);
+  }, [cals, urls, orgEvents, personal, memberships, range]);
 
   const handleDelete = useCallback(
     (ev: AgendaEvent) => {
