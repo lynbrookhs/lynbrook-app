@@ -58,7 +58,15 @@ const QRCodeScannedModal = ({ navigation, route }: QRCodeScannedModalProps) => {
         parameters: { event_id },
       });
       if (result.status < 200 || result.status > 299) {
-        throw { status: result.status, url };
+        // Carry the response body through as `inner` so APIError can show why
+        // the photo was rejected instead of a bare status code.
+        let inner;
+        try {
+          inner = JSON.parse(result.body);
+        } catch {
+          inner = undefined;
+        }
+        throw { status: result.status, url, inner };
       }
       return JSON.parse(result.body);
     });

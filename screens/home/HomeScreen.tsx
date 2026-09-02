@@ -10,8 +10,8 @@ import {
   UserType,
   useUser,
 } from "lynbrook-app-api-hooks";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import React, { useLayoutEffect, useState } from "react";
+import { Alert as RNAlert, Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import ProgressCircle from "react-native-progress-circle";
 import { mutate } from "swr";
@@ -179,8 +179,6 @@ const EventItem = ({ event, buttonText, onPress }: EventItemProps) => (
 );
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  const [hasPermission, setHasPermission] = useState<boolean | undefined>(undefined);
-
   const { data: user, error } = useUser();
   const { data: prizes, error: error2 } = usePrizes();
   const { data: events, error: error3 } = useEvents();
@@ -206,31 +204,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     });
   }, [navigation]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        setHasPermission(status === "granted");
-      } catch (e) {
-        try {
-          console.log("LHS ERROR", e);
-          const { status } = await ImagePicker.getCameraPermissionsAsync();
-          setHasPermission(status === "granted");
-        } catch (e2) {
-          console.log("LHS ERROR 2", e2);
-          setHasPermission(false);
-        }
-      }
-    })();
-  }, []);
-
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
   if (error3) return <APIError error={error3} />;
   if (!user) return <Loading />;
   if (!prizes) return <Loading />;
   if (!events) return <Loading />;
-  if (hasPermission === undefined) return <Loading />;
 
   // Points
 
@@ -254,13 +233,31 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const wordleEvents = events.filter((e) => e.id === 386);
 
-  const getFile = async (event: Event) => {
-    if (!hasPermission) return;
+  const submitPhoto = async (event: Event, source: "camera" | "library") => {
+    const permission =
+      source === "camera"
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0,
-    });
+    if (permission.status !== "granted") {
+      RNAlert.alert(
+        "Permission Needed",
+        source === "camera"
+          ? "Allow camera access in Settings to take a photo for this event."
+          : "Allow photo access in Settings to submit a photo for this event.",
+        [
+          { text: "Not Now", style: "cancel" },
+          { text: "Open Settings", onPress: () => Linking.openSettings() },
+        ]
+      );
+      return;
+    }
+
+    const options = { mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0 };
+    const result =
+      source === "camera"
+        ? await ImagePicker.launchCameraAsync(options)
+        : await ImagePicker.launchImageLibraryAsync(options);
 
     if (result.canceled) return;
 
@@ -269,6 +266,16 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       type: EventSubmissionType.FILE,
       file: result.assets[0],
     });
+  };
+
+  // Spirit day photos are often taken earlier in the day, so the camera roll
+  // has to be an option and not just the live camera.
+  const getFile = (event: Event) => {
+    RNAlert.alert("Submit Photo", "How do you want to add your photo?", [
+      { text: "Take Photo", onPress: () => submitPhoto(event, "camera") },
+      { text: "Choose from Library", onPress: () => submitPhoto(event, "library") },
+      { text: "Cancel", style: "cancel" },
+    ]);
   };
 
   return (
@@ -325,18 +332,14 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             onPress={
               x.submission_type === EventSubmissionType.CODE
                 ? () => navigation.navigate("QRCode")
-                : hasPermission
-                ? () => getFile(x)
-                : () => Linking.openSettings()
+                : () => getFile(x)
             }
             buttonText={
               x.claimed
                 ? "Already Signed In"
                 : x.submission_type === EventSubmissionType.CODE
                 ? "Scan for Points"
-                : hasPermission
-                ? "Upload Photo for Points"
-                : "Enable Camera Access"
+                : "Submit Photo for Points"
             }
           />
         ))}

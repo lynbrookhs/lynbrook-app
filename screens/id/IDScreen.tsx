@@ -215,7 +215,7 @@ const IDScreen = () => {
         "Permission Needed",
         source === "camera"
           ? "Allow camera access in Settings to take a photo of your ID."
-          : "Allow photo library access in Settings to upload a photo of your ID."
+          : "Allow photo library access in Settings to choose a photo of your ID."
       );
       return;
     }
@@ -282,7 +282,7 @@ const IDScreen = () => {
             Take Photo
           </FilledButton>
           <FilledButton loading={saving} onPress={() => pick("library")}>
-            Upload Photo
+            Choose from Library
           </FilledButton>
         </Stack>
       </Stack>
