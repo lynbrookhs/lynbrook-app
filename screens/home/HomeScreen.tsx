@@ -8,6 +8,7 @@ import {
   usePrizes,
   useRequest,
   UserType,
+  useReceivedMemories,
   useUser,
 } from "lynbrook-app-api-hooks";
 import React, { useLayoutEffect, useState } from "react";
@@ -17,6 +18,7 @@ import ProgressCircle from "react-native-progress-circle";
 import { mutate } from "swr";
 import tw from "twrnc";
 
+import { seniorYear } from "./MemoriesScreen";
 import APIError from "../../components/APIError";
 import Alert from "../../components/Alert";
 import Card from "../../components/Card";
@@ -182,6 +184,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { data: user, error } = useUser();
   const { data: prizes, error: error2 } = usePrizes();
   const { data: events, error: error3 } = useEvents();
+  const { data: receivedMemories } = useReceivedMemories();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -290,6 +293,21 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         />
 
         {user.type === UserType.STUDENT && !user.grad_year && <ClassSelect />}
+
+        {(user.grad_year === seniorYear() ||
+          (receivedMemories?.released && receivedMemories.memories.length > 0)) && (
+          <Card>
+            <Stack spacing={2}>
+              <Text style={tw`text-lg font-bold`}>Senior Memories 📸</Text>
+              <Text style={tw`text-base text-gray-600`}>
+                {user.grad_year === seniorYear()
+                  ? "Collect photos and notes for your classmates all year. Delivered in June."
+                  : "You've got memories waiting from the Class of " + String(seniorYear()) + "!"}
+              </Text>
+              <FilledButton onPress={() => navigation.navigate("Memories")}>Open</FilledButton>
+            </Stack>
+          </Card>
+        )}
 
         {asb && nextAsbPrize && (
           <SpiritPoints

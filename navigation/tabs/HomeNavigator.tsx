@@ -9,6 +9,7 @@ import React from "react";
 
 import { RootStackParamList } from "..";
 import HomeScreen from "../../screens/home/HomeScreen";
+import MemoriesScreen from "../../screens/home/MemoriesScreen";
 import RewardsClaimedModal from "../../screens/home/RewardsClaimedModal";
 import RewardsScreen from "../../screens/home/RewardsScreen";
 import SpecialEventsScreen from "../../screens/home/SpecialEventsScreen";
@@ -30,6 +31,7 @@ type HomeTabScreenProps<T extends keyof HomeTabParamList> = {
 
 export type HomeScreenProps = HomeTabScreenProps<"Home">;
 export type RewardsScreenProps = HomeTabScreenProps<"Rewards">;
+export type MemoriesScreenProps = HomeTabScreenProps<"Memories">;
 export type SpecialEventsScreenProps = HomeTabScreenProps<"Special">;
 export type WordleScreenProps = HomeTabScreenProps<"Wordle">;
 export type PostDetailScreenProps = HomeTabScreenProps<"PostDetail">;
@@ -40,6 +42,7 @@ export type RewardsClaimedModalProps = {
 
 export type HomeTabParamList = {
   Home: undefined;
+  Memories: undefined;
   Rewards: undefined;
   Special: { id: number };
   Wordle: undefined;
@@ -54,6 +57,11 @@ const HomeNavigator = () => {
     <HomeStack.Navigator screenOptions={screenOptions}>
       <HomeStack.Screen name="Home" component={HomeScreen} options={{ title: "Home" }} />
       <HomeStack.Screen name="Rewards" component={RewardsScreen} options={{ title: "Rewards" }} />
+      <HomeStack.Screen
+        name="Memories"
+        component={MemoriesScreen}
+        options={{ title: "Senior Memories" }}
+      />
       <HomeStack.Screen name="Special" component={SpecialEventsScreen} options={{ title: "" }} />
       <HomeStack.Screen name="Wordle" component={WordleScreen} options={{ title: "Wordle" }} />
       <HomeStack.Screen name="PostDetail" component={PostDetailScreen} options={{ title: "" }} />
