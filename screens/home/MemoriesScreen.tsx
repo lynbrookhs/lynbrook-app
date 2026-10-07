@@ -17,6 +17,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Alert,
   Image,
+  KeyboardAvoidingView,
   Linking,
   Modal,
   Platform,
@@ -163,100 +164,104 @@ const Composer = ({ visible, onClose, onSaved }: ComposerProps) => {
           <View style={tw`w-14`} />
         </Stack>
 
-        <ScrollView contentContainerStyle={tw`p-4`} keyboardShouldPersistTaps="handled">
-          <Stack spacing={4}>
-            <TouchableOpacity onPress={choosePhoto}>
-              {photo ? (
-                <Image
-                  source={{ uri: photo.uri }}
-                  style={tw`w-full h-64 rounded-md`}
-                  resizeMode="cover"
+        <KeyboardAvoidingView
+          style={tw`flex-1`}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
+          <ScrollView
+            contentContainerStyle={tw`p-4`}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
+          >
+            <Stack spacing={4}>
+              <TouchableOpacity onPress={choosePhoto}>
+                {photo ? (
+                  <Image
+                    source={{ uri: photo.uri }}
+                    style={tw`w-full h-64 rounded-md`}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <View
+                    style={tw`w-full h-40 rounded-md border-2 border-dashed border-gray-300 items-center justify-center bg-white`}
+                  >
+                    <Ionicons name="image-outline" style={tw`text-4xl text-gray-400`} />
+                    <Text style={tw`text-gray-500 mt-1`}>Tap to add a photo</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+
+              <Stack spacing={1}>
+                <TextInput
+                  style={tw`bg-white rounded-md border border-gray-300 px-3 py-3 text-base min-h-24`}
+                  placeholder="Write a note to go with it…"
+                  value={note}
+                  onChangeText={(t) => t.length <= MAX_NOTE && setNote(t)}
+                  multiline
                 />
-              ) : (
-                <View
-                  style={tw`w-full h-40 rounded-md border-2 border-dashed border-gray-300 items-center justify-center bg-white`}
-                >
-                  <Ionicons name="image-outline" style={tw`text-4xl text-gray-400`} />
-                  <Text style={tw`text-gray-500 mt-1`}>Tap to add a photo</Text>
-                </View>
-              )}
-            </TouchableOpacity>
+                <Text style={tw`text-xs text-gray-400 text-right`}>
+                  {note.length}/{MAX_NOTE}
+                </Text>
+              </Stack>
 
-            <Stack spacing={1}>
-              <TextInput
-                style={tw`bg-white rounded-md border border-gray-300 px-3 py-3 text-base min-h-24`}
-                placeholder="Write a note to go with it…"
-                value={note}
-                onChangeText={(t) => t.length <= MAX_NOTE && setNote(t)}
-                multiline
-              />
-              <Text style={tw`text-xs text-gray-400 text-right`}>
-                {note.length}/{MAX_NOTE}
-              </Text>
-            </Stack>
-
-            <Stack spacing={2}>
-              <Text style={tw`text-sm font-medium text-gray-500`}>
-                Tag the people in it — they get the photo in June
-              </Text>
-              {tagged.length > 0 && (
-                <Stack direction="row" style={tw`flex-wrap`}>
-                  {tagged.map((p) => (
+              <Stack spacing={2}>
+                <Text style={tw`text-sm font-medium text-gray-500`}>
+                  Tag the seniors in it. They get the photo in June.
+                </Text>
+                {tagged.length > 0 && (
+                  <Stack direction="row" style={tw`flex-wrap`}>
+                    {tagged.map((p) => (
+                      <TouchableOpacity key={p.id} onPress={() => toggleTag(p)}>
+                        <View
+                          style={tw`flex-row items-center bg-indigo-600 rounded-full px-3 py-1 mr-2 mb-2`}
+                        >
+                          <Text style={tw`text-white text-sm`}>
+                            {p.first_name} {p.last_name}
+                          </Text>
+                          <Ionicons name="close" style={tw`text-white text-sm ml-1`} />
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </Stack>
+                )}
+                <TextInput
+                  style={tw`bg-white rounded-md border border-gray-300 px-3 py-2 text-base`}
+                  placeholder="Search seniors by name…"
+                  value={query}
+                  onChangeText={setQuery}
+                  autoCapitalize="none"
+                />
+                {results
+                  .filter((p) => !tagged.some((x) => x.id === p.id))
+                  .map((p) => (
                     <TouchableOpacity key={p.id} onPress={() => toggleTag(p)}>
                       <View
-                        style={tw`flex-row items-center bg-indigo-600 rounded-full px-3 py-1 mr-2 mb-2`}
+                        style={tw`bg-white rounded-md border border-gray-200 px-3 py-2 flex-row items-center`}
                       >
-                        <Text style={tw`text-white text-sm`}>
+                        <Ionicons
+                          name="person-add-outline"
+                          style={tw`text-base text-indigo-600 mr-2`}
+                        />
+                        <Text style={tw`text-base flex-1`}>
                           {p.first_name} {p.last_name}
                         </Text>
-                        <Ionicons name="close" style={tw`text-white text-sm ml-1`} />
                       </View>
                     </TouchableOpacity>
                   ))}
-                </Stack>
-              )}
-              <TextInput
-                style={tw`bg-white rounded-md border border-gray-300 px-3 py-2 text-base`}
-                placeholder="Search classmates by name…"
-                value={query}
-                onChangeText={setQuery}
-                autoCapitalize="none"
-              />
-              {results
-                .filter((p) => !tagged.some((x) => x.id === p.id))
-                .map((p) => (
-                  <TouchableOpacity key={p.id} onPress={() => toggleTag(p)}>
-                    <View
-                      style={tw`bg-white rounded-md border border-gray-200 px-3 py-2 flex-row items-center`}
-                    >
-                      <Ionicons
-                        name="person-add-outline"
-                        style={tw`text-base text-indigo-600 mr-2`}
-                      />
-                      <Text style={tw`text-base flex-1`}>
-                        {p.first_name} {p.last_name}
-                      </Text>
-                      {p.grad_year && (
-                        <Text style={tw`text-sm text-gray-400`}>
-                          ’{String(p.grad_year).slice(2)}
-                        </Text>
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                ))}
+              </Stack>
+
+              {error && <APIError error={error} style={tw`m-0`} />}
+
+              <FilledButton
+                loading={saving}
+                disabled={!photo || tagged.length === 0 || saving}
+                onPress={submit}
+              >
+                Seal it until June
+              </FilledButton>
             </Stack>
-
-            {error && <APIError error={error} style={tw`m-0`} />}
-
-            <FilledButton
-              loading={saving}
-              disabled={!photo || tagged.length === 0 || saving}
-              onPress={submit}
-            >
-              Seal it until June ✉️
-            </FilledButton>
-          </Stack>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </Stack>
     </Modal>
   );
@@ -325,7 +330,7 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
         <Stack spacing={4} style={tw`p-4`}>
           {received.released && received.memories.length > 0 && (
             <Stack spacing={3}>
-              <Text style={tw`text-lg font-bold`}>Your memories 💌</Text>
+              <Text style={tw`text-lg font-bold`}>Your memories</Text>
               {received.memories.map((m) => (
                 <Card key={m.id} style={tw`p-3`}>
                   <Stack spacing={3}>
@@ -341,7 +346,7 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
                     </Text>
                     {Platform.OS === "ios" && (
                       <FilledButton loading={savingId === m.id} onPress={() => sharePolaroid(m.id)}>
-                        Save polaroid 📸
+                        Save polaroid
                       </FilledButton>
                     )}
                   </Stack>
@@ -362,7 +367,7 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
             <Stack spacing={3}>
               <Card>
                 <Stack spacing={2}>
-                  <Text style={tw`text-lg font-bold`}>Senior Memories 📸</Text>
+                  <Text style={tw`text-lg font-bold`}>Senior Memories</Text>
                   <Text style={tw`text-base text-gray-600`}>
                     Upload photos with a note all year and tag the people in them. Everything stays
                     sealed until it's delivered to everyone at the end of the year.
@@ -407,7 +412,7 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
           {isSenior && received.released && (
             <Card>
               <Text style={tw`text-base text-gray-500 text-center`}>
-                This year's memories have been delivered. 🎓
+                This year's memories have been delivered.
               </Text>
             </Card>
           )}

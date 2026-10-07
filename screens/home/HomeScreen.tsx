@@ -298,7 +298,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           (receivedMemories?.released && receivedMemories.memories.length > 0)) && (
           <Card>
             <Stack spacing={2}>
-              <Text style={tw`text-lg font-bold`}>Senior Memories 📸</Text>
+              <Text style={tw`text-lg font-bold`}>Senior Memories</Text>
               <Text style={tw`text-base text-gray-600`}>
                 {user.grad_year === seniorYear()
                   ? "Collect photos and notes for your classmates all year. Delivered in June."

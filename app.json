@@ -27,7 +27,8 @@
       "buildNumber": "2.4.0",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow camera access to scan barcodes and get spirit points for events.",
-        "NSPhotoLibraryUsageDescription": "Allow photo library access to upload a photo of your student ID."
+        "NSPhotoLibraryUsageDescription": "Allow photo library access to upload a photo of your student ID.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
