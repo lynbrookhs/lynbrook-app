@@ -28,6 +28,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import APIError from "../../components/APIError";
@@ -51,6 +52,8 @@ type ComposerProps = {
 };
 
 const Composer = ({ visible, onClose, onSaved }: ComposerProps) => {
+  const insets = useSafeAreaInsets();
+  const scrollRef = useRef<ScrollView>(null);
   const { request, requestWithFunc, error } = useRequest();
   const [photo, setPhoto] = useState<ImagePicker.ImagePickerAsset | undefined>();
   const [note, setNote] = useState("");
@@ -148,14 +151,14 @@ const Composer = ({ visible, onClose, onSaved }: ComposerProps) => {
     <Modal
       visible={visible}
       animationType="slide"
-      presentationStyle="pageSheet"
+      presentationStyle="fullScreen"
       onRequestClose={onClose}
     >
       <Stack style={tw`flex-1 bg-gray-100`}>
         <Stack
           direction="row"
           align="center"
-          style={tw`bg-white px-4 py-3 border-b border-gray-200`}
+          style={[tw`bg-white px-4 py-3 border-b border-gray-200`, { paddingTop: insets.top + 12 }]}
         >
           <TouchableOpacity onPress={onClose}>
             <Text style={tw`text-base text-indigo-600`}>Cancel</Text>
@@ -169,6 +172,7 @@ const Composer = ({ visible, onClose, onSaved }: ComposerProps) => {
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
           <ScrollView
+            ref={scrollRef}
             contentContainerStyle={tw`p-4`}
             keyboardShouldPersistTaps="handled"
             keyboardDismissMode="on-drag"
@@ -230,9 +234,13 @@ const Composer = ({ visible, onClose, onSaved }: ComposerProps) => {
                   value={query}
                   onChangeText={setQuery}
                   autoCapitalize="none"
+                  onFocus={() =>
+                    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300)
+                  }
                 />
                 {results
                   .filter((p) => !tagged.some((x) => x.id === p.id))
+                  .slice(0, 5)
                   .map((p) => (
                     <TouchableOpacity key={p.id} onPress={() => toggleTag(p)}>
                       <View
@@ -320,6 +328,28 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
     [token]
   );
 
+  const downloadAll = useCallback(async () => {
+    setSavingId(-1);
+    try {
+      const dest = `${FileSystem.cacheDirectory}senior-memories.zip`;
+      const dl = await FileSystem.downloadAsync(
+        apiPath("/memories/received/archive/").toString(),
+        dest,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (dl.status !== 200) throw new Error(`download failed (${dl.status})`);
+      // In the share sheet, "Save to Files" keeps the zip; opening it in Files
+      // unpacks one folder per sender.
+      await Share.share({ url: dl.uri });
+    } catch {
+      Alert.alert("Couldn't download", "Something went wrong preparing your memories. Try again?");
+    } finally {
+      setSavingId(undefined);
+    }
+  }, [token]);
+
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
   if (!user || !received || (isSenior && !mine)) return <Loading />;
@@ -331,6 +361,11 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
           {received.released && received.memories.length > 0 && (
             <Stack spacing={3}>
               <Text style={tw`text-lg font-bold`}>Your memories</Text>
+              {Platform.OS === "ios" && (
+                <FilledButton loading={savingId === -1} onPress={downloadAll}>
+                  Download all (one folder per sender)
+                </FilledButton>
+              )}
               {received.memories.map((m) => (
                 <Card key={m.id} style={tw`p-3`}>
                   <Stack spacing={3}>
