@@ -294,15 +294,17 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
         {user.type === UserType.STUDENT && !user.grad_year && <ClassSelect />}
 
-        {(user.grad_year === seniorYear() ||
+        {(!!user.grad_year ||
           (receivedMemories?.released && receivedMemories.memories.length > 0)) && (
           <Card>
             <Stack spacing={2}>
               <Text style={tw`text-lg font-bold`}>Senior Memories</Text>
               <Text style={tw`text-base text-gray-600`}>
-                {user.grad_year === seniorYear()
+                {receivedMemories?.released && receivedMemories.memories.length > 0
+                  ? "You've got memories waiting from this year!"
+                  : user.grad_year === seniorYear()
                   ? "Collect photos and notes for your classmates all year. Delivered in June."
-                  : "You've got memories waiting from the Class of " + String(seniorYear()) + "!"}
+                  : "Send photos and notes to this year's seniors. Delivered in June."}
               </Text>
               <FilledButton onPress={() => navigation.navigate("Memories")}>Open</FilledButton>
             </Stack>

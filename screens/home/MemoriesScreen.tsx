@@ -284,7 +284,7 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
   const [composing, setComposing] = useState(false);
   const [savingId, setSavingId] = useState<number | undefined>();
 
-  const isSenior = user?.grad_year === seniorYear();
+  const canSend = !!user?.grad_year;
 
   const deleteMemory = useCallback(
     (m: Memory) => {
@@ -352,7 +352,7 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
 
   if (error) return <APIError error={error} />;
   if (error2) return <APIError error={error2} />;
-  if (!user || !received || (isSenior && !mine)) return <Loading />;
+  if (!user || !received || (canSend && !mine)) return <Loading />;
 
   return (
     <>
@@ -390,22 +390,22 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
             </Stack>
           )}
 
-          {received.released && received.memories.length === 0 && !isSenior && (
+          {received.released && received.memories.length === 0 && (
             <Card>
               <Text style={tw`text-base text-gray-500 text-center`}>
-                No memories were addressed to you this year.
+                This year's memories have been delivered.
               </Text>
             </Card>
           )}
 
-          {isSenior && !received.released && (
+          {canSend && !received.released && (
             <Stack spacing={3}>
               <Card>
                 <Stack spacing={2}>
                   <Text style={tw`text-lg font-bold`}>Senior Memories</Text>
                   <Text style={tw`text-base text-gray-600`}>
-                    Upload photos with a note all year and tag the people in them. Everything stays
-                    sealed until it's delivered to everyone at the end of the year.
+                    Any student can upload photos with a note and tag the seniors in them.
+                    Everything stays sealed until it's delivered at the end of the year.
                   </Text>
                   <FilledButton onPress={() => setComposing(true)}>Add a memory</FilledButton>
                 </Stack>
@@ -442,14 +442,6 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
                 </Stack>
               )}
             </Stack>
-          )}
-
-          {isSenior && received.released && (
-            <Card>
-              <Text style={tw`text-base text-gray-500 text-center`}>
-                This year's memories have been delivered.
-              </Text>
-            </Card>
           )}
         </Stack>
       </ScrollView>
