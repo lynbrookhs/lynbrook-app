@@ -3,7 +3,7 @@
     "name": "Lynbrook High School",
     "owner": "lynbrookhs",
     "slug": "lhs-app",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "lhs",
@@ -24,7 +24,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.fuhsd.lhs.app",
-      "buildNumber": "2.4.0",
+      "buildNumber": "2.4.1",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow camera access to scan barcodes and get spirit points for events.",
         "NSPhotoLibraryUsageDescription": "Allow photo library access to upload a photo of your student ID.",
