@@ -23,6 +23,7 @@ import {
   Platform,
   ScrollView,
   Share,
+  Switch,
   Text,
   TextInput,
   TouchableOpacity,
@@ -276,7 +277,7 @@ const Composer = ({ visible, onClose, onSaved }: ComposerProps) => {
 };
 
 const MemoriesScreen = (_props: MemoriesScreenProps) => {
-  const { data: user, error } = useUser();
+  const { data: user, error, mutate: mutateUser } = useUser();
   const { data: mine, mutate: mutateMine } = useMyMemories();
   const { data: received, error: error2 } = useReceivedMemories();
   const { request } = useRequest();
@@ -285,6 +286,17 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
   const [savingId, setSavingId] = useState<number | undefined>();
 
   const canSend = !!user?.grad_year;
+  const isSenior = user?.grad_year === seniorYear();
+
+  const setOptOut = useCallback(
+    async (optOut: boolean) => {
+      if (!user) return;
+      mutateUser({ ...user, memories_opt_out: optOut }, false);
+      await request("PATCH", "/users/me/", { memories_opt_out: optOut });
+      mutateUser();
+    },
+    [user, request, mutateUser]
+  );
 
   const deleteMemory = useCallback(
     (m: Memory) => {
@@ -410,6 +422,21 @@ const MemoriesScreen = (_props: MemoriesScreenProps) => {
                   <FilledButton onPress={() => setComposing(true)}>Add a memory</FilledButton>
                 </Stack>
               </Card>
+
+              {isSenior && (
+                <Card style={tw`p-3`}>
+                  <Stack direction="row" align="center">
+                    <Stack style={tw`flex-1 mr-3`}>
+                      <Text style={tw`text-sm font-bold`}>Allow classmates to tag me</Text>
+                      <Text style={tw`text-sm text-gray-500`}>
+                        Turn off to stop appearing in tag search. Already-sealed memories keep you;
+                        ask a class officer to remove one.
+                      </Text>
+                    </Stack>
+                    <Switch value={!user.memories_opt_out} onValueChange={(v) => setOptOut(!v)} />
+                  </Stack>
+                </Card>
+              )}
 
               {(mine ?? []).length > 0 && (
                 <Stack spacing={2}>
