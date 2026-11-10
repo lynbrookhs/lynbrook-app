@@ -10,15 +10,14 @@ import FilledButton from "../../components/FilledButton";
 import Loading from "../../components/Loading";
 import Stack from "../../components/Stack";
 import { encodeCode39, isEncodable } from "../../helpers/code39";
+import { ID_NUMBER_FILE, ID_PREFIX, isSavedPhoto } from "../../helpers/idFiles";
 
-const ID_PREFIX = "student-id-";
-const ID_NUMBER_FILE = "student-id-number.txt";
 const MAX_WIDTH = 1600;
 const BARCODE_HEIGHT = 140;
 
 const listSavedPhotos = async () => {
   const files = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory ?? "");
-  return files.filter((name) => name.startsWith(ID_PREFIX));
+  return files.filter(isSavedPhoto);
 };
 
 const deleteSavedPhotos = async (names: string[]) => {
